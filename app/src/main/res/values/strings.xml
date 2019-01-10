@@ -1,0 +1,68 @@
+<resources>
+    <string name="app_name">md</string>
+    <string name="powered_by">Powered by</string>
+    <string name="website">Moshkou.com</string>
+
+    <!--Page Title-->
+    <string name="title_register">Register</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_login_verification">Verification</string>
+    <string name="title_activity_login_suspicious">Suspicious Login Attempt</string>
+    <string name="title_activity_login_attempt">Suspicious Login Attempt</string>
+    <string name="title_activity_alert">Oops</string>
+    <string name="title_activity_main">@string/app_name</string>
+    <string name="title_activity_preview">Preview</string>
+    <string name="title_activity_carousel">Carousel</string>
+
+    <!--Header-->
+    <string name="header_alert">Oops!!!</string>
+    <string name="header_login">Welcome to md</string>
+    <string name="header_login_verification">Account Login Verification</string>
+    <string name="header_login_suspicious">We Detected An Unusual Login Attempt</string>
+    <string name="header_login_attempt">Was it you?</string>
+
+    <!--Hints-->
+    <string name="hint_register">Please confirm your name, phone number and email address then tap Next.\nYou will receive account verification code shortly.</string>
+    <string name="hint_login">Please confirm your phone number or email address then tap Next.\nYou will receive account verification code shortly.</string>
+    <string name="hint_login_verification">Just to make sure the account belongs to you,\nwe have sent you account verification code.</string>
+    <string name="hint_login_verification_request">You can request a code again in </string>
+    <string name="hint_login_verification_resend">Click &lt;font color="#00a8e6"&gt;here&lt;/font&gt; to send you verification code.</string>
+    <string name="hint_login_suspicious">To secure your account, we will send you a security code to verify your identity.</string>
+    <string name="hint_login_attempt">Someone attempted to login to your account recently. If it wasn\'t you, tell us so we can verify your account.</string>
+
+    <!--Messages-->
+    <string name="message_login_verification">Thanks for helping us to secure account from unauthorized access!</string>
+    <string name="message_token_expired">Your credentials did not work, the credentials that were used to connect.\nFor security reasons you need to Login.</string>
+    <string name="message_error_required_fields">Please fill up the required fields.</string>
+    <string name="message_error_required_verification_code">Please enter your verification code.</string>
+    <string name="message_error_valid_phone_email">Please enter valid phone number or email.</string>
+    <string name="message_error_valid_email">Valid email is required.</string>
+    <string name="message_error_valid_phone">Valid phone number is required.</string>
+
+    <!--Placeholder-->
+    <string name="placeholder_login_verification">Account Verification Code</string>
+    <string name="placeholder_login">Phone or email</string>
+    <string name="placeholder_phone">Phone Number</string>
+    <string name="placeholder_email">Email</string>
+    <string name="placeholder_name">Full Name</string>
+
+    <!--Actions-->
+    <string name="action_next">Next</string>
+    <string name="action_done">Done</string>
+    <string name="action_skip">SKIP</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_sign_up">Sign up</string>
+    <string name="action_login_button_1">Yahoo Mail</string>
+    <string name="action_login_button_2">Gmail</string>
+    <string name="action_login_button_3">Outlook</string>
+    <string name="action_login_button_4">AOL</string>
+    <string name="action_login">Have an account? Sign in</string>
+    <string name="action_register">Don\'t have an account? Sign up</string>
+    <string name="action_verify">Verify</string>
+    <string name="action_send_security_code">Send Security Code</string>
+    <string name="action_it_was_me">It was me</string>
+    <string name="action_it_was_not_me">It wasn\'t me</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

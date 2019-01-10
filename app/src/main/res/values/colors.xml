@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorPrimaryLight">#009985</color>
+    <color name="colorAccent">#d81b60</color>
+
+    <color name="info">#00a8e6</color>
+    <color name="success">#6a875a</color>
+    <color name="warning">#fba733</color>
+    <color name="error">#da324c</color>
+
+    <color name="lightWhite">#8cffffff</color>
+    <color name="notWhite">#bfffffff</color>
+    <color name="lightBlack">#8c000000</color>
+    <color name="lightGray">#DDDDDD</color>
+
+    <color name="bgAuth">#FFFFFF</color>
+</resources>
