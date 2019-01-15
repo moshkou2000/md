@@ -51,7 +51,7 @@ public class PreviewActivity extends AppCompatActivity {
             });
             image.setVisibility(View.VISIBLE);
             Picasso.get()
-                    .load(Utils.getCdnUrl(url))
+                    .load("IMAGE URL")
                     .placeholder(R.drawable.ic_image)
                     .error(R.drawable.ic_image)
                     .into(image);
@@ -69,7 +69,7 @@ public class PreviewActivity extends AppCompatActivity {
                 }
             });
             video.setVisibility(View.VISIBLE);
-            video.setVideoURI(Uri.parse(Utils.getPreviewUrl(url)));
+            video.setVideoURI(Uri.parse("IMAGE URL"));
             video.start();
         }
     }
