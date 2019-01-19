@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
@@ -12,28 +13,15 @@
         android:orientation="vertical"
         android:padding="20dp">
 
-        <FrameLayout
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="3">
-
-            <Button
-                android:id="@+id/help"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="top|end"
-                android:background="@android:drawable/ic_menu_help" />
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:contentDescription="@string/app_name"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                app:srcCompat="@drawable/ic_fingerprint" />
-        </FrameLayout>
+            android:layout_gravity="center"
+            android:layout_weight="3"
+            android:contentDescription="@string/app_name"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            app:srcCompat="@drawable/ic_fingerprint" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -46,7 +34,7 @@
                 android:id="@+id/textView3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/header_login"
+                android:text="@string/header_help"
                 android:textAlignment="center"
                 android:textColor="@android:color/black"
                 android:textSize="24sp"
@@ -58,27 +46,37 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
-                android:text="@string/hint_login"
+                android:text="@string/hint_help"
                 android:textAlignment="center"
                 android:textSize="14sp" />
 
-            <EditText
-                android:id="@+id/phone_email"
-                android:layout_width="280dp"
+            <Button
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_gravity="top|center_horizontal"
+                android:layout_gravity="bottom|center_horizontal"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="4dp"
-                android:background="@drawable/ic_border"
-                android:ems="10"
-                android:hint="@string/placeholder_login"
-                android:inputType="text"
-                android:maxLength="32"
-                android:paddingStart="8dp"
-                android:paddingTop="4dp"
-                android:paddingEnd="8dp"
-                android:paddingBottom="4dp"
-                android:textAlignment="center" />
+                android:background="@android:color/darker_gray"
+                android:text="@string/action_link_help_center" />
+
+            <Button
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginBottom="4dp"
+                android:background="@android:color/darker_gray"
+                android:text="@string/action_link_update_payment_method" />
+
+            <Button
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginBottom="4dp"
+                android:background="@android:color/darker_gray"
+                android:text="@string/action_link_update_password" />
 
             <TextView
                 android:id="@+id/error"
@@ -96,7 +94,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="50dp"
                 android:background="@color/info"
-                android:text="@string/action_next" />
+                android:text="@string/action_call" />
 
         </LinearLayout>
 
@@ -110,8 +108,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center_horizontal"
-                android:text="@string/action_register"
-                android:textColor="@android:color/holo_blue_dark"
+                android:text="@string/hint_help_call"
                 android:textSize="18sp" />
         </FrameLayout>
 

@@ -13,6 +13,7 @@
     <string name="title_activity_main">@string/app_name</string>
     <string name="title_activity_preview">Preview</string>
     <string name="title_activity_carousel">Carousel</string>
+    <string name="title_activity_help">Help</string>
 
     <!--Header-->
     <string name="header_alert">Oops!!!</string>
@@ -20,6 +21,7 @@
     <string name="header_login_verification">Account Login Verification</string>
     <string name="header_login_suspicious">We Detected An Unusual Login Attempt</string>
     <string name="header_login_attempt">Was it you?</string>
+    <string name="header_help">Need help?</string>
 
     <!--Hints-->
     <string name="hint_register">Please confirm your name, phone number and email address then tap Next.\nYou will receive account verification code shortly.</string>
@@ -29,6 +31,8 @@
     <string name="hint_login_verification_resend">Click &lt;font color="#00a8e6"&gt;here&lt;/font&gt; to send you verification code.</string>
     <string name="hint_login_suspicious">To secure your account, we will send you a security code to verify your identity.</string>
     <string name="hint_login_attempt">Someone attempted to login to your account recently. If it wasn\'t you, tell us so we can verify your account.</string>
+    <string name="hint_help">Don\'t bother about asking questions multiple times.</string>
+    <string name="hint_help_call">Call and talk to a support agent</string>
 
     <!--Messages-->
     <string name="message_login_verification">Thanks for helping us to secure account from unauthorized access!</string>
@@ -47,6 +51,7 @@
     <string name="placeholder_name">Full Name</string>
 
     <!--Actions-->
+    <string name="action_call">Call</string>
     <string name="action_next">Next</string>
     <string name="action_done">Done</string>
     <string name="action_skip">SKIP</string>
@@ -65,4 +70,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="action_link_help_center">Help Center</string>
+    <string name="action_link_update_payment_method">Update Payment Method</string>
+    <string name="action_link_update_password">Update Password</string>
 </resources>

@@ -1,18 +1,18 @@
 package com.moshkou.md.Configs;
 
 public class Keys {
-    public static final String INDEX        = "INDEX";
-    public static final String USER         = "USER";
-    public static final String FLAG         = "FLAG";
-    public static final String ALERT        = "ALERT";
-    public static final String TOKEN        = "TOKEN";
-    public static final String URL          = "URL";
-    public static final String URI          = "URI";
-    public static final String VIDEO        = "VIDEO";
-    public static final String NAME         = "NAME";
-    public static final String ID           = "ID";
-    public static final String IMAGE        = "IMAGE";
-    public static final String TAG          = "TAG";
+    public final static String INDEX        = "INDEX";
+    public final static String USER         = "USER";
+    public final static String FLAG         = "FLAG";
+    public final static String ALERT        = "ALERT";
+    public final static String TOKEN        = "TOKEN";
+    public final static String URL          = "URL";
+    public final static String URI          = "URI";
+    public final static String VIDEO        = "VIDEO";
+    public final static String NAME         = "NAME";
+    public final static String ID           = "ID";
+    public final static String IMAGE        = "IMAGE";
+    public final static String TAG          = "TAG";
 
 
 }

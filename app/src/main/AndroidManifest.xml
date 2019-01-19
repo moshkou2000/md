@@ -6,15 +6,17 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="18" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
-    <uses-feature android:name="android.hardware.camera2" android:required="true" />
-
+    <uses-feature
+        android:name="android.hardware.camera2"
+        android:required="true" />
 
     <supports-screens
         android:anyDensity="true"
@@ -32,111 +34,110 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-
         <receiver
             android:name=".Services.ConnectivityChangeReceiver"
-            android:label="ConnectivityChangeReceiver" >
+            android:label="ConnectivityChangeReceiver">
             <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
                 <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
             </intent-filter>
         </receiver>
 
-
-        <activity android:name=".Activities.SplashActivity"
+        <activity
+            android:name=".Activities.SplashActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize"
-            android:theme="@style/AppLauncher">
+            android:theme="@style/AppLauncher"
+            android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".Activities.PreviewActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_preview"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize"
-            android:theme="@style/AppTheme" />
-
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".Activities.MainActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_main"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize"
-            android:theme="@style/AppTheme" />
-
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".Activities.LoginActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_login"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize"
-            android:theme="@style/AppAuth" />
-
+            android:theme="@style/AppAuth"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".Activities.RegisterActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_login"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize"
-            android:theme="@style/AppAuth" />
-
+            android:theme="@style/AppAuth"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".Activities.AlertActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_alert"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize"
-            android:theme="@style/AppAuth" />
-
+            android:theme="@style/AppAuth"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".Activities.LoginVerificationActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_login_verification"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize"
-            android:theme="@style/AppAuth" />
-
+            android:theme="@style/AppAuth"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".Activities.LoginSuspiciousActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_login_suspicious"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize"
-            android:theme="@style/AppAuth" />
-
+            android:theme="@style/AppAuth"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".Activities.LoginAttemptActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_login_attempt"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize"
-            android:theme="@style/AppAuth" />
-
+            android:theme="@style/AppAuth"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".Activities.CarouselTipsActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_carousel"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize"
-            android:theme="@style/AppTips" />
+            android:theme="@style/AppTips"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".Activities.HelpActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/title_activity_carousel"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppAuth"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
     </application>
 
 </manifest>

@@ -23,6 +23,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText phoneEmail;
     private TextView error;
     private Button signin;
+    private Button help;
 
 
     @Override
@@ -34,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         error = findViewById(R.id.error);
         signin = findViewById(R.id.signin);
         signup = findViewById(R.id.signup);
+        help = findViewById(R.id.help);
 
         signin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,6 +49,12 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 gotoRegister();
+            }
+        });
+        help.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gotoHelp();
             }
         });
     }
@@ -86,6 +94,11 @@ public class LoginActivity extends AppCompatActivity {
         Intent i = new Intent(context, RegisterActivity.class);
         startActivity(i);
         finish();
+    }
+
+    private void gotoHelp() {
+        Intent i = new Intent(context, HelpActivity.class);
+        startActivity(i);
     }
 
     private void reset() {

@@ -2,14 +2,13 @@ package com.moshkou.md.Configs;
 
 
 public class Config {
-    private static final String IP                      = "https://sgdev.apptractive.com.my";
-    public static final String CDN_URL                  = IP + ":3008/cdn";
 
-    public static final String REGEX_NUMBER             = "^[0-9]*$";
+    public final static String TEST_URL                 = "https://jsonplaceholder.typicode.com/todos/1";
 
-    public static String APP_PICTURE_DIRECTORY          = "";
+    private final static String BASE_URL                = "https://sgdev.apptractive.com.my:3020/api/";
+    public final static String LOGIN_URL                = BASE_URL + "auth/login";
+    public final static String LICENSE_URL              = BASE_URL + "auth/license";
 
-    public static double DEVICE_WIDTH                   = 0;
-    public static double DEVICE_HEIGHT                  = 0;
-    public static double DEVICE_DENSITY                 = 0;
+    public final static String REGEX_NUMBER             = "^[0-9]*$";
+
 }

@@ -22,6 +22,7 @@ public class RegisterActivity extends Activity {
     private EditText email;
     private TextView error;
     private Button signup;
+    private Button help;
 
 
     @Override
@@ -35,6 +36,7 @@ public class RegisterActivity extends Activity {
         error = findViewById(R.id.error);
         signin = findViewById(R.id.signin);
         signup = findViewById(R.id.signup);
+        help = findViewById(R.id.help);
 
         signin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,6 +50,12 @@ public class RegisterActivity extends Activity {
                 if (validation()) {
                     gotoLoginVerification();
                 }
+            }
+        });
+        help.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gotoHelp();
             }
         });
     }
@@ -82,6 +90,11 @@ public class RegisterActivity extends Activity {
         Intent i = new Intent(context, LoginActivity.class);
         startActivity(i);
         finish();
+    }
+
+    private void gotoHelp() {
+        Intent i = new Intent(context, HelpActivity.class);
+        startActivity(i);
     }
 
     private void reset() {

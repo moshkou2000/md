@@ -1,6 +1,6 @@
 package com.moshkou.md.Configs;
 
-public class Status {
+public class Enumerates {
 
     public enum Connectivity {
         WIFI,

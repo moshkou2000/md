@@ -2,8 +2,6 @@ package com.moshkou.md.Services;
 
 import android.util.Log;
 
-import com.moshkou.md.Configs.Status;
-
 import java.io.File;
 import java.io.IOException;
 

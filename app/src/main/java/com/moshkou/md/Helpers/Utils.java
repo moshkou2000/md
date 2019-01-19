@@ -14,8 +14,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.moshkou.md.Activities.PreviewActivity;
-import com.moshkou.md.Configs.Config;
+import com.moshkou.md.Configs.Data;
 import com.moshkou.md.Configs.Keys;
+import com.moshkou.md.Configs.Enumerates;
 import com.moshkou.md.R;
 
 import java.io.File;
@@ -37,15 +38,15 @@ public class Utils {
         if (!folder.exists()) {
             folder.mkdirs();
         }
-        Config.APP_PICTURE_DIRECTORY = folder.getAbsolutePath();
+        Data.APP_PICTURE_DIRECTORY = folder.getAbsolutePath();
     }
     public static void getDeviceSize(Context context) {
         try {
             DisplayMetrics displayMetrics = new DisplayMetrics();
             ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-            Config.DEVICE_WIDTH     = (double) displayMetrics.widthPixels;
-            Config.DEVICE_HEIGHT    = (double) displayMetrics.heightPixels;
-            Config.DEVICE_DENSITY   = displayMetrics.density;
+            Data.DEVICE_WIDTH     = (double) displayMetrics.widthPixels;
+            Data.DEVICE_HEIGHT    = (double) displayMetrics.heightPixels;
+            Data.DEVICE_DENSITY   = displayMetrics.density;
         } catch (Exception ex) {
             Log.d("ERROR", "Unable to get device metrics");
         }
@@ -62,15 +63,15 @@ public class Utils {
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    public static void toast(Context context, Keys.MessageState messageState, String message) {
-        View layout = LayoutInflater.from(context).inflate(R.layout.view_toast, null);
+    public static void toast(Context context, Enumerates.Message messageState, String message) {
+        View layout = LayoutInflater.from(context).inflate(R.layout.toast, null);
         LinearLayout root = (LinearLayout) layout.findViewById(R.id.toast_layout_root);
 
-        if(messageState == Keys.MessageState.INFO) {
+        if(messageState == Enumerates.Message.INFO) {
             root.setBackgroundResource(R.drawable.ic_toast_info);
-        } else if(messageState == Keys.MessageState.WARNING) {
+        } else if(messageState == Enumerates.Message.WARNING) {
             root.setBackgroundResource(R.drawable.ic_toast_warning);
-        } else if(messageState == Keys.MessageState.ERROR) {
+        } else if(messageState == Enumerates.Message.ERROR) {
             root.setBackgroundResource(R.drawable.ic_toast_error);
         }
 

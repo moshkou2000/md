@@ -9,6 +9,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+import com.moshkou.md.Controls.ConnectivityControl;
 
 public class App extends Application {
 
@@ -42,6 +43,8 @@ public class App extends Application {
                         cache.put(url, bitmap);
                     }
                 });
+
+        init();
     }
     public static App getInstance() {
         return ourInstance;
@@ -71,6 +74,10 @@ public class App extends Application {
         if (requestQueue != null) {
             requestQueue.cancelAll(tag);
         }
+    }
+
+    private void init() {
+        ConnectivityControl.connection(context);
     }
 
 }

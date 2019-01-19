@@ -5,7 +5,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
-import com.moshkou.md.Configs.Status;
+import com.moshkou.md.Configs.Data;
+import com.moshkou.md.Configs.Enumerates;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -13,18 +14,21 @@ import java.net.URL;
 
 public class ConnectivityControl {
 
-    public static Status.Connectivity connection(Context context) {
+    public static Enumerates.Connectivity connection(Context context) {
         ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 
-        Status.Connectivity status = Status.Connectivity.NO_CONNECTIVITY;
+        Enumerates.Connectivity status = Enumerates.Connectivity.NO_CONNECTIVITY;
 
         if (activeNetwork != null && activeNetwork.isConnectedOrConnecting()) {
             if(activeNetwork.getType() == ConnectivityManager.TYPE_WIFI)
-                status = Status.Connectivity.WIFI;
+                status = Enumerates.Connectivity.WIFI;
             else if(activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE)
-                status = Status.Connectivity.MOBILE;
+                status = Enumerates.Connectivity.MOBILE;
         }
+
+        Data.CONNECTIVITY = status;
+
         return status;
     }
 

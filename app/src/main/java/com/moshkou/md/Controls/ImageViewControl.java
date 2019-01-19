@@ -28,15 +28,15 @@ import android.widget.Scroller;
 public class ImageViewControl extends AppCompatImageView {
 
 
-//	private static final String DEBUG = "DEBUG";
+//	private final static String DEBUG = "DEBUG";
 
     //
     // SuperMin and SuperMax multipliers. Determine how much the image can be
     // zoomed below or above the zoom boundaries, before animating back to the
     // min/max zoom boundary.
     //
-    private static final float SUPER_MIN_MULTIPLIER = .25f;
-    private static final float SUPER_MAX_MULTIPLIER = 5f;
+    private final static float SUPER_MIN_MULTIPLIER = .25f;
+    private final static float SUPER_MAX_MULTIPLIER = 5f;
 
     //
     // Scale of image ranges from minScale to maxScale, where minScale == 1
@@ -959,7 +959,7 @@ public class ImageViewControl extends AppCompatImageView {
     private class DoubleTapZoom implements Runnable {
 
         private long startTime;
-        private static final float ZOOM_TIME = 500;
+        private final static float ZOOM_TIME = 500;
         private float startZoom, targetZoom;
         private float bitmapX, bitmapY;
         private boolean stretchImageToSuper;
