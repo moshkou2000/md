@@ -1,0 +1,110 @@
+
+// ************************************
+// Snackbar
+// ************************************
+final View coordinatorLayout = findViewById(R.id.coordinatorLayout);
+Snackbar snackbar = Snackbar
+        .make(coordinatorLayout, "Message is deleted", Snackbar.LENGTH_LONG)
+        .setAction("UNDO", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar snackbar1 = Snackbar.make(coordinatorLayout, "Message is restored!", Snackbar.LENGTH_SHORT);
+                snackbar1.show();
+            }
+        });
+snackbar.show();
+
+
+
+// ************************************
+// Requests
+// ************************************
+public static void create(JSONObject param) {
+    Requests request = new Requests(
+            Request.Method.POST,
+            Config.LOGIN_URL,
+            null,
+            param,
+            new Error(),
+            new Response.Listener<NetworkResponse>() {
+                @Override
+                public void onResponse(NetworkResponse response) {
+                    switch (response.statusCode) {
+                        case StatusCodes._200:
+                            Convertor.toJSONArray(response);
+                            Convertor.toObject(response, new TypeToken<ArrayList<UserModel>>(){}.getType());
+                            break;
+                        case StatusCodes._201:
+                            break;
+                    }
+                }
+            }
+    );
+    App.getInstance().addToRequestQueue(request, "API_NAME as TAG");
+}
+
+
+
+// ************************************
+// Dialog
+// ************************************
+public static Button dialog(final Dialog dialog, Context context, Keys.MessageState messageState, String strHeader, String strBody, SpannableStringBuilder sbBody) {
+
+    dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+    dialog.setCancelable(false);
+    dialog.setContentView(R.layout.view_dialog);
+
+    //FrameLayout header = (FrameLayout) dialog.findViewById(R.id.header);
+    TextView header_text = (TextView) dialog.findViewById(R.id.header_text);
+    TextView text_body = (TextView) dialog.findViewById(R.id.text_body);
+    ImageView header_symbol = (ImageView) dialog.findViewById(R.id.header_symbol);
+    Button cancel = (Button) dialog.findViewById(R.id.btn_cancel);
+    Button ok = (Button) dialog.findViewById(R.id.btn_ok);
+
+    header_text.setText(strHeader);
+    text_body.setText(sbBody != null ? sbBody : strBody);
+
+
+    ok.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            //dialog.dismiss();
+        }
+    });
+    cancel.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            dialog.dismiss();
+        }
+    });
+
+    if(messageState == Keys.MessageState.INFO) {
+        cancel.setVisibility(View.GONE);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                (int) Config.DEVICE_DENSITY * 40));
+        params.addRule(RelativeLayout.CENTER_IN_PARENT);
+        params.addRule(RelativeLayout.BELOW,R.id.text_body);
+        ok.setLayoutParams(params);
+    }
+
+    if(messageState == Keys.MessageState.INFO) {
+        ok.setBackgroundColor(context.getResources().getColor(R.color.info));
+        //header.setBackgroundColor(context.getResources().getColor(R.color.info));
+        header_symbol.setImageResource(R.drawable.ic_info);
+    } else if(messageState == Keys.MessageState.WARNING) {
+        ok.setBackgroundColor(context.getResources().getColor(R.color.warning));
+        //header.setBackgroundColor(context.getResources().getColor(R.color.warning));
+        header_symbol.setImageResource(R.drawable.ic_warning);
+    } else if(messageState == Keys.MessageState.ERROR) {
+        ok.setBackgroundColor(context.getResources().getColor(R.color.error));
+        //header.setBackgroundColor(context.getResources().getColor(R.color.error));
+        header_symbol.setImageResource(R.drawable.ic_error);
+    }
+
+    dialog.show();
+
+    return ok;
+}

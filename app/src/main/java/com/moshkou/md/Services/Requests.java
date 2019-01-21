@@ -42,13 +42,15 @@ public class Requests extends Request<NetworkResponse> {
             String url,
             @Nullable HashMap headers,
             @Nullable JSONObject params,
-            Response.Listener<NetworkResponse> listener,
-            @Nullable Response.ErrorListener errorListener) {
+            @Nullable Response.ErrorListener errorListener,
+            Response.Listener<NetworkResponse> listener) {
         super(method, url, errorListener);
 
         this.headers.put("Content-Type", "application/json");
         this.headers.put("apiKey", "xxxxxxxxxxxxxxx");
-        this.headers.putAll(headers);
+
+        if (headers != null)
+            this.headers.putAll(headers);
 
         this.params = (params == null) ? null : params.toString();
 

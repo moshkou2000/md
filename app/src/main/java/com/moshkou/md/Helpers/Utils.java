@@ -23,7 +23,7 @@ import java.io.File;
 
 public class Utils {
 
-    public static String humanizedFileSize(int bytes) {
+    public static String humanizerFileSize(int bytes) {
         return String.format("%.2f MB", bytes * 1.0 / 1048576); // 1MB = 1048576 bytes
     }
     public static String humanizerCountDown(long seconds) {

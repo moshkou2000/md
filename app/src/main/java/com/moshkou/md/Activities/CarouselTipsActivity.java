@@ -1,9 +1,7 @@
 package com.moshkou.md.Activities;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -11,7 +9,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
@@ -86,20 +83,7 @@ public class CarouselTipsActivity extends FragmentActivity {
         skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //gotoAlert();
-
-                final View coordinatorLayout = findViewById(R.id.coordinatorLayout);
-                Snackbar snackbar = Snackbar
-                        .make(coordinatorLayout, "Message is deleted", Snackbar.LENGTH_LONG)
-                        .setAction("UNDO", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Snackbar snackbar1 = Snackbar.make(coordinatorLayout, "Message is restored!", Snackbar.LENGTH_SHORT);
-                                snackbar1.show();
-                            }
-                        });
-
-                snackbar.show();
+                gotoAlert();
             }
         });
         done.setOnClickListener(new View.OnClickListener() {
@@ -121,7 +105,7 @@ public class CarouselTipsActivity extends FragmentActivity {
             e.printStackTrace();
         }
 
-        Auth.testPost(param);
+        Auth.create(param);
 
 //        Intent i = new Intent(context, AlertActivity.class);
 //        startActivity(i);

@@ -15,5 +15,18 @@
     <color name="lightBlack">#8c000000</color>
     <color name="lightGray">#DDDDDD</color>
 
-    <color name="bgAuth">#FFFFFF</color>
+    <color name="bgWindow">#FFFFFF</color>
+    <color name="bgWindowAuth">#FFFFFF</color>
+
+    <color name="bgDialog">#e8e8e8</color>#c7c7c7
+    <color name="dividerDialog">#c7c7c7</color>
+
+    <color name="bgNavigationBar">@color/bgWindow</color>
+    <color name="bgNavigationBarAuth">@color/bgWindow</color>
+
+    <color name="headerText">#000000</color>
+    <color name="footerText">#a6a6a6</color>
+    <color name="bodyText">#a6a6a6</color>
+
+    <color name="hyperlinkText">@android:color/holo_blue_dark</color>
 </resources>

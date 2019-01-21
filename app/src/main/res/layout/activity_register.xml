@@ -47,20 +47,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/header_login"
-                android:textAlignment="center"
-                android:textColor="@android:color/black"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+                style="@style/headerText"/>
 
             <TextView
                 android:id="@+id/textView4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
                 android:text="@string/hint_register"
-                android:textAlignment="center"
-                android:textSize="14sp" />
+                style="@style/bodyText" />
 
             <EditText
                 android:id="@+id/name"
@@ -123,7 +117,6 @@
 
             <Button
                 android:id="@+id/signup"
-                style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="200dp"
                 android:layout_height="40dp"
                 android:layout_gravity="bottom|center_horizontal"
@@ -143,10 +136,8 @@
                 android:id="@+id/signin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center_horizontal"
                 android:text="@string/action_login"
-                android:textColor="@android:color/holo_blue_dark"
-                android:textSize="18sp" />
+                style="@style/hyperlink"/>
         </FrameLayout>
 
     </LinearLayout>

@@ -14,6 +14,7 @@
     <string name="title_activity_preview">Preview</string>
     <string name="title_activity_carousel">Carousel</string>
     <string name="title_activity_help">Help</string>
+    <string name="title_activity_contacts">Contacts</string>
 
     <!--Header-->
     <string name="header_alert">Oops!!!</string>
@@ -36,7 +37,7 @@
 
     <!--Messages-->
     <string name="message_login_verification">Thanks for helping us to secure account from unauthorized access!</string>
-    <string name="message_token_expired">Your credentials did not work, the credentials that were used to connect.\nFor security reasons you need to Login.</string>
+    <string name="message_token_expired">Your credentials did not work, the credentials that were used to access to the user data and app services.\n\nFor security reasons you need to Login.</string>
     <string name="message_error_required_fields">Please fill up the required fields.</string>
     <string name="message_error_required_verification_code">Please enter your verification code.</string>
     <string name="message_error_valid_phone_email">Please enter valid phone number or email.</string>
@@ -49,8 +50,11 @@
     <string name="placeholder_phone">Phone Number</string>
     <string name="placeholder_email">Email</string>
     <string name="placeholder_name">Full Name</string>
+    <string name="placeholder_search">Search</string>
 
     <!--Actions-->
+    <string name="action_cancel">Cancel</string>
+    <string name="action_ok">OK</string>
     <string name="action_call">Call</string>
     <string name="action_next">Next</string>
     <string name="action_done">Done</string>

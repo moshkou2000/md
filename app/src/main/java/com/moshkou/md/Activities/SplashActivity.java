@@ -38,7 +38,7 @@ public class SplashActivity extends Activity {
                 Data.user.setToken(token);
         }
 
-        Intent i = new Intent(this, CarouselTipsActivity.class);
+        Intent i = new Intent(this, MainActivity.class);
         i.putExtra(Keys.FLAG, Flags.LOGIN);
         startActivity(i);
         finish();

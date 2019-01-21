@@ -35,23 +35,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/header_help"
-                android:textAlignment="center"
-                android:textColor="@android:color/black"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+                style="@style/headerText"/>
 
             <TextView
                 android:id="@+id/textView4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
                 android:text="@string/hint_help"
-                android:textAlignment="center"
-                android:textSize="14sp" />
+                style="@style/bodyText"/>
 
             <Button
-                style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_gravity="bottom|center_horizontal"
@@ -61,7 +54,6 @@
                 android:text="@string/action_link_help_center" />
 
             <Button
-                style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_gravity="bottom|center_horizontal"
@@ -70,7 +62,6 @@
                 android:text="@string/action_link_update_payment_method" />
 
             <Button
-                style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_gravity="bottom|center_horizontal"
@@ -87,7 +78,6 @@
 
             <Button
                 android:id="@+id/signin"
-                style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="200dp"
                 android:layout_height="40dp"
                 android:layout_gravity="bottom|center_horizontal"
@@ -107,9 +97,8 @@
                 android:id="@+id/signup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center_horizontal"
                 android:text="@string/hint_help_call"
-                android:textSize="18sp" />
+                style="@style/footerText"/>
         </FrameLayout>
 
     </LinearLayout>

@@ -59,17 +59,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activities.PreviewActivity"
+            android:name=".Activities.MainActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:label="@string/title_activity_preview"
+            android:label="@string/title_activity_main"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
-            android:name=".Activities.MainActivity"
+            android:name=".Activities.PreviewActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:label="@string/title_activity_main"
+            android:label="@string/title_activity_preview"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
@@ -134,6 +134,14 @@
             android:name=".Activities.HelpActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_carousel"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppAuth"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".Activities.ContactsActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/title_activity_contacts"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppAuth"
