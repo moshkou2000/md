@@ -12,26 +12,56 @@ import android.widget.TextView;
 import com.moshkou.md.Models.ContactModel;
 import com.moshkou.md.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ContactsAdapter extends BaseAdapter {
 
-    private List<ContactModel> listData;
+    private List<ContactModel> contacts;
+    private List<ContactModel> contactsTemp;
     private LayoutInflater layoutInflater;
 
-    public ContactsAdapter(Context context, List<ContactModel> listData) {
-        this.listData = listData;
+    public ContactsAdapter(Context context, List<ContactModel> contacts) {
+        this.contacts = contacts;
         layoutInflater = LayoutInflater.from(context);
+    }
+
+    public void filter(CharSequence cs) {
+        if (contactsTemp == null) {
+            contactsTemp = new ArrayList<>();
+            contactsTemp.addAll(contacts);
+        }
+        contacts.clear();
+
+        cs = cs.toString().toLowerCase();
+        for (int i = 0; i < contactsTemp.size(); i++) {
+            String name = contactsTemp.get(i).name;
+            String phone = contactsTemp.get(i).phone;
+            if (name.toLowerCase().contains(cs.toString()) ||
+                    phone.contains(cs.toString()))
+                contacts.add(contactsTemp.get(i));
+        }
+
+        notifyDataSetChanged();
+    }
+
+    public void restore() {
+        contacts.clear();
+        contacts.addAll(contactsTemp);
+        contactsTemp.clear();
+        contactsTemp = null;
+
+        notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        return listData.size();
+        return contacts.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return listData.get(position);
+        return contacts.get(position);
     }
 
     @Override
@@ -53,8 +83,8 @@ public class ContactsAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.name.setText(listData.get(position).name);
-        holder.phone.setText(listData.get(position).phone);
+        holder.name.setText(contacts.get(position).name);
+        holder.phone.setText(contacts.get(position).phone);
         //holder.image.(listData.get(position).image);
 
         return convertView;

@@ -1,5 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE resources [
+    <!ENTITY appname "md">
+    ]>
+
 <resources>
-    <string name="app_name">md</string>
+    <string name="app_name">&appname;</string>
     <string name="powered_by">Powered by</string>
     <string name="website">Moshkou.com</string>
 
@@ -18,11 +23,12 @@
 
     <!--Header-->
     <string name="header_alert">Oops!!!</string>
-    <string name="header_login">Welcome to md</string>
+    <string name="header_login">Welcome to &appname;</string>
     <string name="header_login_verification">Account Login Verification</string>
     <string name="header_login_suspicious">We Detected An Unusual Login Attempt</string>
     <string name="header_login_attempt">Was it you?</string>
     <string name="header_help">Need help?</string>
+    <string name="header_permission_contacts">Access your contacts</string>
 
     <!--Hints-->
     <string name="hint_register">Please confirm your name, phone number and email address then tap Next.\nYou will receive account verification code shortly.</string>
@@ -34,6 +40,7 @@
     <string name="hint_login_attempt">Someone attempted to login to your account recently. If it wasn\'t you, tell us so we can verify your account.</string>
     <string name="hint_help">Don\'t bother about asking questions multiple times.</string>
     <string name="hint_help_call">Call and talk to a support agent</string>
+    <string name="hint_permission_contacts">&appname; syncs only phone numbers from your address book to connect to other &appname; users.</string>
 
     <!--Messages-->
     <string name="message_login_verification">Thanks for helping us to secure account from unauthorized access!</string>
@@ -53,6 +60,7 @@
     <string name="placeholder_search">Search</string>
 
     <!--Actions-->
+    <string name="action_allow">Allow</string>
     <string name="action_cancel">Cancel</string>
     <string name="action_ok">OK</string>
     <string name="action_call">Call</string>
