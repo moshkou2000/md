@@ -86,4 +86,6 @@
     <string name="action_link_help_center">Help Center</string>
     <string name="action_link_update_payment_method">Update Payment Method</string>
     <string name="action_link_update_password">Update Password</string>
+
+    <string name="alphabets">+\nA\nB\nC\nD\nE\nF\nG\nH\nI\nJ\nK\nL\nM\nN\nO\nP\nQ\nR\nS\nT\nU\nV\nW\nX\nY\nZ</string>
 </resources>

@@ -1,17 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/grantedView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/indicator"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/header"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:layout_toStartOf="@+id/frame"
+            android:gravity="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="30sp"
+            android:textStyle="normal|bold"
+            android:visibility="visible" />
+
+        <FrameLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentTop="true"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp">
+
+            <EditText
+                android:id="@+id/search"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_border"
+                android:ems="10"
+                android:hint="@string/placeholder_search"
+                android:inputType="textPersonName"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp" />
+        </FrameLayout>
+
+        <ListView
+            android:id="@+id/contacts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:layout_below="@id/header" />
+
+
+        <FrameLayout
+            android:id="@+id/frame"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_below="@id/header"
+            android:layout_alignParentEnd="true">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="12dp"
+                android:gravity="start"
+                android:text="@string/alphabets" />
+        </FrameLayout>
+
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/permissionView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_gravity="center"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="40dp">
+        android:padding="40dp"
+        android:visibility="gone">
 
         <TextView
             style="@style/headerText"
@@ -35,32 +104,4 @@
             android:text="@string/action_allow" />
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/header"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentTop="true"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:visibility="gone">
-
-        <EditText
-            android:id="@+id/search"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:background="@drawable/ic_border"
-            android:ems="10"
-            android:hint="@string/placeholder_search"
-            android:inputType="textPersonName"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp" />
-    </FrameLayout>
-
-    <ListView
-        android:id="@+id/contacts"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/header"
-        android:visibility="gone" />
-</RelativeLayout>
+</FrameLayout>

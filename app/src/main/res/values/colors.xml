@@ -13,7 +13,7 @@
     <color name="lightWhite">#8cffffff</color>
     <color name="notWhite">#bfffffff</color>
     <color name="lightBlack">#8c000000</color>
-    <color name="lightGray">#DDDDDD</color>
+    <color name="lightGray">#dddddd</color>
 
     <color name="bgWindow">#FFFFFF</color>
     <color name="bgWindowAuth">#FFFFFF</color>
