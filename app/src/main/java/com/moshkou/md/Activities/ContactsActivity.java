@@ -2,7 +2,6 @@ package com.moshkou.md.Activities;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -10,31 +9,28 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.text.method.KeyListener;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AbsListView;
-import android.widget.Button;
+import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.moshkou.md.Adapters.AlphabetsAdapter;
 import com.moshkou.md.Adapters.ContactsAdapter;
 import com.moshkou.md.BuildConfig;
-import com.moshkou.md.Configs.Flags;
-import com.moshkou.md.Configs.Keys;
 import com.moshkou.md.Configs.Permission;
 import com.moshkou.md.Configs.RequestCode;
 import com.moshkou.md.Controls.ContactsControl;
-import com.moshkou.md.Helpers.Utils;
 import com.moshkou.md.Models.ContactModel;
 import com.moshkou.md.R;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ContactsActivity extends Activity {
@@ -50,7 +46,9 @@ public class ContactsActivity extends Activity {
     private ListView indicators;
     private TextView indicator;
 
+    private List<String> alphabets;
     private List<ContactModel> contacts;
+    private AlphabetsAdapter alphabetsAdapter;
     private ContactsAdapter adapter;
 
     private boolean flagAllow = false;
@@ -69,9 +67,20 @@ public class ContactsActivity extends Activity {
         indicators = findViewById(R.id.indicators);
         indicator = findViewById(R.id.indicator);
 
-        indicators.setOnTouchListener(new View.OnTouchListener() {
-            public boolean onTouch(View v, MotionEvent event) {
-                return (event.getAction() == MotionEvent.ACTION_MOVE);
+
+        indicators.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                boolean flag = true;
+                int index = 0;
+                for (index = 0; flag && index < contacts.size(); index++) {
+                    if (contacts.get(index).name.toUpperCase().startsWith(alphabets.get(position))) {
+                        flag = false;
+                    }
+                }
+
+                listView.setSelection(index - 1);
             }
         });
 
@@ -112,11 +121,10 @@ public class ContactsActivity extends Activity {
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 if (contacts != null && contacts.size() > 0) {
-                    indicator.setText("" + contacts.get(firstVisibleItem).name.charAt(0));
+                    indicator.setText("" + contacts.get(firstVisibleItem).name.toUpperCase().charAt(0));
                 }
             }
         });
-
 
         Permission.Check.READ_CONTACTS(this);
         if (Permission.READ_CONTACTS)
@@ -146,6 +154,10 @@ public class ContactsActivity extends Activity {
     private void setAdapter() {
         grantedView.setVisibility(View.VISIBLE);
         permissionView.setVisibility(View.GONE);
+
+        alphabets = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.alphabets)));
+        alphabetsAdapter = new AlphabetsAdapter(activity, alphabets);
+        indicators.setAdapter(alphabetsAdapter);
 
         contacts = ContactsControl.getContacts(activity);
         adapter = new ContactsAdapter(activity, contacts);

@@ -1,0 +1,168 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:background="@color/bgDialog"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:id="@+id/ok_parent"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:background="@color/buttonDialog">
+
+            <Button
+                android:id="@+id/ok"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/ic_done"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_toStartOf="@+id/ok_parent"
+            android:layout_toEndOf="@+id/cancel_parent"
+            android:background="@color/bgDialog">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="#000"
+                android:textSize="18sp" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/cancel_parent"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:background="@color/buttonDialog">
+
+            <Button
+                android:id="@+id/cancel"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/ic_close"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_above="@+id/buttons"
+        android:background="@color/dividerDialog" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_gravity="end">
+
+            <!-- day month -->
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/dayMonth"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/divider1" />
+
+            <FrameLayout
+                android:id="@+id/divider1"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_toStartOf="@+id/hour"
+                android:background="@color/dividerDialog" />
+
+            <!-- hour -->
+            <NumberPicker
+                android:id="@+id/hour"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:layout_toStartOf="@+id/divider2"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:theme="@style/AppTheme.TimePicker"
+                android:visibility="visible" />
+
+            <FrameLayout
+                android:id="@+id/divider2"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_toStartOf="@+id/minute"
+                android:background="@color/dividerDialog" />
+
+            <!-- minute -->
+            <NumberPicker
+                android:id="@+id/minute"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:layout_toStartOf="@+id/divider3"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:theme="@style/AppTheme.TimePicker" />
+
+            <FrameLayout
+                android:id="@+id/divider3"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_toStartOf="@+id/amPm"
+                android:background="@color/dividerDialog" />
+
+            <!-- AM / PM -->
+            <NumberPicker
+                android:id="@+id/amPm"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:theme="@style/AppTheme.TimePicker" />
+
+        </RelativeLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@color/SelectedDialog">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_above="@+id/buttons"
+                android:layout_gravity="top"
+                android:background="@color/dividerDialog" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_above="@+id/buttons"
+                android:layout_gravity="bottom"
+                android:background="@color/dividerDialog">
+
+            </FrameLayout>
+        </FrameLayout>
+
+    </FrameLayout>
+
+
+</LinearLayout>

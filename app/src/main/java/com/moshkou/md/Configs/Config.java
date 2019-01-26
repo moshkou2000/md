@@ -1,6 +1,10 @@
 package com.moshkou.md.Configs;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class Config {
 
     public final static String TEST_URL                 = "https://jsonplaceholder.typicode.com/todos/1";
@@ -10,5 +14,8 @@ public class Config {
     public final static String LICENSE_URL              = BASE_URL + "auth/license";
 
     public final static String REGEX_NUMBER             = "^[0-9]*$";
+
+    public final static List<String> MONTH              = new ArrayList<String>(Arrays.asList("JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEPT", "OCT", "NOV", "DEC"));
+    public final static List<String> WEEKDAY            = new ArrayList<String>(Arrays.asList("SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"));
 
 }

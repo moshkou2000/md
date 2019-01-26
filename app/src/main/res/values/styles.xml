@@ -85,4 +85,9 @@
         <item name="android:layout_gravity">bottom|center_horizontal</item>
     </style>
 
+    <style name="AppTheme.TimePicker" parent="android:Widget.DeviceDefault.DatePicker">
+        <item name="android:colorControlNormal">@android:color/transparent</item>
+        <item name="android:textSize">18dp</item>
+    </style>
+
 </resources>

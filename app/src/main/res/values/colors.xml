@@ -18,8 +18,10 @@
     <color name="bgWindow">#FFFFFF</color>
     <color name="bgWindowAuth">#FFFFFF</color>
 
-    <color name="bgDialog">#e8e8e8</color>#c7c7c7
+    <color name="bgDialog">#e8e8e8</color>
     <color name="dividerDialog">#c7c7c7</color>
+    <color name="buttonDialog">#d2d2d2</color>
+    <color name="SelectedDialog">#6bffffff</color>
 
     <color name="bgNavigationBar">@color/bgWindow</color>
     <color name="bgNavigationBarAuth">@color/bgWindow</color>

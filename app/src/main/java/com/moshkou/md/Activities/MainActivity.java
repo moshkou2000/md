@@ -11,7 +11,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.moshkou.md.Configs.Enumerates;
@@ -19,6 +23,7 @@ import com.moshkou.md.Configs.Flags;
 import com.moshkou.md.Configs.Keys;
 import com.moshkou.md.Configs.Permission;
 import com.moshkou.md.Configs.RequestCode;
+import com.moshkou.md.Controls.TimePickerControl;
 import com.moshkou.md.Helpers.Utils;
 import com.moshkou.md.R;
 
@@ -35,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
     private Button login;
     private Button dialogh;
     private Button contacts;
+    private Button datetime;
+    private LinearLayout testou;
+    private TimePickerControl datetimePicker;
 
 
     @Override
@@ -50,6 +58,13 @@ public class MainActivity extends AppCompatActivity {
         login = findViewById(R.id.login);
         dialogh = findViewById(R.id.dialogh);
         contacts = findViewById(R.id.contacts);
+        datetime = findViewById(R.id.datetime);
+        testou = findViewById(R.id.testou);
+        datetimePicker = findViewById(R.id.datetimePicker);
+
+
+        testou.setTranslationY(1000);
+
 
         snackbar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,6 +153,26 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(context, ContactsActivity.class));
             }
         });
+        datetime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                testou.animate()
+                        .translationY(0)
+                        .alpha(1.0f)
+                        .setListener(null);
+            }
+        });
+        datetimePicker.setOnTimeChangedListener(new TimePickerControl.OnTimeChangedListener() {
+            @Override
+            public void onTimeChanged(TimePickerControl view, Enumerates.ConfirmationState confirmationState, int hourOfDay, int minute) {
+                testou.setVisibility(View.VISIBLE);
+                testou.animate()
+                        .translationY(testou.getHeight())
+                        .alpha(1.0f)
+                        .setListener(null);
+            }
+        });
+
     }
 
     @Override

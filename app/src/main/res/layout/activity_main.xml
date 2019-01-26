@@ -53,4 +53,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="contacts" />
+
+    <Button
+        android:id="@+id/datetime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="date time" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/testou"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@drawable/ic_launcher_background"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <com.moshkou.md.Controls.TimePickerControl
+                android:id="@+id/datetimePicker"
+                layout="@layout/widget_time_picker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </FrameLayout>
+
 </LinearLayout>

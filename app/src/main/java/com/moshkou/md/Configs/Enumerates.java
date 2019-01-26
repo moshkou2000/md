@@ -14,6 +14,12 @@ public class Enumerates {
         UNSELECT
     }
 
+    public enum ConfirmationState {
+        NULL,
+        OK,
+        CANCEL
+    }
+
     public enum Message {
         NULL,
         INFO,
