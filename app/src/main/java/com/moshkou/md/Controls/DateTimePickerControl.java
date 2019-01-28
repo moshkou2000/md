@@ -4,8 +4,11 @@ import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -14,6 +17,7 @@ import android.widget.NumberPicker.Formatter;
 import android.widget.TextView;
 
 import com.moshkou.md.Adapters.DayMonthAdapter;
+import com.moshkou.md.Models.DatetimeModel;
 import com.moshkou.md.R;
 
 import com.moshkou.md.Configs.Enumerates;
@@ -21,7 +25,7 @@ import com.moshkou.md.Configs.Enumerates;
 import java.util.Calendar;
 
 
-public class TimePickerControl extends FrameLayout {
+public class DateTimePickerControl extends FrameLayout {
 
     private Context context;
 
@@ -31,7 +35,7 @@ public class TimePickerControl extends FrameLayout {
      * later in the code.
      */
     private static final OnTimeChangedListener NO_OP_CHANGE_LISTENER = new OnTimeChangedListener() {
-        public void onTimeChanged(TimePickerControl view, Enumerates.ConfirmationState confirmationState, int hourOfDay, int minute) { }
+        public void onTimeChanged(DateTimePickerControl view, Enumerates.ConfirmationState confirmationState, DatetimeModel datetime) { }
     };
 
     public static final NumberPicker.Formatter TWO_DIGIT_FORMATTER =
@@ -55,22 +59,23 @@ public class TimePickerControl extends FrameLayout {
 
 
     // state
-    private int mCurrentHour = 0; // 0-23
-    private int mCurrentMinute = 0; // 0-59
+    private DatetimeModel datetime = new DatetimeModel();
     private Boolean mIs24HourView = false;
-    private boolean mIsAm;
+    private boolean isAm = true;
+    private boolean dayMonthLoading = true;
 
     // ui components
     private final TextView title;
-    private final NumberPicker mHourPicker;
-    private final NumberPicker mMinutePicker;
-    private final NumberPicker mAmPmPicker;
+    private final NumberPicker yearPicker;
+    private final NumberPicker hourPicker;
+    private final NumberPicker minutePicker;
+    private final NumberPicker amPmPicker;
     private final android.support.v7.widget.RecyclerView dayMonth;
 
     private final DayMonthAdapter dayMonthAdapter;
 
     // callbacks
-    private OnTimeChangedListener mOnTimeChangedListener;
+    private OnTimeChangedListener onTimeChangedListener;
 
     /**
      * The callback interface used to indicate the time has been adjusted.
@@ -79,23 +84,20 @@ public class TimePickerControl extends FrameLayout {
 
         /**
          * view The view associated with this listener.
-         * hourOfDay The current hour.
-         * minute The current minute.
          */
-        void onTimeChanged(TimePickerControl view, Enumerates.ConfirmationState confirmationState, int hourOfDay, int minute);
-
-        //void onDoneClicked();
+        void onTimeChanged(DateTimePickerControl view, Enumerates.ConfirmationState confirmationState, DatetimeModel datetime);
     }
 
-    public TimePickerControl(Context context) {
+
+    public DateTimePickerControl(Context context) {
         this(context, null);
     }
 
-    public TimePickerControl(Context context, AttributeSet attrs) {
+    public DateTimePickerControl(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public TimePickerControl(final Context context, AttributeSet attrs, int defStyle) {
+    public DateTimePickerControl(final Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
         this.context = context;
@@ -104,30 +106,81 @@ public class TimePickerControl extends FrameLayout {
         inflater.inflate(R.layout.widget_time_picker, this, true);
 
         title = findViewById(R.id.title);
+        yearPicker = findViewById(R.id.year);
+        hourPicker = findViewById(R.id.hour);
+        minutePicker = findViewById(R.id.minute);
+        dayMonth = findViewById(R.id.dayMonth);
 
         // day  month
-        dayMonth = findViewById(R.id.dayMonth);
         dayMonth.setHasFixedSize(true);
         dayMonth.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         dayMonthAdapter = new DayMonthAdapter(getContext());
         dayMonth.setAdapter(dayMonthAdapter);
+        dayMonth.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (!dayMonthLoading) {
+                    dayMonthAdapter.addDayMonth();
+                }
+                return !dayMonthLoading;
+            }
+        });
+        dayMonth.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if (dayMonthLoading) {
+                    if (dy > 0) {
+
+                        int visibleItemCount = 4;
+                        int totalItemCount = dayMonthAdapter.getItemCount();
+                        int pastVisibleItems = ((LinearLayoutManager)dayMonth.getLayoutManager()).findFirstVisibleItemPosition();
+                        Log.i("WWWWW", "" + dy + " " + totalItemCount + " " + pastVisibleItems);
+
+                        if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                            dayMonthLoading = false;
+                        }
+                    } else {
+
+                        // TODO: scroll-up
+
+                        // DO this for UP (> 0) & DOWN ( < 0)
+                        //
+                        // remove data from recycleView dataSet
+                        // keep the range of 100 data in the list
+                        // load more -> remove more
+                        // load & remove
+                        // load up, remove down
+                        // load down, remove up
+
+                    }
+                }
+            }
+        });
+        dayMonthAdapter.setOnDataChangedListener(new DayMonthAdapter.OnDataChangedListener() {
+            @Override
+            public void onDataChanged(boolean success, int addedSize) {
+                dayMonthLoading = true;
+            }
+        });
 
         // hour
-        mHourPicker = findViewById(R.id.hour);
-        mHourPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+        hourPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
 
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                mCurrentHour = newVal;
+                int hour = datetime.getHour();
+                datetime.setHour(newVal);
                 if (!mIs24HourView) {
                     // adjust from [1-12] to [0-11] internally, with the times
                     // written "12:xx" being the start of the half-day
-                    if (mCurrentHour == 12) {
-                        mCurrentHour = 0;
+                    if (hour == 12) {
+                        datetime.setHour(0);
                     }
-                    if (!mIsAm) {
+                    if (!isAm) {
                         // PM means 12 hours later than nominal
-                        mCurrentHour += 12;
+                        datetime.setHour(hour + 12);
                     }
                 }
                 onTimeChanged(Enumerates.ConfirmationState.NULL);
@@ -135,38 +188,39 @@ public class TimePickerControl extends FrameLayout {
         });
 
         // digits of minute
-        mMinutePicker = findViewById(R.id.minute);
-        mMinutePicker.setMinValue(0);
-        mMinutePicker.setMaxValue(59);
-        mMinutePicker.setFormatter(TWO_DIGIT_FORMATTER);
-        mMinutePicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+        minutePicker.setMinValue(0);
+        minutePicker.setMaxValue(59);
+        minutePicker.setFormatter(TWO_DIGIT_FORMATTER);
+        minutePicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker spinner, int oldVal, int newVal) {
-                mCurrentMinute = newVal;
+                datetime.setMinute(newVal);
                 onTimeChanged(Enumerates.ConfirmationState.NULL);
             }
         });
 
         // AM   PM
-        mAmPmPicker = findViewById(R.id.amPm);
-        mAmPmPicker.setMinValue(0);
-        mAmPmPicker.setMaxValue(1);
-        mAmPmPicker.setFormatter(AM_PM_FORMATTER);
-        mAmPmPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+        amPmPicker = findViewById(R.id.amPm);
+        amPmPicker.setMinValue(0);
+        amPmPicker.setMaxValue(1);
+        amPmPicker.setValue(0);
+        amPmPicker.setFormatter(AM_PM_FORMATTER);
+        amPmPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker spinner, int oldVal, int newVal) {
-                if (mIsAm) {
+                int hour = datetime.getHour();
+                if (isAm) {
                     // Currently AM switching to PM
-                    if (mCurrentHour < 12) {
-                        mCurrentHour += 12;
+                    if (hour < 12) {
+                        datetime.setHour(hour + 12);
                     }
                 } else {
                     // Currently PM switching to AM
-                    if (mCurrentHour >= 12) {
-                        mCurrentHour -= 12;
+                    if (hour >= 12) {
+                        datetime.setHour(hour - 12);
                     }
                 }
-                mIsAm = !mIsAm;
+                isAm = !isAm;
                 onTimeChanged(Enumerates.ConfirmationState.NULL);
             }
         });
@@ -176,15 +230,9 @@ public class TimePickerControl extends FrameLayout {
         // the hour range properly based on the 12/24 hour display mode.
         configurePickerRanges();
 
-        // initialize to current time
-        Calendar cal = Calendar.getInstance();
         setOnTimeChangedListener(NO_OP_CHANGE_LISTENER);
 
-        // by default we're not in 24 hour mode
-        setCurrentHour(cal.get(Calendar.HOUR_OF_DAY));
-        setCurrentMinute(cal.get(Calendar.MINUTE));
-
-        mIsAm = (mCurrentHour < 12);
+        isAm = (datetime.getHour() < 12);
 
 
         Button cancel = findViewById(R.id.cancel);
@@ -194,7 +242,7 @@ public class TimePickerControl extends FrameLayout {
                 onTimeChanged(Enumerates.ConfirmationState.CANCEL);
             }
         });
-        Button ok = findViewById(R.id.ok);
+        Button ok = findViewById(R.id.done);
         ok.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -214,9 +262,11 @@ public class TimePickerControl extends FrameLayout {
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
-        mMinutePicker.setEnabled(enabled);
-        mHourPicker.setEnabled(enabled);
-        mAmPmPicker.setEnabled(enabled);
+        yearPicker.setEnabled(enabled);
+        hourPicker.setEnabled(enabled);
+        minutePicker.setEnabled(enabled);
+        amPmPicker.setEnabled(enabled);
+        dayMonth.setEnabled(enabled);
     }
 
     /**
@@ -224,42 +274,51 @@ public class TimePickerControl extends FrameLayout {
      */
     private static class SavedState extends BaseSavedState {
 
-        private final int mHour;
-        private final int mMinute;
+        private final int year;
+        private final int month;
+        private final int day;
+        private final int hour;
+        private final int minute;
 
-        private SavedState(Parcelable superState, int hour, int minute) {
+        private SavedState(Parcelable superState, DatetimeModel datetime) {
             super(superState);
-            mHour = hour;
-            mMinute = minute;
+
+            this.year = datetime.getYear();
+            this.month = datetime.getMonth();
+            this.day = datetime.getDay();
+            this.hour = datetime.getHour();
+            this.minute = datetime.getMinute();
         }
 
         private SavedState(Parcel in) {
             super(in);
-            mHour = in.readInt();
-            mMinute = in.readInt();
+            this.year = in.readInt();
+            this.month = in.readInt();
+            this.day = in.readInt();
+            this.hour = in.readInt();
+            this.minute = in.readInt();
         }
 
-        public int getHour() {
-            return mHour;
-        }
-
-        public int getMinute() {
-            return mMinute;
-        }
+        public int getYear() { return year; }
+        public int getMonth() { return month; }
+        public int getDay() { return day; }
+        public int getHour() { return hour; }
+        public int getMinute() { return minute; }
 
         @Override
         public void writeToParcel(Parcel dest, int flags) {
             super.writeToParcel(dest, flags);
-            dest.writeInt(mHour);
-            dest.writeInt(mMinute);
+            dest.writeInt(year);
+            dest.writeInt(month);
+            dest.writeInt(day);
+            dest.writeInt(hour);
+            dest.writeInt(minute);
         }
 
-        public static final Parcelable.Creator<SavedState> CREATOR
-                = new Creator<SavedState>() {
+        public static final Parcelable.Creator<SavedState> CREATOR = new Creator<SavedState>() {
             public SavedState createFromParcel(Parcel in) {
                 return new SavedState(in);
             }
-
             public SavedState[] newArray(int size) {
                 return new SavedState[size];
             }
@@ -269,15 +328,14 @@ public class TimePickerControl extends FrameLayout {
     @Override
     protected Parcelable onSaveInstanceState() {
         Parcelable superState = super.onSaveInstanceState();
-        return new SavedState(superState, mCurrentHour, mCurrentMinute);
+        return new SavedState(superState, datetime);
     }
 
     @Override
     protected void onRestoreInstanceState(Parcelable state) {
         SavedState ss = (SavedState) state;
         super.onRestoreInstanceState(ss.getSuperState());
-        setCurrentHour(ss.getHour());
-        setCurrentMinute(ss.getMinute());
+        setDatetime(ss.getYear(), ss.getMonth(), ss.getDay(), ss.getHour(), ss.getMinute());
     }
 
     /**
@@ -285,21 +343,16 @@ public class TimePickerControl extends FrameLayout {
      * onTimeChangedListener the callback, should not be null.
      */
     public void setOnTimeChangedListener(OnTimeChangedListener onTimeChangedListener) {
-        mOnTimeChangedListener = onTimeChangedListener;
+        this.onTimeChangedListener = onTimeChangedListener;
     }
 
-    /**
-     * The current hour (0-23).
-     */
-    public Integer getCurrentHour() {
-        return mCurrentHour;
+
+    public DatetimeModel getDatetime() {
+        return this.datetime;
     }
 
-    /**
-     * Set the current hour.
-     */
-    public void setCurrentHour(Integer currentHour) {
-        this.mCurrentHour = currentHour;
+    public void setDatetime(int year, int month, int day, int hour, int minute) {
+        this.datetime.setCalendar(year, month, day, hour, minute);
         updateHourDisplay();
     }
 
@@ -315,74 +368,43 @@ public class TimePickerControl extends FrameLayout {
         }
     }
 
-    /**
-     * true if this is in 24 hour view else false.
-     */
-    public boolean is24HourView() {
-        return mIs24HourView;
-    }
-
-    /**
-     * The current minute.
-     */
-    public Integer getCurrentMinute() {
-        return mCurrentMinute;
-    }
-
-    /**
-     * Set the current minute (0-59).
-     */
-    public void setCurrentMinute(Integer currentMinute) {
-        this.mCurrentMinute = currentMinute;
-        updateMinuteDisplay();
-    }
-
-
     @Override
     public int getBaseline() {
-        return mHourPicker.getBaseline();
+        return hourPicker.getBaseline();
     }
 
     /**
      * Set the state of the spinners appropriate to the current hour.
      */
     private void updateHourDisplay() {
-        int currentHour = mCurrentHour;
+        int currentHour = this.datetime.getHour();
         if (!mIs24HourView) {
             // convert [0,23] ordinal to wall clock display
             if (currentHour > 12) currentHour -= 12;
             else if (currentHour == 0) currentHour = 12;
         }
-        mHourPicker.setValue(currentHour);
-        mIsAm = mCurrentHour < 12;
-        mAmPmPicker.setValue(mIsAm ? 0 : 1);
+        hourPicker.setValue(currentHour);
+        isAm = this.datetime.getHour() < 12;
+        amPmPicker.setValue(isAm ? 0 : 1);
         onTimeChanged(Enumerates.ConfirmationState.NULL);
     }
 
     private void configurePickerRanges() {
         if (mIs24HourView) {
-            mHourPicker.setMinValue(0);
-            mHourPicker.setMaxValue(23);
-            mHourPicker.setFormatter(TWO_DIGIT_FORMATTER);
-            mAmPmPicker.setVisibility(View.GONE);
+            hourPicker.setMinValue(0);
+            hourPicker.setMaxValue(23);
+            hourPicker.setFormatter(TWO_DIGIT_FORMATTER);
+            amPmPicker.setVisibility(View.GONE);
         } else {
-            mHourPicker.setMinValue(1);
-            mHourPicker.setMaxValue(12);
-            mHourPicker.setFormatter(null);
-            mAmPmPicker.setVisibility(View.VISIBLE);
+            hourPicker.setMinValue(1);
+            hourPicker.setMaxValue(12);
+            hourPicker.setFormatter(null);
+            amPmPicker.setVisibility(View.VISIBLE);
         }
     }
 
     private void onTimeChanged(Enumerates.ConfirmationState confirmationState) {
-        mOnTimeChangedListener.onTimeChanged(this, confirmationState, getCurrentHour(), getCurrentMinute());
-    }
-
-    /**
-     * Set the state of the spinners appropriate to the current minute.
-     */
-    private void updateMinuteDisplay() {
-        mMinutePicker.setValue(mCurrentMinute);
-        mOnTimeChangedListener.onTimeChanged(this, Enumerates.ConfirmationState.NULL, getCurrentHour(), getCurrentMinute());
+        onTimeChangedListener.onTimeChanged(this, confirmationState, getDatetime());
     }
 
 }

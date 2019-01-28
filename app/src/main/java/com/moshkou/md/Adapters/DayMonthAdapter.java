@@ -3,14 +3,12 @@ package com.moshkou.md.Adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.moshkou.md.Models.DayMonthModel;
+import com.moshkou.md.Models.DatetimeModel;
 import com.moshkou.md.R;
 
 import java.util.ArrayList;
@@ -18,19 +16,35 @@ import java.util.List;
 
 public class DayMonthAdapter extends RecyclerView.Adapter<DayMonthAdapter.ItemRowHolder> {
 
+    private OnDataChangedListener onDataChangedListener;
+    public interface OnDataChangedListener {
+        void onDataChanged(boolean success, int addedSize);
+    }
+    private static final OnDataChangedListener NO_OP_CHANGE_LISTENER = new OnDataChangedListener() {
+        public void onDataChanged(boolean success, int addedSize) { }
+    };
+    public void setOnDataChangedListener(OnDataChangedListener onDataChangedListener) {
+        this.onDataChangedListener = onDataChangedListener;
+    }
+
 
     private final Context context;
-    private final List<DayMonthModel> dayMonthData = new ArrayList<>();
+    private final List<DatetimeModel> dayMonthData = new ArrayList<>();
 
 
     public DayMonthAdapter(Context context) {
         this.context = context;
+
+        setOnDataChangedListener(NO_OP_CHANGE_LISTENER);
+
         addDayMonth();
     }
 
-    private void addDayMonth() {
-        for (int i = 0; i < 100; i++)
-            dayMonthData.add(new DayMonthModel());
+    public void addDayMonth() {
+        for (int i = 0; i < 11; i++)
+            dayMonthData.add(new DatetimeModel());
+        notifyDataSetChanged();
+        onDataChangedListener.onDataChanged(true, 11);
     }
 
 
@@ -47,14 +61,14 @@ public class DayMonthAdapter extends RecyclerView.Adapter<DayMonthAdapter.ItemRo
 
     @Override
     public void onBindViewHolder(@NonNull ItemRowHolder itemRowHolder, int i) {
-        final DayMonthModel item = getItem(i);
+        final DatetimeModel item = getItem(i);
 
-        itemRowHolder.day.setText(String.valueOf(item.day));
-        itemRowHolder.month.setText(item.month);
-        itemRowHolder.weekday.setText(item.weekDay);
+        itemRowHolder.day.setText(String.valueOf(item.getDay()));
+        itemRowHolder.month.setText(item.getMonthString());
+        itemRowHolder.weekday.setText(item.getWeekDay());
     }
 
-    public DayMonthModel getItem(int position) {
+    public DatetimeModel getItem(int position) {
         return dayMonthData.get(position);
     }
 

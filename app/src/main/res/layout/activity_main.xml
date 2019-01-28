@@ -71,14 +71,7 @@
             android:layout_gravity="bottom"
             android:background="@drawable/ic_launcher_background"
             android:orientation="vertical"
-            android:visibility="visible">
+            android:visibility="visible"/>
 
-            <com.moshkou.md.Controls.TimePickerControl
-                android:id="@+id/datetimePicker"
-                layout="@layout/widget_time_picker"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
     </FrameLayout>
-
 </LinearLayout>

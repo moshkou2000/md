@@ -15,6 +15,28 @@ Snackbar snackbar = Snackbar
 snackbar.show();
 
 
+// ************************************
+// Datetime Picker
+// ************************************
+final BottomSheetDialog datetimePicker = new BottomSheetDialog(context);
+View sheetView = getLayoutInflater().inflate(R.layout.bottom_sheet_dialog_datetime_picker, null);
+DateTimePickerControl dateTimePickerControl = sheetView.findViewById(R.id.datetimePicker);
+dateTimePickerControl.setOnTimeChangedListener(new DateTimePickerControl.OnTimeChangedListener() {
+    @Override
+    public void onTimeChanged(DateTimePickerControl view, Enumerates.ConfirmationState confirmationState, DatetimeModel datetimeModel) {
+        if (confirmationState == Enumerates.ConfirmationState.OK) {
+            // DONE
+            datetimePicker.dismiss();
+        } else if (confirmationState == Enumerates.ConfirmationState.CANCEL) {
+            // CANCEL
+            datetimePicker.dismiss();
+        }
+    }
+});
+datetimePicker.setContentView(sheetView);
+datetimePicker.show();
+
+
 
 // ************************************
 // Requests

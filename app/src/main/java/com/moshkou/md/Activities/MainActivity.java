@@ -6,25 +6,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.moshkou.md.Configs.Enumerates;
-import com.moshkou.md.Configs.Flags;
-import com.moshkou.md.Configs.Keys;
-import com.moshkou.md.Configs.Permission;
 import com.moshkou.md.Configs.RequestCode;
-import com.moshkou.md.Controls.TimePickerControl;
+import com.moshkou.md.Controls.DateTimePickerControl;
 import com.moshkou.md.Helpers.Utils;
+import com.moshkou.md.Models.DatetimeModel;
 import com.moshkou.md.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -41,8 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private Button dialogh;
     private Button contacts;
     private Button datetime;
-    private LinearLayout testou;
-    private TimePickerControl datetimePicker;
+//    private LinearLayout testou;
 
 
     @Override
@@ -59,12 +53,10 @@ public class MainActivity extends AppCompatActivity {
         dialogh = findViewById(R.id.dialogh);
         contacts = findViewById(R.id.contacts);
         datetime = findViewById(R.id.datetime);
-        testou = findViewById(R.id.testou);
-        datetimePicker = findViewById(R.id.datetimePicker);
 
-
-        testou.setTranslationY(1000);
-
+        //testou = findViewById(R.id.testou);
+        //testou.setTranslationY(1000);
+        //testou.animate().translationY(0).alpha(1.0f).setListener(null);
 
         snackbar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,20 +148,23 @@ public class MainActivity extends AppCompatActivity {
         datetime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                testou.animate()
-                        .translationY(0)
-                        .alpha(1.0f)
-                        .setListener(null);
-            }
-        });
-        datetimePicker.setOnTimeChangedListener(new TimePickerControl.OnTimeChangedListener() {
-            @Override
-            public void onTimeChanged(TimePickerControl view, Enumerates.ConfirmationState confirmationState, int hourOfDay, int minute) {
-                testou.setVisibility(View.VISIBLE);
-                testou.animate()
-                        .translationY(testou.getHeight())
-                        .alpha(1.0f)
-                        .setListener(null);
+                final BottomSheetDialog datetimePicker = new BottomSheetDialog(context);
+                View sheetView = getLayoutInflater().inflate(R.layout.bottom_sheet_dialog_datetime_picker, null);
+                DateTimePickerControl dateTimePickerControl = sheetView.findViewById(R.id.datetimePicker);
+                dateTimePickerControl.setOnTimeChangedListener(new DateTimePickerControl.OnTimeChangedListener() {
+                    @Override
+                    public void onTimeChanged(DateTimePickerControl view, Enumerates.ConfirmationState confirmationState, DatetimeModel datetimeModel) {
+                        if (confirmationState == Enumerates.ConfirmationState.OK) {
+                            // DONE
+                            datetimePicker.dismiss();
+                        } else if (confirmationState == Enumerates.ConfirmationState.CANCEL) {
+                            // CANCEL
+                            datetimePicker.dismiss();
+                        }
+                    }
+                });
+                datetimePicker.setContentView(sheetView);
+                datetimePicker.show();
             }
         });
 
