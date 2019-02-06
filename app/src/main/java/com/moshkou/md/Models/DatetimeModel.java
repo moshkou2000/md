@@ -19,7 +19,7 @@ public class DatetimeModel {
     public DatetimeModel() {
         this.calendar = Calendar.getInstance();
         this.year = calendar.get(Calendar.YEAR);
-        this.month = calendar.get(Calendar.MONTH) + 1;
+        this.month = calendar.get(Calendar.MONTH);
         this.monthString = Config.MONTH.get(month);
         this.weekDay = Config.WEEKDAY.get(calendar.get(Calendar.DAY_OF_WEEK) - 1);
         this.day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -30,7 +30,7 @@ public class DatetimeModel {
     public DatetimeModel(Calendar calendar) {
         this.calendar = calendar;
         this.year = calendar.get(Calendar.YEAR);
-        this.month = calendar.get(Calendar.MONTH) + 1;
+        this.month = calendar.get(Calendar.MONTH);
         this.monthString = Config.MONTH.get(month);
         this.weekDay = Config.WEEKDAY.get(calendar.get(Calendar.DAY_OF_WEEK) - 1);
         this.day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -42,7 +42,7 @@ public class DatetimeModel {
     public void setCalendar(int year, int month, int day, int hour, int minute) {
         this.calendar.set(year, month, day, hour, minute);
         this.year = calendar.get(Calendar.YEAR);
-        this.month = calendar.get(Calendar.MONTH) + 1;
+        this.month = calendar.get(Calendar.MONTH);
         this.monthString = Config.MONTH.get(month);
         this.weekDay = Config.WEEKDAY.get(calendar.get(Calendar.DAY_OF_WEEK) - 1);
         this.day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -78,7 +78,7 @@ public class DatetimeModel {
 
     public Calendar getCalendar() { return calendar; }
     public int getYear() { return calendar.get(Calendar.YEAR); }
-    public int getMonth() { return calendar.get(Calendar.MONTH) + 1; }
+    public int getMonth() { return calendar.get(Calendar.MONTH); }
     public String getMonthString() { return Config.MONTH.get(getMonth()); }
     public String getWeekDay() { return Config.WEEKDAY.get(calendar.get(Calendar.DAY_OF_WEEK) - 1); }
     public int getDay() { return calendar.get(Calendar.DAY_OF_MONTH); }

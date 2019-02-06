@@ -3,48 +3,114 @@ package com.moshkou.md.Adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.moshkou.md.Models.DatetimeModel;
+import com.moshkou.md.Models.DateModel;
 import com.moshkou.md.R;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+
 
 public class DayMonthAdapter extends RecyclerView.Adapter<DayMonthAdapter.ItemRowHolder> {
 
+
     private OnDataChangedListener onDataChangedListener;
     public interface OnDataChangedListener {
-        void onDataChanged(boolean success, int addedSize);
+        void onDataChanged(boolean flag, int addedSize, Calendar calendar);
     }
     private static final OnDataChangedListener NO_OP_CHANGE_LISTENER = new OnDataChangedListener() {
-        public void onDataChanged(boolean success, int addedSize) { }
+        public void onDataChanged(boolean flag, int addedSize, Calendar calendar) { }
     };
     public void setOnDataChangedListener(OnDataChangedListener onDataChangedListener) {
         this.onDataChangedListener = onDataChangedListener;
     }
 
 
+    private OnClickListener onClickListener;
+    public interface OnClickListener {
+        void onClick(int position);
+    }
+    private static final OnClickListener NO_OP_CLICK_LISTENER = new OnClickListener() {
+        public void onClick(int position) { }
+    };
+    public void setOnClickListener(OnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
+    }
+
+
     private final Context context;
-    private final List<DatetimeModel> dayMonthData = new ArrayList<>();
+    private List<DateModel> dayMonthData = new ArrayList<>();
+    public static final int RANGE = 20;
 
 
     public DayMonthAdapter(Context context) {
         this.context = context;
 
         setOnDataChangedListener(NO_OP_CHANGE_LISTENER);
+        setOnClickListener(NO_OP_CLICK_LISTENER);
 
-        addDayMonth();
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, -1 * RANGE / 2);
+
+        for (int i = 0; i < RANGE; i++) {
+            calendar.add(Calendar.DATE, 1);
+            dayMonthData.add(new DateModel(calendar));
+        }
     }
 
-    public void addDayMonth() {
-        for (int i = 0; i < 11; i++)
-            dayMonthData.add(new DatetimeModel());
+    public void addDayMonth(boolean scrollUp, int firstVisiblePosition) {
+
+        Calendar calendar = Calendar.getInstance();
+        DateModel dm = getItem(firstVisiblePosition);
+        calendar.set(dm.getYear(), dm.getMonth(), dm.getDay());
+
+        if (scrollUp) {
+            calendar.add(Calendar.DATE, 1);
+            for (int i = 0; i < RANGE; i++) {
+                calendar.add(Calendar.DATE, 1);
+                dayMonthData.add(new DateModel(calendar));
+            }
+        } else {
+            for (int i = 0; i < RANGE; i++) {
+                calendar.add(Calendar.DATE, -1);
+
+                // TODO: check this part
+                dayMonthData.add(0, new DateModel(calendar));
+            }
+        }
+
         notifyDataSetChanged();
-        onDataChangedListener.onDataChanged(true, 11);
+        //onDataChangedListener.onDataChanged(true, RANGE - 3, calendar);
+
+    }
+
+    public void setValue(final Calendar calendar) {
+        dayMonthData.clear();
+
+        calendar.add(Calendar.DATE, -1 * RANGE / 2);
+
+        for (int i = 0; i < RANGE; i++) {
+            calendar.add(Calendar.DATE, 1);
+            dayMonthData.add(new DateModel(calendar));
+        }
+
+        notifyDataSetChanged();
+        onDataChangedListener.onDataChanged(false, RANGE / 2 - 2, calendar);
+    }
+
+    public DateModel getItem(int position) {
+        return dayMonthData.get(position);
+    }
+
+    @Override
+    public int getItemCount() {
+        return dayMonthData.size();
     }
 
 
@@ -52,29 +118,24 @@ public class DayMonthAdapter extends RecyclerView.Adapter<DayMonthAdapter.ItemRo
     @Override
     public ItemRowHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_daymonth, null);
-//        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(new ViewGroup.LayoutParams(
-//                ViewGroup.LayoutParams.MATCH_PARENT,
-//                ViewGroup.LayoutParams.WRAP_CONTENT));
-//        v.setLayoutParams(params);
         return new ItemRowHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ItemRowHolder itemRowHolder, int i) {
-        final DatetimeModel item = getItem(i);
+    public void onBindViewHolder(@NonNull ItemRowHolder itemRowHolder, final int i) {
+        final DateModel item = getItem(i);
 
         itemRowHolder.day.setText(String.valueOf(item.getDay()));
         itemRowHolder.month.setText(item.getMonthString());
         itemRowHolder.weekday.setText(item.getWeekDay());
-    }
 
-    public DatetimeModel getItem(int position) {
-        return dayMonthData.get(position);
-    }
-
-    @Override
-    public int getItemCount() {
-        return dayMonthData.size();
+        if (!itemRowHolder.itemView.hasOnClickListeners())
+            itemRowHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onClickListener.onClick(i);
+                }
+            });
     }
 
     public class ItemRowHolder extends RecyclerView.ViewHolder {

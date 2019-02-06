@@ -34,7 +34,7 @@
         android:id="@+id/carousel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="carousel" />
+        android:text="carousel tips" />
 
     <Button
         android:id="@+id/login"
@@ -60,12 +60,24 @@
         android:layout_height="wrap_content"
         android:text="date time" />
 
+    <Button
+        android:id="@+id/profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="profile" />
+
+    <Button
+        android:id="@+id/level"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="carousel level" />
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/testou"
+            android:id="@+id/datetimePickerContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"

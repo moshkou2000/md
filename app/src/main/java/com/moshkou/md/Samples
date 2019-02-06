@@ -130,3 +130,12 @@ public static Button dialog(final Dialog dialog, Context context, Keys.MessageSt
 
     return ok;
 }
+
+
+
+// ************************************
+// Invoke UI Thread
+// ************************************
+((MainActivity) context).runOnUiThread(new Runnable() {
+    public void run() { }
+});

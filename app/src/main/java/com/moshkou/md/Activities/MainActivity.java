@@ -1,18 +1,19 @@
 package com.moshkou.md.Activities;
 
 import android.Manifest;
+import android.animation.Animator;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
-import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.moshkou.md.Configs.Enumerates;
@@ -36,7 +37,10 @@ public class MainActivity extends AppCompatActivity {
     private Button dialogh;
     private Button contacts;
     private Button datetime;
-//    private LinearLayout testou;
+    private Button profile;
+    private Button level;
+    private LinearLayout datetimePickerContainer;
+    private DateTimePickerControl datetimePicker;
 
 
     @Override
@@ -53,10 +57,11 @@ public class MainActivity extends AppCompatActivity {
         dialogh = findViewById(R.id.dialogh);
         contacts = findViewById(R.id.contacts);
         datetime = findViewById(R.id.datetime);
+        profile = findViewById(R.id.profile);
+        level = findViewById(R.id.level);
 
-        //testou = findViewById(R.id.testou);
-        //testou.setTranslationY(1000);
-        //testou.animate().translationY(0).alpha(1.0f).setListener(null);
+        datetimePickerContainer = findViewById(R.id.datetimePickerContainer);
+        datetimePickerContainer.setTranslationY(1000);
 
         snackbar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,29 +147,71 @@ public class MainActivity extends AppCompatActivity {
         contacts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(context, ContactsActivity.class));
+                //startActivity(new Intent(context, ContactsActivity.class));
+                datetimePicker.setDatetime(2017, 0, 1, 1, 1);
             }
         });
         datetime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final BottomSheetDialog datetimePicker = new BottomSheetDialog(context);
-                View sheetView = getLayoutInflater().inflate(R.layout.bottom_sheet_dialog_datetime_picker, null);
-                DateTimePickerControl dateTimePickerControl = sheetView.findViewById(R.id.datetimePicker);
-                dateTimePickerControl.setOnTimeChangedListener(new DateTimePickerControl.OnTimeChangedListener() {
-                    @Override
-                    public void onTimeChanged(DateTimePickerControl view, Enumerates.ConfirmationState confirmationState, DatetimeModel datetimeModel) {
-                        if (confirmationState == Enumerates.ConfirmationState.OK) {
-                            // DONE
-                            datetimePicker.dismiss();
-                        } else if (confirmationState == Enumerates.ConfirmationState.CANCEL) {
-                            // CANCEL
-                            datetimePicker.dismiss();
+                if (datetimePicker == null) {
+                    datetimePicker = new DateTimePickerControl(context);
+                    datetimePicker.setOnTimeChangedListener(new DateTimePickerControl.OnTimeChangedListener() {
+                        @Override
+                        public void onTimeChanged(DateTimePickerControl view, Enumerates.ConfirmationState confirmationState, DatetimeModel datetimeModel) {
+                            if (confirmationState == Enumerates.ConfirmationState.NULL) {
+                                // value changed
+                            } else {
+                                if (confirmationState == Enumerates.ConfirmationState.OK) {
+                                    // DONE
+                                } else if (confirmationState == Enumerates.ConfirmationState.CANCEL) {
+                                    // CANCEL
+                                }
+
+                                datetimePickerContainer
+                                        .animate()
+                                        .translationY(datetimePicker.getHeight())
+                                        .alpha(1.0f)
+                                        .setListener(new Animator.AnimatorListener() {
+                                            @Override
+                                            public void onAnimationStart(Animator animation) {
+                                            }
+
+                                            @Override
+                                            public void onAnimationEnd(Animator animation) {
+                                                datetimePicker = null;
+                                                datetimePickerContainer.removeAllViews();
+                                            }
+
+                                            @Override
+                                            public void onAnimationCancel(Animator animation) {
+                                                datetimePicker = null;
+                                                datetimePickerContainer.removeAllViews();
+                                            }
+
+                                            @Override
+                                            public void onAnimationRepeat(Animator animation) {
+                                            }
+                                        });
+                            }
                         }
-                    }
-                });
-                datetimePicker.setContentView(sheetView);
-                datetimePicker.show();
+                    });
+
+                    datetimePickerContainer.addView(datetimePicker);
+                    datetimePickerContainer.animate().translationY(0).alpha(1.0f).setListener(null);
+                }
+            }
+        });
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(context, ProfileActivity.class));
+            }
+        });
+        level.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(context, LevelsActivity.class));
             }
         });
 

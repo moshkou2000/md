@@ -4,11 +4,12 @@ import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSmoothScroller;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -17,6 +18,7 @@ import android.widget.NumberPicker.Formatter;
 import android.widget.TextView;
 
 import com.moshkou.md.Adapters.DayMonthAdapter;
+import com.moshkou.md.Models.DateModel;
 import com.moshkou.md.Models.DatetimeModel;
 import com.moshkou.md.R;
 
@@ -62,7 +64,10 @@ public class DateTimePickerControl extends FrameLayout {
     private DatetimeModel datetime = new DatetimeModel();
     private Boolean mIs24HourView = false;
     private boolean isAm = true;
-    private boolean dayMonthLoading = true;
+    private boolean dayMonthLock = false;
+    private boolean scrollUp = true;
+    private int dayMonthItemPosition = 0;
+
 
     // ui components
     private final TextView title;
@@ -73,6 +78,7 @@ public class DateTimePickerControl extends FrameLayout {
     private final android.support.v7.widget.RecyclerView dayMonth;
 
     private final DayMonthAdapter dayMonthAdapter;
+
 
     // callbacks
     private OnTimeChangedListener onTimeChangedListener;
@@ -111,59 +117,72 @@ public class DateTimePickerControl extends FrameLayout {
         minutePicker = findViewById(R.id.minute);
         dayMonth = findViewById(R.id.dayMonth);
 
+
+        // year
+        yearPicker.setMinValue(1900);
+        yearPicker.setMaxValue(2022);
+        yearPicker.setValue(Calendar.getInstance().get(Calendar.YEAR));
+        yearPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker spinner, int oldVal, int newVal) {
+                datetime.setYear(newVal);
+                dayMonthAdapter.setValue(datetime.getCalendar());
+                onTimeChanged(Enumerates.ConfirmationState.NULL);
+            }
+        });
+
         // day  month
-        dayMonth.setHasFixedSize(true);
-        dayMonth.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         dayMonthAdapter = new DayMonthAdapter(getContext());
-        dayMonth.setAdapter(dayMonthAdapter);
-        dayMonth.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (!dayMonthLoading) {
-                    dayMonthAdapter.addDayMonth();
-                }
-                return !dayMonthLoading;
-            }
-        });
-        dayMonth.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-                if (dayMonthLoading) {
-                    if (dy > 0) {
-
-                        int visibleItemCount = 4;
-                        int totalItemCount = dayMonthAdapter.getItemCount();
-                        int pastVisibleItems = ((LinearLayoutManager)dayMonth.getLayoutManager()).findFirstVisibleItemPosition();
-                        Log.i("WWWWW", "" + dy + " " + totalItemCount + " " + pastVisibleItems);
-
-                        if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
-                            dayMonthLoading = false;
-                        }
-                    } else {
-
-                        // TODO: scroll-up
-
-                        // DO this for UP (> 0) & DOWN ( < 0)
-                        //
-                        // remove data from recycleView dataSet
-                        // keep the range of 100 data in the list
-                        // load more -> remove more
-                        // load & remove
-                        // load up, remove down
-                        // load down, remove up
-
-                    }
-                }
-            }
-        });
         dayMonthAdapter.setOnDataChangedListener(new DayMonthAdapter.OnDataChangedListener() {
             @Override
-            public void onDataChanged(boolean success, int addedSize) {
-                dayMonthLoading = true;
+            public void onDataChanged(boolean flag, int addedSize, Calendar calendar) {
+                dayMonthLock = false;
+
+//                if (!dayMonthLock)
+//                    dayMonthItemPosition = addedSize;
+
+                setDate(calendar);
             }
         });
+        dayMonthAdapter.setOnClickListener(new DayMonthAdapter.OnClickListener() {
+            @Override
+            public void onClick(int position) {
+//                LinearLayoutManager lm = (LinearLayoutManager) dayMonth.getLayoutManager();
+//                lm.smoothScrollToPosition(dayMonth, null, position + 1);
+//
+//                Log.i("WWWW", "" + position);
+            }
+        });
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false) {
+            @Override
+            public void smoothScrollToPosition(RecyclerView recyclerView, RecyclerView.State state, int position) {
+                LinearSmoothScroller smoothScroller = new LinearSmoothScroller(context) {
+
+                    private static final float SPEED = 1000f;// Change this value (default=25f)
+
+                    @Override
+                    protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
+                        return SPEED / displayMetrics.densityDpi;
+                    }
+                };
+                smoothScroller.setTargetPosition(position);
+                startSmoothScroll(smoothScroller);
+            }
+
+            @Override
+            public void scrollToPosition(int position) {
+                super.scrollToPosition(position);
+            }
+        };
+
+        dayMonth.setHasFixedSize(true);
+        dayMonth.setLayoutManager(linearLayoutManager);
+        dayMonth.setAdapter(dayMonthAdapter);
+        dayMonth.addOnScrollListener(new CustomScrollListener());
+        dayMonthItemPosition = DayMonthAdapter.RANGE / 2 - 2;
+        LinearLayoutManager lm = (LinearLayoutManager) dayMonth.getLayoutManager();
+        lm.scrollToPosition(dayMonthItemPosition);
 
         // hour
         hourPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
@@ -203,7 +222,6 @@ public class DateTimePickerControl extends FrameLayout {
         amPmPicker = findViewById(R.id.amPm);
         amPmPicker.setMinValue(0);
         amPmPicker.setMaxValue(1);
-        amPmPicker.setValue(0);
         amPmPicker.setFormatter(AM_PM_FORMATTER);
         amPmPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
@@ -227,7 +245,7 @@ public class DateTimePickerControl extends FrameLayout {
 
 
         // now that the hour/minute picker objects have been initialized, set
-        // the hour range properly based on the 12/24 hour display mode.
+        // the hour RANGE properly based on the 12/24 hour display mode.
         configurePickerRanges();
 
         setOnTimeChangedListener(NO_OP_CHANGE_LISTENER);
@@ -356,6 +374,25 @@ public class DateTimePickerControl extends FrameLayout {
         updateHourDisplay();
     }
 
+    private void setDate(Calendar calendar) {
+        int year = calendar.get(Calendar.YEAR);
+        datetime.setYear(year);
+        datetime.setMonth(calendar.get(Calendar.MONTH));
+        datetime.setDay(calendar.get(Calendar.DATE));
+        yearPicker.setValue(year);
+
+        onTimeChanged(Enumerates.ConfirmationState.NULL);
+    }
+    private void setDate(DateModel date) {
+        datetime.setYear(date.getYear());
+        datetime.setMonth(date.getMonth());
+        datetime.setDay(date.getDay());
+        yearPicker.setValue(date.getYear());
+
+        onTimeChanged(Enumerates.ConfirmationState.NULL);
+    }
+
+
     /**
      * Set whether in 24 hour or AM/PM mode.
      * is24HourView True = 24 hour mode. False = AM/PM.
@@ -384,8 +421,10 @@ public class DateTimePickerControl extends FrameLayout {
             else if (currentHour == 0) currentHour = 12;
         }
         hourPicker.setValue(currentHour);
+        minutePicker.setValue(this.datetime.getMinute());
         isAm = this.datetime.getHour() < 12;
         amPmPicker.setValue(isAm ? 0 : 1);
+        dayMonthAdapter.setValue(this.datetime.getCalendar());
         onTimeChanged(Enumerates.ConfirmationState.NULL);
     }
 
@@ -406,5 +445,55 @@ public class DateTimePickerControl extends FrameLayout {
     private void onTimeChanged(Enumerates.ConfirmationState confirmationState) {
         onTimeChangedListener.onTimeChanged(this, confirmationState, getDatetime());
     }
+
+
+    public class CustomScrollListener extends RecyclerView.OnScrollListener {
+        public CustomScrollListener() { }
+
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+
+                int position = dayMonthAdapter.getItemCount();
+                position = scrollUp ? position - 1 : 0;
+
+                if (dayMonthLock) {
+                    dayMonthAdapter.addDayMonth(scrollUp, position);
+                } else {
+                    position = dayMonthItemPosition;
+                    setDate(dayMonthAdapter.getItem(dayMonthItemPosition));
+                }
+
+                Log.i("WWWWW", "" + position);
+
+                LinearLayoutManager lm = (LinearLayoutManager) dayMonth.getLayoutManager();
+                lm.smoothScrollToPosition(dayMonth, null, scrollUp ? position - 2 : position);
+            }
+        }
+
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+
+            if (!dayMonthLock) {
+                dayMonthItemPosition = ((LinearLayoutManager)dayMonth.getLayoutManager()).findFirstVisibleItemPosition();
+
+                if (dy > 0) {
+                    scrollUp = true;
+
+                    dayMonthItemPosition += 2; // last visible item in the list
+
+                    if (dayMonthItemPosition + 1 >= dayMonthAdapter.getItemCount())
+                        dayMonthLock = true;
+
+                } else {
+                    scrollUp = false;
+
+                    if (dayMonthItemPosition - 1 <= 0)
+                        dayMonthLock = true;
+                }
+                Log.i("WWWWW", ">>" + dayMonthItemPosition);
+            }
+        }
+    }
+
 
 }

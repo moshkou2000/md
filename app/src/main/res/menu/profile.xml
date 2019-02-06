@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action1"
+        android:icon="@drawable/ic_fingerprint"
+        android:title="@string/action_register"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action2"
+        android:icon="@drawable/ic_fingerprint"
+        android:title="@string/action_allow"
+        android:orderInCategory="99"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/actionMore"
+        android:icon="@drawable/ic_error"
+        android:title="@string/action_login"
+        android:tooltipText="@string/action_login"
+        android:orderInCategory="1"
+        app:showAsAction="always" />
+
+</menu>

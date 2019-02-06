@@ -146,6 +146,22 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppAuth"
             android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".Activities.ProfileActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/title_activity_profile"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".Activities.LevelsActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/title_activity_carousel"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTips"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
     </application>
 
 </manifest>
