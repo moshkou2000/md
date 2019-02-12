@@ -139,3 +139,40 @@ public static Button dialog(final Dialog dialog, Context context, Keys.MessageSt
 ((MainActivity) context).runOnUiThread(new Runnable() {
     public void run() { }
 });
+
+
+
+// ************************************
+// Square layout
+// ************************************
+import android.content.Context;
+import android.support.v7.widget.AppCompatImageView;
+import android.util.AttributeSet;
+import android.view.View;
+import android.view.ViewGroup;
+public class SquareViewControl extends ViewGroup {
+
+    public SquareViewControl(Context context) {
+        super(context);
+    }
+
+    public SquareViewControl(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public SquareViewControl(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        getChildAt(0).layout(0, 0, r - l, b - t); // Layout with max size
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        View child = getChildAt(0);
+        int width = resolveSize(child.getMeasuredWidth(), widthMeasureSpec);
+        setMeasuredDimension(width, width);
+    }
+}

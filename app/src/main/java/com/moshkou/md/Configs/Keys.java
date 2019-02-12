@@ -13,6 +13,7 @@ public class Keys {
     public final static String ID           = "ID";
     public final static String IMAGE        = "IMAGE";
     public final static String TAG          = "TAG";
+    public final static String LEVELS       = "LEVELS";
 
 
 }

@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private Button datetime;
     private Button profile;
     private Button level;
+    private Button bottomNavigation;
     private LinearLayout datetimePickerContainer;
     private DateTimePickerControl datetimePicker;
 
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         datetime = findViewById(R.id.datetime);
         profile = findViewById(R.id.profile);
         level = findViewById(R.id.level);
+        bottomNavigation = findViewById(R.id.bottomNavigation);
 
         datetimePickerContainer = findViewById(R.id.datetimePickerContainer);
         datetimePickerContainer.setTranslationY(1000);
@@ -147,8 +149,8 @@ public class MainActivity extends AppCompatActivity {
         contacts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //startActivity(new Intent(context, ContactsActivity.class));
-                datetimePicker.setDatetime(2017, 0, 1, 1, 1);
+                startActivity(new Intent(context, ContactsActivity.class));
+                //datetimePicker.setDatetime(2017, 0, 1, 1, 1);
             }
         });
         datetime.setOnClickListener(new View.OnClickListener() {
@@ -212,6 +214,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(context, LevelsActivity.class));
+            }
+        });
+        bottomNavigation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(context, BottomNavigationActivity.class));
             }
         });
 

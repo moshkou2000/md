@@ -17,51 +17,51 @@ import java.util.List;
 
 public class ContactsAdapter extends BaseAdapter {
 
-    private List<ContactModel> contacts;
-    private List<ContactModel> contactsTemp;
+    private List<ContactModel> data;
+    private List<ContactModel> dataTemp;
     private LayoutInflater layoutInflater;
 
-    public ContactsAdapter(Context context, List<ContactModel> contacts) {
-        this.contacts = contacts;
+    public ContactsAdapter(Context context, List<ContactModel> data) {
+        this.data = data;
         layoutInflater = LayoutInflater.from(context);
     }
 
     public void filter(CharSequence cs) {
-        if (contactsTemp == null) {
-            contactsTemp = new ArrayList<>();
-            contactsTemp.addAll(contacts);
+        if (dataTemp == null) {
+            dataTemp = new ArrayList<>();
+            dataTemp.addAll(data);
         }
-        contacts.clear();
+        data.clear();
 
         cs = cs.toString().toLowerCase();
-        for (int i = 0; i < contactsTemp.size(); i++) {
-            String name = contactsTemp.get(i).name;
-            String phone = contactsTemp.get(i).phone;
+        for (int i = 0; i < dataTemp.size(); i++) {
+            String name = dataTemp.get(i).name;
+            String phone = dataTemp.get(i).phone;
             if (name.toLowerCase().contains(cs.toString()) ||
                     phone.contains(cs.toString()))
-                contacts.add(contactsTemp.get(i));
+                data.add(dataTemp.get(i));
         }
 
         notifyDataSetChanged();
     }
 
     public void restore() {
-        contacts.clear();
-        contacts.addAll(contactsTemp);
-        contactsTemp.clear();
-        contactsTemp = null;
+        data.clear();
+        data.addAll(dataTemp);
+        dataTemp.clear();
+        dataTemp = null;
 
         notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        return contacts.size();
+        return data.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return contacts.get(position);
+        return data.get(position);
     }
 
     @Override
@@ -83,8 +83,8 @@ public class ContactsAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.name.setText(contacts.get(position).name);
-        holder.phone.setText(contacts.get(position).phone);
+        holder.name.setText(data.get(position).name);
+        holder.phone.setText(data.get(position).phone);
         //holder.image.(listData.get(position).image);
 
         return convertView;

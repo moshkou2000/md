@@ -6,71 +6,88 @@
     android:orientation="vertical"
     android:id="@+id/coordinatorLayout">
 
-    <Button
-        android:id="@+id/snackbar"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="snackbar" />
+        android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/toast"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="toast" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/alert"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="alert" />
+            <Button
+                android:id="@+id/attempt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="attempt" />
 
-    <Button
-        android:id="@+id/attempt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="attempt" />
+            <Button
+                android:id="@+id/toast"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="toast" />
 
-    <Button
-        android:id="@+id/carousel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="carousel tips" />
+            <Button
+                android:id="@+id/dialogh"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="dialogh" />
 
-    <Button
-        android:id="@+id/login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="login" />
+            <Button
+                android:id="@+id/carousel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="carousel tips" />
 
-    <Button
-        android:id="@+id/dialogh"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="dialogh" />
+            <Button
+                android:id="@+id/datetime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="date time" />
 
-    <Button
-        android:id="@+id/contacts"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="contacts" />
+            <Button
+                android:id="@+id/level"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="carousel level" />
 
-    <Button
-        android:id="@+id/datetime"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="date time" />
+            <Button
+                android:id="@+id/bottomNavigation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="bottom navigation" />
 
-    <Button
-        android:id="@+id/profile"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="profile" />
+            <Button
+                android:id="@+id/profile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="profile" />
 
-    <Button
-        android:id="@+id/level"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="carousel level" />
+            <Button
+                android:id="@+id/alert"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="alert" />
+
+            <Button
+                android:id="@+id/contacts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="contacts" />
+
+            <Button
+                android:id="@+id/snackbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="snackbar" />
+
+            <Button
+                android:id="@+id/login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="login" />
+        </LinearLayout>
+    </ScrollView>
 
     <FrameLayout
         android:layout_width="match_parent"

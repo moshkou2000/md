@@ -51,7 +51,9 @@ public class LoginVerificationActivity extends Activity {
 
     private void verification() {
         if (validation()) {
+
             // TODO: validation*****************
+
             gotoSomething();
         }
     }

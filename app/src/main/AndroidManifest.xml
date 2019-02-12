@@ -34,6 +34,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <receiver
             android:name=".Services.ConnectivityChangeReceiver"
             android:label="ConnectivityChangeReceiver">
@@ -160,7 +161,15 @@
             android:label="@string/title_activity_carousel"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTips"
+            android:theme="@style/AppLevel"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".Activities.BottomNavigationActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/title_activity_bottom_navigation"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppBottomNavigation"
             android:windowSoftInputMode="stateHidden|adjustResize" />
     </application>
 

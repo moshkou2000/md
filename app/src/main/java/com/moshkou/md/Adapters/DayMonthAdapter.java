@@ -3,7 +3,6 @@ package com.moshkou.md.Adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,8 +43,8 @@ public class DayMonthAdapter extends RecyclerView.Adapter<DayMonthAdapter.ItemRo
     }
 
 
-    private final Context context;
-    private List<DateModel> dayMonthData = new ArrayList<>();
+    private Context context;
+    private List<DateModel> data = new ArrayList<>();
     public static final int RANGE = 20;
 
 
@@ -60,7 +59,7 @@ public class DayMonthAdapter extends RecyclerView.Adapter<DayMonthAdapter.ItemRo
 
         for (int i = 0; i < RANGE; i++) {
             calendar.add(Calendar.DATE, 1);
-            dayMonthData.add(new DateModel(calendar));
+            data.add(new DateModel(calendar));
         }
     }
 
@@ -74,14 +73,14 @@ public class DayMonthAdapter extends RecyclerView.Adapter<DayMonthAdapter.ItemRo
             calendar.add(Calendar.DATE, 1);
             for (int i = 0; i < RANGE; i++) {
                 calendar.add(Calendar.DATE, 1);
-                dayMonthData.add(new DateModel(calendar));
+                data.add(new DateModel(calendar));
             }
         } else {
             for (int i = 0; i < RANGE; i++) {
                 calendar.add(Calendar.DATE, -1);
 
                 // TODO: check this part
-                dayMonthData.add(0, new DateModel(calendar));
+                data.add(0, new DateModel(calendar));
             }
         }
 
@@ -91,13 +90,13 @@ public class DayMonthAdapter extends RecyclerView.Adapter<DayMonthAdapter.ItemRo
     }
 
     public void setValue(final Calendar calendar) {
-        dayMonthData.clear();
+        data.clear();
 
         calendar.add(Calendar.DATE, -1 * RANGE / 2);
 
         for (int i = 0; i < RANGE; i++) {
             calendar.add(Calendar.DATE, 1);
-            dayMonthData.add(new DateModel(calendar));
+            data.add(new DateModel(calendar));
         }
 
         notifyDataSetChanged();
@@ -105,12 +104,12 @@ public class DayMonthAdapter extends RecyclerView.Adapter<DayMonthAdapter.ItemRo
     }
 
     public DateModel getItem(int position) {
-        return dayMonthData.get(position);
+        return data.get(position);
     }
 
     @Override
     public int getItemCount() {
-        return dayMonthData.size();
+        return data.size();
     }
 
 

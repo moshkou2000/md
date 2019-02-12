@@ -8,7 +8,7 @@ import com.google.gson.Gson;
 import com.moshkou.md.Configs.Data;
 import com.moshkou.md.Configs.Flags;
 import com.moshkou.md.Configs.Keys;
-import com.moshkou.md.Controls.SharedPreferencesControl;
+import com.moshkou.md.Helpers.SharedPreferencesSupport;
 import com.moshkou.md.Helpers.Utils;
 import com.moshkou.md.Models.UserModel;
 import com.moshkou.md.R;
@@ -27,12 +27,12 @@ public class SplashActivity extends Activity {
         Utils.getDeviceSize(this);
         Utils.getAppPictureDirectory(this);
 
-        String data = SharedPreferencesControl.get(this, Keys.USER);
+        String data = SharedPreferencesSupport.getString(this, Keys.USER);
         Gson gson = new Gson();
         Data.user = gson.fromJson(data, UserModel.class);
 
         if (Data.user != null) {
-            String token = SharedPreferencesControl.get(this, Keys.TOKEN);
+            String token = SharedPreferencesSupport.getString(this, Keys.TOKEN);
 
             if (!token.isEmpty())
                 Data.user.setToken(token);

@@ -15,24 +15,24 @@ import java.util.List;
 
 public class AlphabetsAdapter extends BaseAdapter {
 
-    private List<String> alphabets;
+    private List<String> data;
     private LayoutInflater layoutInflater;
     private float textSize = 18;
 
-    public AlphabetsAdapter(Context context, List<String> alphabets) {
-        this.alphabets = alphabets;
+    public AlphabetsAdapter(Context context, List<String> data) {
+        this.data = data;
         layoutInflater = LayoutInflater.from(context);
         textSize = (int) (Data.DEVICE_HEIGHT * 1.0 / Data.DEVICE_DENSITY / 27 / 1.646);
     }
 
     @Override
     public int getCount() {
-        return alphabets.size();
+        return data.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return alphabets.get(position);
+        return data.get(position);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class AlphabetsAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.name.setText(alphabets.get(position));
+        holder.name.setText(data.get(position));
 
         return convertView;
     }

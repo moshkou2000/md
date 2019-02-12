@@ -42,4 +42,5 @@ public class Enumerates {
         NO_DATA,
         UNSUCCESSFUL
     }
+
 }

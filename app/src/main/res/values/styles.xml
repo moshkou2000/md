@@ -21,6 +21,18 @@
         <item name="buttonStyle">@style/Widget.AppCompat.Button.Colored</item>
     </style>
 
+    <style name="AppBottomNavigation" parent="AppTheme">
+        <item name="android:statusBarColor">@color/bgWindow</item>
+        <item name="android:windowBackground">@color/bgWindow</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <style name="AppLevel" parent="AppTheme">
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
+
     <style name="AppAuth" parent="AppTheme">
         <item name="android:statusBarColor">@color/bgWindowAuth</item>
         <item name="android:windowBackground">@color/bgWindowAuth</item>
@@ -46,14 +58,10 @@
     <style name="AppTheme.Toolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="navigationIcon">@drawable/abc_ic_ab_back_material</item>
         <item name="android:textColorSecondary">@android:color/white</item>
-        <item name="android:textColorPrimary">@android:color/holo_blue_light</item>
-        <item name="actionMenuTextColor">@android:color/holo_green_light</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorControlNormal">@android:color/white</item>
         <item name="colorControlActivated">@android:color/white</item>
         <item name="colorControlHighlight">@android:color/white</item>
-        <item name="selectableItemBackground">?android:selectableItemBackground</item>
-        <item name="selectableItemBackgroundBorderless">?android:selectableItemBackground</item>
     </style>
 
     <style name="AppTheme.CollapsingToolbar" parent="@style/Widget.Design.CollapsingToolbar">

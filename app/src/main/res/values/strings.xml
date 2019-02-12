@@ -1,7 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE resources [
-    <!ENTITY appname "md">
-    ]>
+<?xml version="1.0" encoding="utf-8"?><!DOCTYPE resources [<!ENTITY appname "md">]>
 
 <resources>
     <string name="app_name">&appname;</string>
@@ -21,6 +18,15 @@
     <string name="title_activity_help">Help</string>
     <string name="title_activity_contacts">Contacts</string>
     <string name="title_activity_profile">Profile</string>
+    <string name="title_activity_bottom_navigation">BottomNavigationActivity</string>
+
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_emergency">Emergency</string>
+    <string name="title_search">Search</string>
+    <string name="title_person">Person</string>
+    <string name="title_camera">Camera</string>
 
     <!--Header-->
     <string name="header_alert">Oops!!!</string>
@@ -41,7 +47,8 @@
     <string name="hint_login_attempt">Someone attempted to login to your account recently. If it wasn\'t you, tell us so we can verify your account.</string>
     <string name="hint_help">Don\'t bother about asking questions multiple times.</string>
     <string name="hint_help_call">Call and talk to a support agent</string>
-    <string name="hint_permission_contacts">&appname; syncs only phone numbers from your address book to connect to other &appname; users.</string>
+    <string name="hint_permission_contacts">&appname; syncs only phone numbers from your address book to connect to other &appname;
+        users.</string>
 
     <!--Messages-->
     <string name="message_login_verification">Thanks for helping us to secure account from unauthorized access!</string>
@@ -80,9 +87,6 @@
     <string name="action_send_security_code">Send Security Code</string>
     <string name="action_it_was_me">It was me</string>
     <string name="action_it_was_not_me">It wasn\'t me</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="action_link_help_center">Help Center</string>
     <string name="action_link_update_payment_method">Update Payment Method</string>
