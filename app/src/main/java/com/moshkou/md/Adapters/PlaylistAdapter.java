@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.ItemRowHolder> {
+public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ItemRowHolder> {
 
 
     private Context context;
@@ -29,7 +29,7 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.ItemRowHol
     private List<BaseDataModel> data = new ArrayList<>();
 
 
-    public TopicsAdapter(Context context, List<BaseDataModel> data) {
+    public PlaylistAdapter(Context context, List<BaseDataModel> data) {
         this.data = data;
         this.inflater = LayoutInflater.from(context);//.inflate(R.layout.item_gallery, null);
     }
@@ -52,7 +52,7 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.ItemRowHol
     @NonNull
     @Override
     public ItemRowHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_topics, null);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_playlist, null);
         return new ItemRowHolder(v);
     }
 

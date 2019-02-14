@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.ItemRowHolder> {
+public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ItemRowHolder> {
 
 
     private Context context;
@@ -29,7 +29,7 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.ItemRowHol
     private List<BaseDataModel> data = new ArrayList<>();
 
 
-    public TopicsAdapter(Context context, List<BaseDataModel> data) {
+    public CardsAdapter(Context context, List<BaseDataModel> data) {
         this.data = data;
         this.inflater = LayoutInflater.from(context);//.inflate(R.layout.item_gallery, null);
     }
@@ -52,7 +52,7 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.ItemRowHol
     @NonNull
     @Override
     public ItemRowHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_topics, null);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_cards, null);
         return new ItemRowHolder(v);
     }
 
@@ -60,11 +60,14 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.ItemRowHol
     public void onBindViewHolder(@NonNull ItemRowHolder itemRowHolder, int i) {
         final BaseDataModel item = getItem(i);
 
-        int right = i + 1 == getItemCount() ? 20 : 0;
-        itemRowHolder.root.setPadding(20, 20, right, 20);
+        if (i == 0)
+            itemRowHolder.root.setPadding(10, 0, 0, 0);
+
+        if (i + 1 == getItemCount())
+            itemRowHolder.root.setPadding(0, 0, 10, 0);
+
 
         itemRowHolder.title.setText(item.getTitle());
-        itemRowHolder.description.setText(item.getDescription());
 
         Picasso.get()
                 .load(Uri.parse(item.getImage()))
@@ -86,7 +89,6 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.ItemRowHol
 
         protected LinearLayout root;
         protected TextView title;
-        protected TextView description;
         protected ImageView image;
         protected Button button;
 
@@ -95,7 +97,6 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.ItemRowHol
 
             root = (LinearLayout) view;
             title = view.findViewById(R.id.title);
-            description = view.findViewById(R.id.description);
             image = view.findViewById(R.id.image);
             button = view.findViewById(R.id.button);
         }

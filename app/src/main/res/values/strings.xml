@@ -75,6 +75,7 @@
     <string name="action_next">Next</string>
     <string name="action_done">Done</string>
     <string name="action_skip">SKIP</string>
+    <string name="action_more">More</string>
     <string name="action_sign_in">Sign in</string>
     <string name="action_sign_up">Sign up</string>
     <string name="action_login_button_1">Yahoo Mail</string>

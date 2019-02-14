@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.ItemRowHolder> {
+public class SpeakersAdapter extends RecyclerView.Adapter<SpeakersAdapter.ItemRowHolder> {
 
 
     private Context context;
@@ -29,7 +29,7 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.ItemRowHol
     private List<BaseDataModel> data = new ArrayList<>();
 
 
-    public TopicsAdapter(Context context, List<BaseDataModel> data) {
+    public SpeakersAdapter(Context context, List<BaseDataModel> data) {
         this.data = data;
         this.inflater = LayoutInflater.from(context);//.inflate(R.layout.item_gallery, null);
     }
@@ -52,7 +52,7 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.ItemRowHol
     @NonNull
     @Override
     public ItemRowHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_topics, null);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_speakers, null);
         return new ItemRowHolder(v);
     }
 
@@ -64,7 +64,6 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.ItemRowHol
         itemRowHolder.root.setPadding(20, 20, right, 20);
 
         itemRowHolder.title.setText(item.getTitle());
-        itemRowHolder.description.setText(item.getDescription());
 
         Picasso.get()
                 .load(Uri.parse(item.getImage()))
@@ -86,7 +85,6 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.ItemRowHol
 
         protected LinearLayout root;
         protected TextView title;
-        protected TextView description;
         protected ImageView image;
         protected Button button;
 
@@ -95,7 +93,6 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.ItemRowHol
 
             root = (LinearLayout) view;
             title = view.findViewById(R.id.title);
-            description = view.findViewById(R.id.description);
             image = view.findViewById(R.id.image);
             button = view.findViewById(R.id.button);
         }

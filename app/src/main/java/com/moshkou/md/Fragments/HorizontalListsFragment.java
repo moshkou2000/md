@@ -9,9 +9,10 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 
-import com.moshkou.md.Adapters.GalleryAdapter;
+import com.moshkou.md.Adapters.CardsAdapter;
+import com.moshkou.md.Adapters.PlaylistAdapter;
+import com.moshkou.md.Adapters.SpeakersAdapter;
 import com.moshkou.md.Adapters.TopicsAdapter;
 import com.moshkou.md.Configs.Enumerates;
 import com.moshkou.md.Helpers.Utils;
@@ -35,9 +36,15 @@ public class HorizontalListsFragment extends Fragment {
     private com.moshkou.md.Fragments.HorizontalListsFragment.OnFragmentInteractionListener mListener;
 
     private android.support.v17.leanback.widget.HorizontalGridView gridView;
+    private android.support.v17.leanback.widget.HorizontalGridView gridView2;
+    private android.support.v17.leanback.widget.HorizontalGridView gridView3;
+    private android.support.v17.leanback.widget.HorizontalGridView gridView4;
 
     private List<BaseDataModel> data = new ArrayList<>();
-    private TopicsAdapter adapter;
+    private TopicsAdapter tAdapter;
+    private PlaylistAdapter pAdapter;
+    private CardsAdapter cAdapter;
+    private SpeakersAdapter sAdapter;
 
     public HorizontalListsFragment() {
         // Required empty public constructor
@@ -73,10 +80,19 @@ public class HorizontalListsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_horizontal_lists, container, false);
 
         gridView = view.findViewById(R.id.gridView);
+        gridView2 = view.findViewById(R.id.gridView2);
+        gridView3 = view.findViewById(R.id.gridView3);
+        gridView4 = view.findViewById(R.id.gridView4);
 
-        adapter = new TopicsAdapter(getActivity(), data);
+        tAdapter = new TopicsAdapter(getActivity(), data);
+        pAdapter = new PlaylistAdapter(getActivity(), data);
+        cAdapter = new CardsAdapter(getActivity(), data);
+        sAdapter = new SpeakersAdapter(getActivity(), data);
 
-        gridView.setAdapter(adapter);
+        gridView.setAdapter(tAdapter);
+        gridView2.setAdapter(pAdapter);
+        gridView3.setAdapter(cAdapter);
+        gridView4.setAdapter(sAdapter);
 
         Toolbar toolbar = view.findViewById(R.id.appBar);
         toolbar.inflateMenu(R.menu.profile);
