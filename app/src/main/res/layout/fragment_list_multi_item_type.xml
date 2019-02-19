@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootGallery">
+
+    <include
+        android:id="@+id/appBar"
+        layout="@layout/toolbar_main" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/appBar"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
+
+</RelativeLayout>
+
+
+    <!--android:scrollbars="none"-->
+    <!--android:verticalSpacing="8dp"-->
+    <!--android:listSelector="@android:color/transparent"-->

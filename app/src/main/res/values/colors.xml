@@ -12,7 +12,8 @@
 
     <color name="lightWhite">#8cffffff</color>
     <color name="notWhite">#bfffffff</color>
-    <color name="lightBlack">#8c000000</color>
+    <color name="lightBlack">#8C000000</color>
+    <color name="shadow">#66000000</color>
     <color name="lightGray">#DDDDDD</color>
 
     <color name="dark">#2b2b2b</color>

@@ -4,9 +4,9 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.PreviewActivity">
+    tools:context=".activities.PreviewActivity">
 
-    <com.moshkou.md.Controls.ImageViewControl
+    <com.moshkou.md.controls.ImageViewControl
         android:id="@+id/image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

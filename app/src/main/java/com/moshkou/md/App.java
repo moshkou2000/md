@@ -9,7 +9,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
-import com.moshkou.md.Controls.ConnectivityControl;
+import com.moshkou.md.controls.ConnectivityControl;
 
 public class App extends Application {
 

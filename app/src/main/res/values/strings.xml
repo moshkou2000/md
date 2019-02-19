@@ -47,8 +47,8 @@
     <string name="hint_login_attempt">Someone attempted to login to your account recently. If it wasn\'t you, tell us so we can verify your account.</string>
     <string name="hint_help">Don\'t bother about asking questions multiple times.</string>
     <string name="hint_help_call">Call and talk to a support agent</string>
-    <string name="hint_permission_contacts">&appname; syncs only phone numbers from your address book to connect to other &appname;
-        users.</string>
+    <string name="hint_permission_contacts">&appname; syncs only phone numbers from your address book to connect to other &appname; users.</string>
+    <string name="hint_permission_camera">Set your profile picture and make a circle gallery.</string>
 
     <!--Messages-->
     <string name="message_login_verification">Thanks for helping us to secure account from unauthorized access!</string>
@@ -58,6 +58,7 @@
     <string name="message_error_valid_phone_email">Please enter valid phone number or email.</string>
     <string name="message_error_valid_email">Valid email is required.</string>
     <string name="message_error_valid_phone">Valid phone number is required.</string>
+    <string name="message_error_camera">&appname; does not support your device camera.</string>
 
     <!--Placeholder-->
     <string name="placeholder_login_verification">Account Verification Code</string>
