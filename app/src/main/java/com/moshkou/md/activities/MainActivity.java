@@ -27,8 +27,7 @@ import com.moshkou.md.R;
 public class MainActivity extends AppCompatActivity {
 
 
-    private Context context = this;
-    private Activity activity = this;
+    private final Context context = this;
 
     private Button snackbar;
     private Button toast;

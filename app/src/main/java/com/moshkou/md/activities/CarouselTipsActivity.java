@@ -25,7 +25,8 @@ import java.util.List;
 public class CarouselTipsActivity extends FragmentActivity {
 
 
-    private Context context = this;
+    private final Context context = this;
+    
     private List<Fragment> pages = new ArrayList<>();
     private ViewPager pager;
     private PagerAdapter pagerAdapter;

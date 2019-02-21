@@ -32,12 +32,12 @@ public class Permission {
         }
 
         public static void EXTERNAL_STORAGE(Activity activity) {
-            if (ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                if (activity.shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            if (ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                if (activity.shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                     // TODO: display "app needs READ_EXTERNAL_STORAGE permissions to continue"
                 }
                 ActivityCompat.requestPermissions(activity,
-                        new String[] { Manifest.permission.READ_EXTERNAL_STORAGE },
+                        new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE },
                         RequestCode.EXTERNAL_STORAGE);
             } else {
                 Permission.EXTERNAL_STORAGE = true;

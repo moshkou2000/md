@@ -25,7 +25,7 @@ import java.util.List;
 public class LevelsActivity extends FragmentActivity {
 
 
-    private Context context = this;
+    private final Context context = this;
 
     private TextView level0;
     private TextView level1;

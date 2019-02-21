@@ -1,6 +1,7 @@
 package com.moshkou.md.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
-import com.moshkou.md.fragments.CameraFragment;
 import com.moshkou.md.fragments.HorizontalListsFragment;
 import com.moshkou.md.fragments.GalleryFragment;
 import com.moshkou.md.fragments.ListMultiItemTypeFragment;
@@ -24,7 +24,7 @@ public class BottomNavigationActivity extends AppCompatActivity implements
         ListMultiItemTypeFragment.OnFragmentInteractionListener {
 
 
-    private Context context = this;
+    private final Context context = this;
 
     private BottomNavigationView navigation;
     private FrameLayout fragmentContainer;
@@ -32,7 +32,6 @@ public class BottomNavigationActivity extends AppCompatActivity implements
     private GalleryFragment galleryFragment;
     private HorizontalListsFragment horizontalListsFragment;
     private ListMultiItemTypeFragment listMultiItemTypeFragment;
-    private CameraFragment cameraFragment;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -45,9 +44,7 @@ public class BottomNavigationActivity extends AppCompatActivity implements
 
             switch (item.getItemId()) {
                 case R.id.navigation_camera:
-                    transaction.replace(R.id.fragment_container, cameraFragment, "cameraFragment");
-                    transaction.addToBackStack("cameraFragment");
-                    transaction.commit();
+                    startActivity(new Intent(context, CameraActivity.class));
                     return true;
                 case R.id.navigation_search:
                     transaction.replace(R.id.fragment_container, horizontalListsFragment, "horizontalListsFragment");
@@ -103,7 +100,6 @@ public class BottomNavigationActivity extends AppCompatActivity implements
         galleryFragment = null;
         horizontalListsFragment = null;
         listMultiItemTypeFragment = null;
-        cameraFragment = null;
         Runtime.getRuntime().gc();
     }
 
@@ -112,7 +108,6 @@ public class BottomNavigationActivity extends AppCompatActivity implements
         galleryFragment = new GalleryFragment();
         horizontalListsFragment = new HorizontalListsFragment();
         listMultiItemTypeFragment = new ListMultiItemTypeFragment();
-        cameraFragment = new CameraFragment();
     }
 
     @Override

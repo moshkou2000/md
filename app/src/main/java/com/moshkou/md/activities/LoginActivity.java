@@ -16,7 +16,7 @@ import com.moshkou.md.R;
 public class LoginActivity extends AppCompatActivity {
 
 
-    private Context context = this;
+    private final Context context = this;
     private TextView signup;
     private EditText phoneEmail;
     private TextView error;

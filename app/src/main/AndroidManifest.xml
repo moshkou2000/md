@@ -189,6 +189,15 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppBottomNavigation"
             android:windowSoftInputMode="stateHidden|adjustResize" />
+
+        <activity
+            android:name=".activities.CameraActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/title_activity_camera"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppAuth"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
     </application>
 
 </manifest>

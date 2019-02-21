@@ -13,12 +13,14 @@ import com.moshkou.md.R;
 
 public class AlertActivity extends Activity {
 
+
+    private final Context context = this;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alert);
-
-        final Context context = this;
 
         Button signInButton = ((Button) findViewById(R.id.sign_in_button));
         signInButton.setOnClickListener(new View.OnClickListener() {

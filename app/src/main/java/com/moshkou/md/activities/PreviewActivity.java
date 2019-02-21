@@ -36,7 +36,7 @@ public class PreviewActivity extends AppCompatActivity {
         setTitle(name);
 
         if (!isVideo) {
-            ImageView image = (ImageView) findViewById(R.id.image);
+            ImageView image = findViewById(R.id.image);
             image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -55,7 +55,7 @@ public class PreviewActivity extends AppCompatActivity {
                     .error(R.drawable.ic_image)
                     .into(image);
         } else {
-            VideoView video = (VideoView) findViewById(R.id.video);
+            VideoView video = findViewById(R.id.video);
             video.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

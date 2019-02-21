@@ -25,7 +25,7 @@ public class SplashActivity extends Activity {
     private void launch() {
 
         Utils.getDeviceSize(this);
-        Utils.getAppPictureDirectory(this);
+        Utils.getAppPictureDirectory();
 
         String data = SharedPreferencesSupport.getString(this, Keys.USER);
         Gson gson = new Gson();

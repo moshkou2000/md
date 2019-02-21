@@ -14,7 +14,7 @@ import com.moshkou.md.R;
 public class ProfileActivity extends AppCompatActivity {
 
 
-    private Context context = this;
+    private final Context context = this;
 
 
     @Override

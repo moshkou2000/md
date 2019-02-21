@@ -15,7 +15,7 @@ import com.moshkou.md.R;
 public class RegisterActivity extends Activity {
 
 
-    private Context context = this;
+    private final Context context = this;
     private TextView signin;
     private EditText name;
     private EditText phone;
