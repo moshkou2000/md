@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.moshkou.md.adapters.CardsAdapter;
 import com.moshkou.md.adapters.PlaylistAdapter;
@@ -102,13 +103,13 @@ public class HorizontalListsFragment extends Fragment {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action1:
-                        Utils.toast(getContext(), Enumerates.Message.ERROR, "1");
+                        Utils.toast(getContext(), Enumerates.Message.ERROR, "1", Toast.LENGTH_LONG);
                         return true;
                     case R.id.action2:
-                        Utils.toast(getContext(), Enumerates.Message.ERROR, "22");
+                        Utils.toast(getContext(), Enumerates.Message.ERROR, "22", Toast.LENGTH_LONG);
                         return true;
                     case R.id.actionMore:
-                        Utils.toast(getContext(), Enumerates.Message.ERROR, "333");
+                        Utils.toast(getContext(), Enumerates.Message.ERROR, "333", Toast.LENGTH_LONG);
                         return true;
                     default:
                         return false;

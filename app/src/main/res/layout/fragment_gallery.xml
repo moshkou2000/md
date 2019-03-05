@@ -8,15 +8,22 @@
         android:id="@+id/appBar"
         layout="@layout/toolbar_main" />
 
-    <GridView
-        android:id="@+id/recyclerView"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/appBar"
-        android:numColumns="2"
-        android:scrollbars="none"
-        android:stretchMode="columnWidth"
-        android:listSelector="@android:color/transparent"
-        android:verticalSpacing="8dp" />
+        android:layout_below="@id/appBar">
+
+        <GridView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:listSelector="@android:color/transparent"
+            android:numColumns="2"
+            android:scrollbars="none"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="0dp" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

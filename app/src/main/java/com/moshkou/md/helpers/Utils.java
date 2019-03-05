@@ -117,25 +117,27 @@ public class Utils {
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    public static void toast(Context context, Enumerates.Message messageState, String message) {
-        View layout = LayoutInflater.from(context).inflate(R.layout.toast, null);
-        LinearLayout root = layout.findViewById(R.id.toast_layout_root);
+    public static void toast(Context context, Enumerates.Message messageState, String message, int duration) {
+        try {
+            View layout = LayoutInflater.from(context).inflate(R.layout.toast, null);
+            LinearLayout root = layout.findViewById(R.id.toast_layout_root);
 
-        if(messageState == Enumerates.Message.INFO) {
-            root.setBackgroundResource(R.drawable.ic_toast_info);
-        } else if(messageState == Enumerates.Message.WARNING) {
-            root.setBackgroundResource(R.drawable.ic_toast_warning);
-        } else if(messageState == Enumerates.Message.ERROR) {
-            root.setBackgroundResource(R.drawable.ic_toast_error);
-        }
+            if(messageState == Enumerates.Message.INFO) {
+                root.setBackgroundResource(R.drawable.ic_toast_info);
+            } else if(messageState == Enumerates.Message.WARNING) {
+                root.setBackgroundResource(R.drawable.ic_toast_warning);
+            } else if(messageState == Enumerates.Message.ERROR) {
+                root.setBackgroundResource(R.drawable.ic_toast_error);
+            }
 
-        TextView text = layout.findViewById(R.id.textView_message);
-        text.setText(message);
-        Toast toast = new Toast(context);
-        toast.setGravity(Gravity.TOP, 0, 60);
-        toast.setDuration(Toast.LENGTH_LONG);
-        toast.setView(layout);
-        toast.show();
+            TextView text = layout.findViewById(R.id.textView_message);
+            text.setText(message);
+            Toast toast = new Toast(context);
+            toast.setGravity(Gravity.TOP, 0, 60);
+            toast.setDuration(duration);
+            toast.setView(layout);
+            toast.show();
+        } catch(Exception ex) {}
     }
 
     public static void activityPreview(Context context, String url, String name, boolean isVideo){

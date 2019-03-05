@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.moshkou.md.adapters.ListMultiTypeItemAdapter;
 import com.moshkou.md.configs.Enumerates;
@@ -63,9 +64,11 @@ public class ListMultiItemTypeFragment extends Fragment {
 
         // TODO: just for test
         for (int i = 0; i < 11; i++) {
-            data.add(new BaseDataModel("" + i * 234, "title " + i, "description asdasda sdasd asd das dasd as dads ads " + i, "location " + i, "12.02.2022", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTV-XL-dvaC-cblm2rqA7am9z2-54v_mGnaLDokhZQqEJbXFduZng", null));
+            ContactModel c = i % 3 == 0 ?
+                    new ContactModel("Hassan", "+60172552542", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTV-XL-dvaC-cblm2rqA7am9z2-54v_mGnaLDokhZQqEJbXFduZng") :
+                    null;
+            data.add(new BaseDataModel("" + i * 234, "title " + i, "description asdasda sdasd asd das dasd as dads ads " + i, "location " + i, "12.02.2022", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTV-XL-dvaC-cblm2rqA7am9z2-54v_mGnaLDokhZQqEJbXFduZng", c));
         }
-        data.get(1).setContact(new ContactModel("Hassan", "+60172552542", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTV-XL-dvaC-cblm2rqA7am9z2-54v_mGnaLDokhZQqEJbXFduZng"));
 
     }
 
@@ -88,13 +91,13 @@ public class ListMultiItemTypeFragment extends Fragment {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action1:
-                        Utils.toast(getContext(), Enumerates.Message.ERROR, "1");
+                        Utils.toast(getContext(), Enumerates.Message.ERROR, "1", Toast.LENGTH_LONG);
                         return true;
                     case R.id.action2:
-                        Utils.toast(getContext(), Enumerates.Message.ERROR, "22");
+                        Utils.toast(getContext(), Enumerates.Message.ERROR, "22", Toast.LENGTH_LONG);
                         return true;
                     case R.id.actionMore:
-                        Utils.toast(getContext(), Enumerates.Message.ERROR, "333");
+                        Utils.toast(getContext(), Enumerates.Message.ERROR, "333", Toast.LENGTH_LONG);
                         return true;
                     default:
                         return false;

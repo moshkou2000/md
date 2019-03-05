@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.moshkou.md.models.BaseDataModel;
@@ -27,10 +28,16 @@ public class GalleryAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private List<BaseDataModel> data = new ArrayList<>();
 
+    private int numColumns = 2;
+
 
     public GalleryAdapter(Context context, List<BaseDataModel> data) {
         this.data = data;
         this.inflater = LayoutInflater.from(context);//.inflate(R.layout.item_gallery, null);
+    }
+
+    public void setNumColumns(int numColumns) {
+        this.numColumns = numColumns;
     }
 
     @Override
@@ -53,7 +60,11 @@ public class GalleryAdapter extends BaseAdapter {
 
         ViewHolder viewHolder = null;
         if(convertView == null){
-            convertView = inflater.inflate(R.layout.item_gallery, parent, false);
+            if (numColumns == 1) {
+                convertView = inflater.inflate(R.layout.item2_gallery, parent, false);
+            } else
+                convertView = inflater.inflate(R.layout.item_gallery, parent, false);
+
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
         }
@@ -61,15 +72,38 @@ public class GalleryAdapter extends BaseAdapter {
             viewHolder = (ViewHolder)convertView.getTag();
         }
 
+        // padding: 20
+        // half padding: 10
+        //
         int bottom = position + 1 == getCount() ? 20 : 0;
 
-        if (position % 2 == 0)
-            viewHolder.root.setPadding(20, 20, 10, bottom);
+        // 1..2 < more columns
+        //
+        int padding = ((numColumns - 2) * 2 + 2) * 10;
+        int middlePadding = 10;
+
+        if (padding == 0) {
+            padding = 20;
+        } else if (padding == 20) {
+            padding = 10;
+        } else {
+            middlePadding = padding / numColumns;
+            padding = middlePadding - 10;
+        }
+
+        int p = (position + 1) % numColumns;
+        if (p == 1)
+            viewHolder.root.setPadding(20, 20, padding, bottom);     // first column
+        else if (p == 0)
+            viewHolder.root.setPadding(padding, 20, 20, bottom);     // last column
         else
-            viewHolder.root.setPadding(10, 20, 20, bottom);
+            viewHolder.root.setPadding(middlePadding, 20, middlePadding, bottom);     // middle
 
         viewHolder.title.setText(item.getTitle());
         viewHolder.description.setText(item.getDescription());
+
+        if (numColumns == 1)
+            viewHolder.location.setText(item.getLocation());
 
         Picasso.get()
                 .load(Uri.parse(item.getImage()))
@@ -90,17 +124,19 @@ public class GalleryAdapter extends BaseAdapter {
 
     public class ViewHolder {
 
-        protected LinearLayout root;
+        protected RelativeLayout root;
         protected TextView title;
         protected TextView description;
+        protected TextView location;
         protected ImageView image;
         protected Button button;
 
         public ViewHolder(View view) {
 
-            root = (LinearLayout) view;
+            root = (RelativeLayout) view;
             title = view.findViewById(R.id.title);
             description = view.findViewById(R.id.description);
+            location = view.findViewById(R.id.location);
             image = view.findViewById(R.id.image);
             button = view.findViewById(R.id.button);
         }

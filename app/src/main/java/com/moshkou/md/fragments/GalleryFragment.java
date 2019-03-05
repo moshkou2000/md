@@ -3,13 +3,17 @@ package com.moshkou.md.fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.moshkou.md.adapters.GalleryAdapter;
 import com.moshkou.md.configs.Enumerates;
@@ -34,6 +38,7 @@ public class GalleryFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private GridView gridView;
+    private SwipeRefreshLayout swipeRefresh;
 
     private List<BaseDataModel> data = new ArrayList<>();
     private GalleryAdapter adapter;
@@ -72,6 +77,21 @@ public class GalleryFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
 
         gridView = view.findViewById(R.id.recyclerView);
+        swipeRefresh = view.findViewById(R.id.swipeRefresh);
+        swipeRefresh.setColorSchemeResources(R.color.colorPrimary, R.color.colorPrimaryDark, R.color.colorPrimaryLight);
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefresh.setRefreshing(true);
+                try {
+
+                    // TODO: refresh / reload data
+
+                } catch(Exception ex) {
+
+                }
+            }
+        });
 
         adapter = new GalleryAdapter(getActivity(), data);
 
@@ -85,13 +105,19 @@ public class GalleryFragment extends Fragment {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action1:
-                        Utils.toast(getContext(), Enumerates.Message.ERROR, "1");
+                        adapter.setNumColumns(2);
+                        gridView.setNumColumns(2);
+                        Utils.toast(getContext(), Enumerates.Message.ERROR, "num columns 2", Toast.LENGTH_LONG);
                         return true;
                     case R.id.action2:
-                        Utils.toast(getContext(), Enumerates.Message.ERROR, "22");
+                        adapter.setNumColumns(3);
+                        gridView.setNumColumns(3);
+                        Utils.toast(getContext(), Enumerates.Message.ERROR, "num columns 3", Toast.LENGTH_LONG);
                         return true;
                     case R.id.actionMore:
-                        Utils.toast(getContext(), Enumerates.Message.ERROR, "333");
+                        adapter.setNumColumns(1);
+                        gridView.setNumColumns(1);
+                        Utils.toast(getContext(), Enumerates.Message.ERROR, "num columns 1", Toast.LENGTH_LONG);
                         return true;
                     default:
                         return false;

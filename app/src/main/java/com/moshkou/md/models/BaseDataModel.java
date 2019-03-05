@@ -10,10 +10,10 @@ public class BaseDataModel {
     private String location;
     private String image;
 
-    private ContactModel contact;
+    private ContactModel child;
 
 
-    public BaseDataModel(String _id, String title, String description, String location, String dateTime, String image, ContactModel contact) {
+    public BaseDataModel(String _id, String title, String description, String location, String dateTime, String image, ContactModel child) {
 
         this._id = _id;
         this.title = title;
@@ -21,7 +21,7 @@ public class BaseDataModel {
         this.dateTime = dateTime;
         this.location = location;
         this.image = image;
-        this.contact = contact;
+        this.child = child;
     }
 
     public String get_id() { return _id; }
@@ -30,7 +30,7 @@ public class BaseDataModel {
     public String getLocation() { return location; }
     public String getDateTime() { return dateTime; }
     public String getImage() { return image; }
-    public ContactModel getContact() { return contact; }
+    public ContactModel getChild() { return child; }
 
     public void set_id(String _id) { this._id = _id; }
     public void setTitle(String title) { this.title = title; }
@@ -38,6 +38,6 @@ public class BaseDataModel {
     public void setLocation(String location) { this.location = location; }
     public void setDateTime(String dateTime) { this.dateTime = dateTime; }
     public void setImage(String image) { this.image = image; }
-    public void setContact(ContactModel contact) { this.contact = contact; }
+    public void setChild(ContactModel contact) { this.child = contact; }
 
 }

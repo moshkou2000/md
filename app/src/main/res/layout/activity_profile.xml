@@ -54,10 +54,11 @@
     <!--Floating Action Button-->
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/actionButton"
-        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:src="@drawable/ic_fingerprint"
+        app:elevation="6dp"
         app:layout_anchor="@id/appBar"
         app:layout_anchorGravity="bottom|right|end" />
 

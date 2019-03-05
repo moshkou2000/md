@@ -16,6 +16,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.moshkou.md.configs.Enumerates;
 import com.moshkou.md.configs.RequestCode;
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         toast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utils.toast(context, Enumerates.Message.ERROR, "Errorr dari na");
+                Utils.toast(context, Enumerates.Message.ERROR, "Errorr dari na", Toast.LENGTH_LONG);
             }
         });
         alert.setOnClickListener(new View.OnClickListener() {

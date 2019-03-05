@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.moshkou.md.configs.Enumerates;
 import com.moshkou.md.helpers.Utils;
@@ -38,13 +39,13 @@ public class ProfileActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action1:
-                        Utils.toast(context, Enumerates.Message.ERROR, "1");
+                        Utils.toast(context, Enumerates.Message.ERROR, "1", Toast.LENGTH_LONG);
                         return true;
                     case R.id.action2:
-                        Utils.toast(context, Enumerates.Message.ERROR, "22");
+                        Utils.toast(context, Enumerates.Message.ERROR, "22", Toast.LENGTH_LONG);
                         return true;
                     case R.id.actionMore:
-                        Utils.toast(context, Enumerates.Message.ERROR, "333");
+                        Utils.toast(context, Enumerates.Message.ERROR, "333", Toast.LENGTH_LONG);
                         return true;
                     default:
                         return false;
