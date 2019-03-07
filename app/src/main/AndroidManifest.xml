@@ -173,6 +173,15 @@
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <activity
+            android:name=".activities.ActivityActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/title_activity_profile"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+        <activity
             android:name=".activities.LevelsActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_carousel"
@@ -194,6 +203,15 @@
             android:name=".activities.CameraActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_camera"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppAuth"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+        <activity
+            android:name=".activities.GroupActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/title_activity_group"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppAuth"

@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
     private Button level;
     private Button bottomNavigation;
     private Button camera;
+    private Button activity;
+    private Button group;
     private LinearLayout datetimePickerContainer;
     private DateTimePickerControl datetimePicker;
 
@@ -65,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
         level = findViewById(R.id.level);
         bottomNavigation = findViewById(R.id.bottomNavigation);
         camera = findViewById(R.id.camera);
+        activity = findViewById(R.id.activity);
+        group = findViewById(R.id.group);
 
         datetimePickerContainer = findViewById(R.id.datetimePickerContainer);
         datetimePickerContainer.setTranslationY(1000);
@@ -233,6 +237,18 @@ public class MainActivity extends AppCompatActivity {
                 // TODO: camera fragment ******************************
                 //
                 //CameraControl camera = new CameraControl(activity);
+            }
+        });
+        activity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(context, ActivityActivity.class));
+            }
+        });
+        group.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(context, GroupActivity.class));
             }
         });
 

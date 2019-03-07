@@ -92,6 +92,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="camera" />
+
+            <Button
+                android:id="@+id/activity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="activity" />
+
+            <Button
+                android:id="@+id/group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="group" />
         </LinearLayout>
     </ScrollView>
 

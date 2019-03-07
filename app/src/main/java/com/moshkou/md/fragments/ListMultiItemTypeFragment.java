@@ -67,7 +67,7 @@ public class ListMultiItemTypeFragment extends Fragment {
             ContactModel c = i % 3 == 0 ?
                     new ContactModel("Hassan", "+60172552542", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTV-XL-dvaC-cblm2rqA7am9z2-54v_mGnaLDokhZQqEJbXFduZng") :
                     null;
-            data.add(new BaseDataModel("" + i * 234, "title " + i, "description asdasda sdasd asd das dasd as dads ads " + i, "location " + i, "12.02.2022", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTV-XL-dvaC-cblm2rqA7am9z2-54v_mGnaLDokhZQqEJbXFduZng", c));
+            data.add(new BaseDataModel("" + i * 234, "title " + i, "description asdasda sdasd asd das dasd as dads ads " + i, "location " + i, "12.02.2022", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTV-XL-dvaC-cblm2rqA7am9z2-54v_mGnaLDokhZQqEJbXFduZng", c, null));
         }
 
     }
@@ -78,9 +78,7 @@ public class ListMultiItemTypeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_list_multi_item_type, container, false);
 
         recyclerView = view.findViewById(R.id.recyclerView);
-
         adapter = new ListMultiTypeItemAdapter(getActivity(), data);
-
         recyclerView.setAdapter(adapter);
 
         Toolbar toolbar = view.findViewById(R.id.appBar);

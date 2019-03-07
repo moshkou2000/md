@@ -93,7 +93,7 @@ public class CarouselsFragment extends Fragment {
         // TODO: just for test
         //
         for (int i = 0; i < 11; i++) {
-            BaseDataModel b = new BaseDataModel("" + i * 17, "title " + i, "description asdasda sdasd asd das dasd as dads ads " + i, "location " + i, "12.02.2022", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTV-XL-dvaC-cblm2rqA7am9z2-54v_mGnaLDokhZQqEJbXFduZng", null);
+            BaseDataModel b = new BaseDataModel("" + i * 17, "title " + i, "description asdasda sdasd asd das dasd as dads ads " + i, "location " + i, "12.02.2022", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTV-XL-dvaC-cblm2rqA7am9z2-54v_mGnaLDokhZQqEJbXFduZng", null, null);
             data.add(b);
 
             CarouselsItemFragment carouselsItem = new CarouselsItemFragment();
