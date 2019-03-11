@@ -5,7 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
-import com.moshkou.md.configs.Data;
+import com.moshkou.md.configs.Settings;
 import com.moshkou.md.configs.Enumerates;
 
 import java.io.IOException;
@@ -27,7 +27,7 @@ public class ConnectivityControl {
                 status = Enumerates.Connectivity.MOBILE;
         }
 
-        Data.CONNECTIVITY = status;
+        Settings.CONNECTIVITY = status;
 
         return status;
     }

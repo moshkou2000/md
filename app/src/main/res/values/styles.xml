@@ -39,6 +39,13 @@
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
+    <style name="AppCalendar" parent="AppTheme">
+        <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="android:navigationBarColor">@color/colorPrimary</item>
+        <item name="android:windowBackground">@color/bgWindowAuth</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
     <style name="AppTips" parent="AppTheme">
         <item name="android:statusBarColor">@color/colorPrimary</item>
         <item name="android:windowBackground">@color/colorPrimary</item>

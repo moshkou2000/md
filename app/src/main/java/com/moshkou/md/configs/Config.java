@@ -18,4 +18,6 @@ public class Config {
     public final static List<String> MONTH              = new ArrayList<String>(Arrays.asList("JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEPT", "OCT", "NOV", "DEC"));
     public final static List<String> WEEKDAY            = new ArrayList<String>(Arrays.asList("SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"));
 
+    public final static int MIN_YEAR                    = 1900;
+
 }

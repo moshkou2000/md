@@ -1,6 +1,5 @@
 package com.moshkou.md.services;
 
-import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -10,7 +9,7 @@ import com.android.volley.NoConnectionError;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.moshkou.md.App;
-import com.moshkou.md.configs.Data;
+import com.moshkou.md.configs.Settings;
 import com.moshkou.md.configs.Enumerates;
 import com.moshkou.md.configs.StatusCodes;
 import com.moshkou.md.helpers.Utils;
@@ -23,7 +22,7 @@ public class Error implements Response.ErrorListener {
         Log.i("MY_ERROR", error.toString());
 
         if (error instanceof NoConnectionError || error instanceof NetworkError) {
-            Data.CONNECTIVITY = Enumerates.Connectivity.NO_CONNECTIVITY;
+            Settings.CONNECTIVITY = Enumerates.Connectivity.NO_CONNECTIVITY;
             Utils.toast(App.getContext(), Enumerates.Message.ERROR, "No Internet", Toast.LENGTH_SHORT);
         } else {
             NetworkResponse response = error.networkResponse;

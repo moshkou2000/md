@@ -3,6 +3,7 @@ package com.moshkou.md.models;
 
 import com.moshkou.md.configs.Config;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class DatetimeModel {
@@ -50,6 +51,10 @@ public class DatetimeModel {
         this.minute = calendar.get(Calendar.MINUTE);
     }
 
+    public void setCalendar(Calendar calendar) {
+        this.calendar = calendar;
+    }
+
     public void setYear(int year) {
         this.year = year;
         this.calendar.set(year, month, day, hour, minute);
@@ -81,8 +86,15 @@ public class DatetimeModel {
     public int getMonth() { return calendar.get(Calendar.MONTH); }
     public String getMonthString() { return Config.MONTH.get(getMonth()); }
     public String getWeekDay() { return Config.WEEKDAY.get(calendar.get(Calendar.DAY_OF_WEEK) - 1); }
+    public String getWeekDayShort() { return Config.WEEKDAY.get(calendar.get(Calendar.DAY_OF_WEEK) - 1).substring(0, 2); }
     public int getDay() { return calendar.get(Calendar.DAY_OF_MONTH); }
     public int getHour() { return calendar.get(Calendar.HOUR_OF_DAY); }
     public int getMinute() { return calendar.get(Calendar.MINUTE); }
+
+    public String getDateString() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE dd MMM yyyy");
+        return dateFormat.format(calendar.getTime());
+    }
 
 }

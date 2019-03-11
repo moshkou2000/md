@@ -484,7 +484,7 @@ public class DateTimePickerControl extends FrameLayout {
                     if (dayMonthItemPosition + 1 >= dayMonthAdapter.getItemCount())
                         dayMonthLock = true;
 
-                } else {
+                } else if (dy < 0) {
                     scrollUp = false;
 
                     if (dayMonthItemPosition - 1 <= 0)

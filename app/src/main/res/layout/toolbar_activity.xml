@@ -33,15 +33,15 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
+            android:background="@null"
             android:elevation="4dp"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:titleMarginTop="0dp"
+            android:theme="@style/AppTheme.Toolbar"
             app:contentInsetLeft="0dp"
             app:contentInsetStart="0dp"
-            android:background="@null"
             app:layout_collapseMode="pin"
-            android:theme="@style/AppTheme.Toolbar"
-            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed">
+            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:titleMarginTop="0dp">
 
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.CollapsingToolbarLayout>

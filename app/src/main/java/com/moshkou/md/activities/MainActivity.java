@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private Button camera;
     private Button activity;
     private Button group;
+    private Button calendar;
     private LinearLayout datetimePickerContainer;
     private DateTimePickerControl datetimePicker;
 
@@ -69,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         camera = findViewById(R.id.camera);
         activity = findViewById(R.id.activity);
         group = findViewById(R.id.group);
+        calendar = findViewById(R.id.calendar);
 
         datetimePickerContainer = findViewById(R.id.datetimePickerContainer);
         datetimePickerContainer.setTranslationY(1000);
@@ -249,6 +251,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(context, GroupActivity.class));
+            }
+        });
+        calendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(context, CalendarActivity.class));
             }
         });
 

@@ -11,7 +11,7 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
-import com.moshkou.md.configs.Data;
+import com.moshkou.md.configs.Settings;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -164,7 +164,7 @@ public class FileControl {
 
         BufferedInputStream bis = null;
         BufferedOutputStream bos = null;
-        File file = new File(Data.APP_PICTURE_DIRECTORY, fileName);
+        File file = new File(Settings.APP_PICTURE_DIRECTORY, fileName);
         bis = new BufferedInputStream(inputStream);
         bos = new BufferedOutputStream(new FileOutputStream(file, false));
 

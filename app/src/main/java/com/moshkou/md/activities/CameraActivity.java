@@ -3,8 +3,6 @@ package com.moshkou.md.activities;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Environment;
-import android.text.format.DateFormat;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -42,8 +40,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.moshkou.md.R;
-import com.moshkou.md.configs.Data;
-import com.moshkou.md.configs.Permission;
+import com.moshkou.md.configs.Settings;
 import com.moshkou.md.controls.AutoFitTextureViewControl;
 
 import java.io.File;
@@ -56,7 +53,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
@@ -979,7 +975,7 @@ public class CameraActivity extends Activity {
         ImageSaver(Image image) {
             mImage = image;
 
-            mFile = new File(Data.APP_PICTURE_DIRECTORY, "DCIM_" + (new SimpleDateFormat("yyyyMMdd_hhmmssSSS").format(new java.util.Date())) + ".png");
+            mFile = new File(Settings.APP_PICTURE_DIRECTORY, "DCIM_" + (new SimpleDateFormat("yyyyMMdd_hhmmssSSS").format(new java.util.Date())) + ".png");
         }
 
         @Override

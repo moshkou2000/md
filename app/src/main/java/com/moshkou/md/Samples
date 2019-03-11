@@ -176,3 +176,77 @@ public class SquareViewControl extends ViewGroup {
         setMeasuredDimension(width, width);
     }
 }
+
+
+
+// ************************************
+// RecyclerView: change scrolling speed
+// ************************************
+LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false) {
+    @Override
+    public void smoothScrollToPosition(RecyclerView recyclerView, RecyclerView.State state, int position) {
+        LinearSmoothScroller smoothScroller = new LinearSmoothScroller(context) {
+
+            private static final float SPEED = 1000f;// Change this value (default=25f)
+
+            @Override
+            protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
+                return SPEED / displayMetrics.densityDpi;
+            }
+        };
+        smoothScroller.setTargetPosition(position);
+        startSmoothScroll(smoothScroller);
+    }
+
+    @Override
+    public void scrollToPosition(int position) {
+        super.scrollToPosition(position);
+    }
+};
+
+
+
+// ************************************
+// RecyclerView: custom ScrollListener
+// ************************************
+public class CustomScrollListener extends RecyclerView.OnScrollListener {
+    public CustomScrollListener() { }
+
+    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+        if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+
+            LinearLayoutManager lm = (LinearLayoutManager) recyclerView.getLayoutManager();
+            lm.smoothScrollToPosition(recyclerView, null, scrollRight ? position - 2 : position);
+        }
+    }
+
+    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+        super.onScrolled(recyclerView, dx, dy);
+
+        position = ((LinearLayoutManager)recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
+
+        if (dx > 0) {
+            scrollRight = true;
+            position--;
+        } else {
+            scrollRight = false;
+        }
+    }
+}
+
+
+
+// ************************************
+// RecyclerView:  percentage, item to left or right
+// ************************************
+private double percentage(RecyclerView recyclerView) {
+
+    int offset = recyclerView.computeHorizontalScrollOffset();
+    int extent = recyclerView.computeHorizontalScrollExtent();
+    int range = recyclerView.computeHorizontalScrollRange();
+
+    double percentage = (1.0 * offset / (double)(range - extent)) * data.size();
+    percentage -= Math.floor(percentage);
+
+    return percentage;
+}

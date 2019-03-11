@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.moshkou.md.configs.Data;
+import com.moshkou.md.configs.Settings;
 import com.moshkou.md.configs.Keys;
 import com.moshkou.md.helpers.SharedPreferencesSupport;
 import com.moshkou.md.models.KeyValue;
@@ -92,7 +92,7 @@ public class LevelsActivity extends FragmentActivity {
 
         level0.measure(0, 0);
         width = level0.getMeasuredWidth();
-        x = (float) ( -1 * (Data.DEVICE_WIDTH / 2 - width / 2));
+        x = (float) ( -1 * (Settings.DEVICE_WIDTH / 2 - width / 2));
 
         motion();
         colors();

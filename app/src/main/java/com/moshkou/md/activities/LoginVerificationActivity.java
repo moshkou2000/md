@@ -1,9 +1,9 @@
 package com.moshkou.md.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +15,7 @@ import com.moshkou.md.configs.Keys;
 import com.moshkou.md.helpers.Utils;
 import com.moshkou.md.R;
 
-public class LoginVerificationActivity extends Activity {
+public class LoginVerificationActivity extends AppCompatActivity {
 
 
     private EditText code;

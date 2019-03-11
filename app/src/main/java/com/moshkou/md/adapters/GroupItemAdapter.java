@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.moshkou.md.R;
@@ -88,7 +89,7 @@ public class GroupItemAdapter extends RecyclerView.Adapter<GroupItemAdapter.Item
 
     public class ItemRowHolder extends RecyclerView.ViewHolder {
 
-        protected LinearLayout root;
+        protected RelativeLayout root;
         protected TextView title;
         protected TextView description;
         protected ImageView image;

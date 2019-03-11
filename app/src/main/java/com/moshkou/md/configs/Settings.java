@@ -2,7 +2,7 @@ package com.moshkou.md.configs;
 
 import com.moshkou.md.models.UserModel;
 
-public class Data {
+public class Settings {
 
     public static UserModel user;
 

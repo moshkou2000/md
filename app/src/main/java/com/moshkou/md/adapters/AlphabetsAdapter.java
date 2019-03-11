@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.moshkou.md.configs.Data;
+import com.moshkou.md.configs.Settings;
 import com.moshkou.md.R;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public class AlphabetsAdapter extends BaseAdapter {
     public AlphabetsAdapter(Context context, List<String> data) {
         this.data = data;
         layoutInflater = LayoutInflater.from(context);
-        textSize = (int) (Data.DEVICE_HEIGHT * 1.0 / Data.DEVICE_DENSITY / 27 / 1.646);
+        textSize = (int) (Settings.DEVICE_HEIGHT * 1.0 / Settings.DEVICE_DENSITY / 27 / 1.646);
     }
 
     @Override

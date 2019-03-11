@@ -3,7 +3,6 @@ package com.moshkou.md.helpers;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.os.Environment;
 import android.util.DisplayMetrics;
@@ -18,11 +17,10 @@ import android.widget.Toast;
 
 import com.moshkou.md.App;
 import com.moshkou.md.activities.PreviewActivity;
-import com.moshkou.md.configs.Data;
+import com.moshkou.md.configs.Settings;
 import com.moshkou.md.configs.Keys;
 import com.moshkou.md.configs.Enumerates;
 import com.moshkou.md.R;
-import com.moshkou.md.configs.Permission;
 
 import java.io.File;
 
@@ -55,7 +53,7 @@ public class Utils {
             if (!file.mkdirs()) {
                 Log.i("UTILSss", "Private Directory not created");
             }
-            Data.APP_PICTURE_DIRECTORY = file.getPath();
+            Settings.APP_PICTURE_DIRECTORY = file.getPath();
             return file.mkdirs();
         }
 
@@ -69,7 +67,7 @@ public class Utils {
             if (!file.mkdirs()) {
                 Log.i("UTILS", "Private Directory not created");
             }
-            Data.APP_PICTURE_DIRECTORY = file.getPath();
+            Settings.APP_PICTURE_DIRECTORY = file.getPath();
             return file.mkdirs();
         }
 
@@ -83,7 +81,7 @@ public class Utils {
             if (!file.mkdirs()) {
                 Log.i("UTILS", "Public Directory not created");
             }
-            Data.APP_PICTURE_DIRECTORY = file.getPath();
+            Settings.APP_PICTURE_DIRECTORY = file.getPath();
             return file.mkdirs();
         }
 
@@ -98,9 +96,9 @@ public class Utils {
         try {
             DisplayMetrics displayMetrics = new DisplayMetrics();
             ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-            Data.DEVICE_WIDTH     = (double) displayMetrics.widthPixels;
-            Data.DEVICE_HEIGHT    = (double) displayMetrics.heightPixels;
-            Data.DEVICE_DENSITY   = displayMetrics.density;
+            Settings.DEVICE_WIDTH     = (double) displayMetrics.widthPixels;
+            Settings.DEVICE_HEIGHT    = (double) displayMetrics.heightPixels;
+            Settings.DEVICE_DENSITY   = displayMetrics.density;
         } catch (Exception ex) {
             Log.d("ERROR", "Unable to get device metrics");
         }
