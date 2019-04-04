@@ -69,7 +69,7 @@ public class CalendarYearAdapter extends RecyclerView.Adapter<CalendarYearAdapte
             itemRowHolder.title.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    activity.updateSelectedDateYear(i);
+                    activity.updateSelectedDateYear(getItem(i));
                 }
             });
         }

@@ -7,8 +7,8 @@ public class CalendarModel extends DatetimeModel {
 
 
     public CalendarModel(int day) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set( getYear(), 0, 1);
+        Calendar calendar = getCalendar();// Calendar.getInstance();
+        //calendar.set( getYear(), 0, 1);
         calendar.add(Calendar.DAY_OF_YEAR, day);
         setCalendar(calendar);
     }

@@ -56,7 +56,7 @@ public class CarouselsItem4Fragment extends Fragment implements CounterHandler.C
         plus = view.findViewById(R.id.imageButtonPlus);
         minus = view.findViewById(R.id.imageButtonMinus);
         editText = view.findViewById(R.id.editText);
-        editText.setText("254534565");
+        editText.setText("1");
 
         title.setText(data.getTitle());
         description.setText(data.getDescription());
@@ -76,6 +76,18 @@ public class CarouselsItem4Fragment extends Fragment implements CounterHandler.C
                 }
             });
 
+        if (!minus.hasOnClickListeners())
+            minus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int current = Integer.valueOf(data.get_id());
+                    if (current > 1) {
+                        data.set_id(String.valueOf(current - 1));
+                        editText.setText(data.get_id());
+                    }
+                }
+            });
+
         if (!plus.hasOnClickListeners())
             plus.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -86,39 +98,39 @@ public class CarouselsItem4Fragment extends Fragment implements CounterHandler.C
                 }
             });
 
-        plus.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                int current = Integer.valueOf(data.get_id());
-                data.set_id(String.valueOf(current + 1));
-                editText.setText(data.get_id());
-
-                return false;
-            }
-        });
-
-        if (!minus.hasOnClickListeners())
-            minus.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int current = Integer.valueOf(data.get_id());
-                    if (current > 0) {
-                        data.set_id(String.valueOf(current - 1));
-                        editText.setText(data.get_id());
-                    }
-                }
-            });
-
-        new CounterHandler.Builder()
-                .incrementalView(plus)
-                .decrementalView(minus)
-                .minRange(1) // cant go any less than -50
-                .maxRange(10000) // cant go any further than 50
-                .isCycle(false) // 49,50,-50,-49 and so on
-                .counterDelay(100) // speed of counter
-                .counterStep(1)  // steps e.g. 0,2,4,6...
-                .listener(this) // to listen counter results and show them in app
-                .build();
+//        plus.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+//                int current = Integer.valueOf(data.get_id());
+//                data.set_id(String.valueOf(current + 1));
+//                editText.setText(data.get_id());
+//
+//                return false;
+//            }
+//        });
+//
+//        if (!minus.hasOnClickListeners())
+//            minus.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    int current = Integer.valueOf(data.get_id());
+//                    if (current > 0) {
+//                        data.set_id(String.valueOf(current - 1));
+//                        editText.setText(data.get_id());
+//                    }
+//                }
+//            });
+//
+//        new CounterHandler.Builder()
+//                .incrementalView(plus)
+//                .decrementalView(minus)
+//                .minRange(1) // cant go any less than -50
+//                .maxRange(10000) // cant go any further than 50
+//                .isCycle(false) // 49,50,-50,-49 and so on
+//                .counterDelay(100) // speed of counter
+//                .counterStep(1)  // steps e.g. 0,2,4,6...
+//                .listener(this) // to listen counter results and show them in app
+//                .build();
 
         return view;
     }

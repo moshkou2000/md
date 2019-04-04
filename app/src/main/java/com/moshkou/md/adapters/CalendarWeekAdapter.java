@@ -1,15 +1,12 @@
 package com.moshkou.md.adapters;
 
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.moshkou.md.R;
@@ -87,6 +84,8 @@ public class CalendarWeekAdapter extends PagerAdapter {
         description6 = layout.findViewById(R.id.description6);
         description7 = layout.findViewById(R.id.description7);
 
+        Log.e("AAAAA", "position:: " + position);
+
         description1.setText("" + data.get(position * 7).getDay());
         description2.setText("" + data.get(position * 7 + 1).getDay());
         description3.setText("" + data.get(position * 7 + 2).getDay());
@@ -115,9 +114,8 @@ public class CalendarWeekAdapter extends PagerAdapter {
         TextView.OnClickListener onClickListener = new TextView.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String str = (String) v.getTag();
-                Log.e("AAAAA", "" + str);
-                activity.updateSelectedDateDay(Integer.valueOf(str));
+                Integer i = (Integer) v.getTag();
+                activity.updateSelectedDateDay(i);
             }
         };
 

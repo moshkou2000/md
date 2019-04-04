@@ -7,11 +7,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:baselineAligned="false">
+        android:layout_gravity="center">
 
         <LinearLayout
-            android:id="@+id/day1"
+            android:id="@+id/month1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -26,18 +25,10 @@
                 android:textColor="@android:color/white"
                 android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/description1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@android:color/white"
-                android:textSize="16sp" />
-
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/day2"
+            android:id="@+id/month2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -52,18 +43,10 @@
                 android:textColor="@android:color/white"
                 android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/description2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@android:color/white"
-                android:textSize="16sp" />
-
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/day3"
+            android:id="@+id/month3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -78,18 +61,10 @@
                 android:textColor="@android:color/white"
                 android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/description3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@android:color/white"
-                android:textSize="16sp" />
-
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/day4"
+            android:id="@+id/month4"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -104,18 +79,10 @@
                 android:textColor="@android:color/white"
                 android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/description4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@android:color/white"
-                android:textSize="16sp" />
-
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/day5"
+            android:id="@+id/month5"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -130,18 +97,10 @@
                 android:textColor="@android:color/white"
                 android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/description5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@android:color/white"
-                android:textSize="16sp" />
-
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/day6"
+            android:id="@+id/month6"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -156,40 +115,7 @@
                 android:textColor="@android:color/white"
                 android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/description6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@android:color/white"
-                android:textSize="16sp" />
-
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/day7"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/title7"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@android:color/white"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/description7"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@android:color/white"
-                android:textSize="16sp" />
-
-        </LinearLayout>
     </LinearLayout>
 </FrameLayout>

@@ -110,6 +110,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="calendar" />
+
+            <Button
+                android:id="@+id/booking"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="booking" />
         </LinearLayout>
     </ScrollView>
 

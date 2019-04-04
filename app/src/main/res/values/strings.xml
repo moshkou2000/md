@@ -23,6 +23,7 @@
     <string name="title_activity_camera">Camera</string>
     <string name="title_activity_group">Group</string>
     <string name="title_activity_calendar">Calendar</string>
+    <string name="title_activity_booking">Booking</string>
 
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>

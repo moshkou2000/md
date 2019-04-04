@@ -92,7 +92,7 @@ public class DatetimeModel {
     public int getMinute() { return calendar.get(Calendar.MINUTE); }
 
     public String getDateString() {
-        Calendar calendar = Calendar.getInstance();
+        //Calendar calendar = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE dd MMM yyyy");
         return dateFormat.format(calendar.getTime());
     }

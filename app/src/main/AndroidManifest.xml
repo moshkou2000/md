@@ -225,6 +225,15 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppCalendar"
             android:windowSoftInputMode="stateHidden|adjustResize" />
+
+        <activity
+            android:name=".activities.BookingActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/title_activity_booking"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppAuth"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
     </application>
 
 </manifest>
