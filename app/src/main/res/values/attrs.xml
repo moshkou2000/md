@@ -2,6 +2,7 @@
 <resources>
     <declare-styleable name="ToggleSwitchOptions">
         <attr name="toggleWidth"        format="dimension"/>
+        <attr name="toggleHeight"       format="dimension"/>
 
         <attr name="textToggleCenter"   format="string" localization="suggested" />
         <attr name="textToggleLeft"     format="string" localization="suggested" />

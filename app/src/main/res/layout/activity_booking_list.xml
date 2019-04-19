@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/grantedView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/appBar"
+        layout="@layout/toolbar_booking_list"/>
+
+    <!--<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+        <!--android:id="@+id/toolbar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="?actionBarSize"-->
+        <!--android:background="@color/colorPrimary"-->
+        <!--app:contentInsetLeft="0dp"-->
+        <!--app:contentInsetStart="0dp"-->
+        <!--app:popupTheme="@style/ThemeOverlay.AppCompat.Light">-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/toolbar_title"-->
+            <!--style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:text="@string/app_name"-->
+            <!--android:textColor="@android:color/white" />-->
+
+    <!--</android.support.v7.widget.Toolbar>-->
+
+    <FrameLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@id/toolbar"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp">
+
+        <EditText
+            android:id="@+id/search"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_border"
+            android:ems="10"
+            android:hint="@string/placeholder_search"
+            android:inputType="textPersonName"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp" />
+    </FrameLayout>
+
+    <ListView
+        android:id="@+id/bookings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/header"
+        android:divider="@null"
+        android:dividerHeight="0dp" />
+
+    <TextView
+        android:id="@+id/indicator"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/header"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="20dp"
+        android:layout_toStartOf="@+id/frame"
+        android:gravity="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="30sp"
+        android:textStyle="normal|bold"
+        android:visibility="visible" />
+
+
+    <FrameLayout
+        android:id="@+id/frame"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_below="@id/header"
+        android:layout_alignParentEnd="true">
+
+        <ListView
+            android:id="@+id/indicators"
+            android:layout_width="45dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="12dp"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:gravity="start"
+            android:scrollbars="none"
+            android:visibility="visible" />
+
+    </FrameLayout>
+
+</RelativeLayout>

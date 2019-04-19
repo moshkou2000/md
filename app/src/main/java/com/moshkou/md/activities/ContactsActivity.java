@@ -71,7 +71,7 @@ public class ContactsActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 boolean flag = true;
-                int index = 0;
+                int index;
                 for (index = 0; flag && index < contacts.size(); index++) {
                     if (contacts.get(index).name.toUpperCase().startsWith(alphabets.get(position))) {
                         flag = false;

@@ -2,340 +2,496 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="660dp"
     android:fillViewport="true"
     android:scrollbars="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_weight="1.5"/>
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:background="@drawable/bg_placeholder_image"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:id="@+id/classParent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textView2362"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="4dp"
+                            android:gravity="center_vertical"
+                            android:text="ECONOMY"
+                            android:textColor="@android:color/black"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/textView20"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="CLASS" />
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <Button
+                    android:id="@+id/class_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:gravity="center_horizontal|top"
+                    android:textColor="@android:color/black" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.6" />
 
         <com.moshkou.md.controls.ToggleSwitchControl
             android:id="@+id/customized_items_toggle_switch"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_weight="1"
+            android:layout_height="48dp"
             android:layout_gravity="center"
+            android:background="@drawable/ic_border_toggle_switch"
             android:textSize="18sp"
             app:activeBgColor="@android:color/holo_blue_dark"
             app:activeTextColor="@android:color/white"
-            app:cornerRadius="8dp"
+            app:cornerRadius="0dp"
             app:inactiveBgColor="@android:color/white"
             app:inactiveTextColor="@android:color/black"
             app:separatorColor="@color/lightGray"
-            app:textToggleLeft="ONE WAY"
-            app:textToggleRight="RETURN"
-            app:toggleWidth="210dp" />
+            app:textToggleLeft="RETURN"
+            app:textToggleRight="ONE WAY">
 
-        <RelativeLayout
+        </com.moshkou.md.controls.ToggleSwitchControl>
+
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_weight="3">
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2" />
 
-            <FrameLayout
-                android:id="@+id/fromParent"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentStart="true"
-                android:layout_toStartOf="@+id/imageView5"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/textView17"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="top"
-                    android:gravity="center"
-                    android:text="IST"
-                    android:textColor="@android:color/black"
-                    android:textSize="36sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/textView19"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:gravity="center"
-                    android:text="ISTANBUL" />
-
-                <Button
-                    android:id="@+id/button5"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@android:color/transparent"
-                    android:gravity="center_horizontal|top"
-                    android:text="FROM"
-                    android:textColor="@android:color/black" />
-            </FrameLayout>
-
-            <ImageView
-                android:id="@+id/imageView5"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true"
-                app:srcCompat="@drawable/lb_ic_nav_arrow" />
-
-            <FrameLayout
-                android:id="@+id/toParent"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
-                android:layout_toEndOf="@+id/imageView5"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/textView137"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="top"
-                    android:gravity="center"
-                    android:text="LAX"
-                    android:textColor="@android:color/black"
-                    android:textSize="36sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/textView39"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:gravity="center"
-                    android:text="LOS ANGELES" />
-
-                <Button
-                    android:id="@+id/button53"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@android:color/transparent"
-                    android:gravity="center_horizontal|top"
-                    android:text="TO"
-                    android:textColor="@android:color/black" />
-            </FrameLayout>
-        </RelativeLayout>
-
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_weight="2"
-            android:orientation="horizontal">
+            android:layout_height="0dp"
+            android:layout_weight="7">
 
-            <FrameLayout
-                android:id="@+id/departParent"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1">
+                android:orientation="vertical">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="3">
+
+                    <FrameLayout
+                        android:id="@+id/fromParent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentStart="true"
+                        android:layout_toStartOf="@+id/imageView5"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textView17"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="IST"
+                            android:textColor="@android:color/black"
+                            android:textSize="36sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/textView19"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:paddingTop="60dp"
+                            android:text="ISTANBUL" />
+
+                        <Button
+                            android:id="@+id/from"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@android:color/transparent"
+                            android:gravity="center_horizontal|top"
+                            android:paddingTop="4dp"
+                            android:text="FROM"
+                            android:textAlignment="gravity"
+                            android:textColor="@android:color/black" />
+                    </FrameLayout>
+
+                    <ImageView
+                        android:id="@+id/imageView5"
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        app:srcCompat="@drawable/lb_ic_nav_arrow" />
+
+                    <FrameLayout
+                        android:id="@+id/toParent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentEnd="true"
+                        android:layout_toEndOf="@+id/imageView5"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textView137"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="top"
+                            android:gravity="center"
+                            android:text="LAX"
+                            android:textColor="@android:color/black"
+                            android:textSize="36sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/textView39"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:paddingTop="60dp"
+                            android:text="LOS ANGELES" />
+
+                        <Button
+                            android:id="@+id/to"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@android:color/transparent"
+                            android:gravity="center_horizontal|top"
+                            android:paddingTop="10dp"
+                            android:text="TO"
+                            android:textColor="@android:color/black" />
+                    </FrameLayout>
+                </RelativeLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:background="@drawable/bg_placeholder_image"
+                    android:orientation="horizontal">
+
+                    <FrameLayout
+                        android:id="@+id/returnParent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/textView21"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:text="DEPART ON" />
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="-2dp"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/textView23"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="match_parent"
+                                        android:layout_marginRight="4dp"
+                                        android:gravity="center_vertical"
+                                        android:text="06 DEC"
+                                        android:textColor="@android:color/black"
+                                        android:textSize="28sp"
+                                        android:textStyle="bold" />
+
+                                    <LinearLayout
+                                        android:id="@+id/ln2342"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:id="@+id/textView247"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="bottom"
+                                            android:text="2019"
+                                            android:textAlignment="gravity"
+                                            android:textColor="@android:color/black"
+                                            android:textSize="12sp" />
+
+                                        <TextView
+                                            android:id="@+id/textView227"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="-3dp"
+                                            android:gravity="top"
+                                            android:text="Friday"
+                                            android:textAlignment="gravity"
+                                            android:textColor="@android:color/black"
+                                            android:textSize="12sp" />
+                                    </LinearLayout>
+                                </LinearLayout>
+                            </LinearLayout>
+
+                        </RelativeLayout>
+
+                        <Button
+                            android:id="@+id/depart"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@android:color/transparent"
+                            android:gravity="center_horizontal|top"
+                            android:textColor="@android:color/black" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent" />
+
+                    <FrameLayout
+                        android:id="@+id/departParent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/textView346"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:text="RETURN ON" />
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="-2dp"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/textView236"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="match_parent"
+                                        android:layout_marginRight="4dp"
+                                        android:gravity="center_vertical"
+                                        android:text="06 DEC"
+                                        android:textColor="@android:color/black"
+                                        android:textSize="28sp"
+                                        android:textStyle="bold" />
+
+                                    <LinearLayout
+                                        android:id="@+id/ln23426"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:id="@+id/textView24"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="bottom"
+                                            android:text="2019"
+                                            android:textColor="@android:color/black"
+                                            android:textSize="12sp" />
+
+                                        <TextView
+                                            android:id="@+id/textView22"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="-3dp"
+                                            android:gravity="top"
+                                            android:text="Friday"
+                                            android:textColor="@android:color/black"
+                                            android:textSize="12sp" />
+                                    </LinearLayout>
+                                </LinearLayout>
+                            </LinearLayout>
+
+                        </RelativeLayout>
+
+                        <Button
+                            android:id="@+id/returns"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@android:color/transparent"
+                            android:gravity="center_horizontal|top"
+                            android:textColor="@android:color/black" />
+                    </FrameLayout>
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.4" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1.4"
                     android:orientation="horizontal">
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="20dp"
-                        android:orientation="horizontal">
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/textView236"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginRight="4dp"
-                            android:gravity="center_vertical"
-                            android:text="06 DEC"
-                            android:textColor="@android:color/black"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <LinearLayout
-                            android:id="@+id/ln23426"
-                            android:layout_width="wrap_content"
+                            android:id="@+id/textView25"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                            android:gravity="center"
+                            android:text="ADULT" />
 
-                            <TextView
-                                android:id="@+id/textView24"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="bottom"
-                                android:text="2019"
-                                android:textSize="12sp" />
-
-                            <TextView
-                                android:id="@+id/textView22"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="top"
-                                android:text="Friday"
-                                android:textSize="12sp" />
-                        </LinearLayout>
+                        <TextView
+                            android:id="@+id/textView26"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="+12 YEARS" />
                     </LinearLayout>
-
-                </RelativeLayout>
-
-                <Button
-                    android:id="@+id/button54"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@android:color/transparent"
-                    android:gravity="center_horizontal|top"
-                    android:text="DEPART ON"
-                    android:textColor="@android:color/black" />
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="100dp"
-                android:layout_height="match_parent" />
-
-            <FrameLayout
-                android:id="@+id/returnParent"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="20dp"
-                        android:orientation="horizontal">
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/textView23"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginRight="4dp"
-                            android:gravity="center_vertical"
-                            android:text="06 DEC"
-                            android:textColor="@android:color/black"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <LinearLayout
-                            android:id="@+id/ln2342"
-                            android:layout_width="wrap_content"
+                            android:id="@+id/textView27"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                            android:gravity="center"
+                            android:text="CHILDREN" />
 
-                            <TextView
-                                android:id="@+id/textView247"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="bottom"
-                                android:text="2019"
-                                android:textSize="12sp" />
-
-                            <TextView
-                                android:id="@+id/textView227"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="top"
-                                android:text="Friday"
-                                android:textSize="12sp" />
-                        </LinearLayout>
+                        <TextView
+                            android:id="@+id/textView28"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="2 - 12 YEARS" />
                     </LinearLayout>
 
-                </RelativeLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-                <Button
-                    android:id="@+id/button533"
-                    android:layout_width="match_parent"
+                        <TextView
+                            android:id="@+id/textView29"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="INFANTS" />
+
+                        <TextView
+                            android:id="@+id/textView30"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="- 2 YEARS" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <DatePicker
+                    android:id="@+id/datePicker2"
+                    style="@android:style/Widget.DatePicker"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:background="@android:color/transparent"
-                    android:gravity="center_horizontal|top"
-                    android:text="RETURN ON"
-                    android:textColor="@android:color/black" />
-            </FrameLayout>
+                    android:layout_weight="1"
+                    android:visibility="invisible" />
 
-        </LinearLayout>
+                <FrameLayout
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent">
+
+                </FrameLayout>
+
+                <DatePicker
+                    android:id="@+id/datePicker3"
+                    style="@android:style/Widget.DatePicker"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:visibility="invisible" />
+
+            </LinearLayout>
+
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_weight="2"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/textView25"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="ADULT" />
-
-                <TextView
-                    android:id="@+id/textView26"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="+12 YEARS" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/textView27"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="CHILDREN" />
-
-                <TextView
-                    android:id="@+id/textView28"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="2 - 12 YEARS" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/textView29"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="INFANTS" />
-
-                <TextView
-                    android:id="@+id/textView30"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="- 2 YEARS" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_weight="3"
+            android:layout_height="0dp"
+            android:layout_weight="3.5"
             android:orientation="horizontal">
 
             <FrameLayout
@@ -348,7 +504,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_gravity="center"
-                    android:background="@android:color/black">
+                    android:background="@color/lightGray">
 
                 </FrameLayout>
 
@@ -356,6 +512,7 @@
                     android:id="@+id/textView31"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="@drawable/ic_border"
                     android:gravity="center"
                     android:text="2"
                     android:textColor="@android:color/black"
@@ -373,7 +530,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_gravity="center"
-                    android:background="@android:color/black">
+                    android:background="@color/lightGray">
 
                 </FrameLayout>
 
@@ -381,6 +538,7 @@
                     android:id="@+id/textView32"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="@drawable/ic_border"
                     android:gravity="center"
                     android:text="0"
                     android:textColor="@android:color/black"
@@ -398,7 +556,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_gravity="center"
-                    android:background="@android:color/black">
+                    android:background="@color/lightGray">
 
                 </FrameLayout>
 
@@ -406,6 +564,7 @@
                     android:id="@+id/textView33"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="@drawable/ic_border"
                     android:gravity="center"
                     android:text="1"
                     android:textColor="@android:color/black"
@@ -414,32 +573,63 @@
             </FrameLayout>
         </LinearLayout>
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7">
+
+        </FrameLayout>
+
         <com.moshkou.md.controls.ToggleSwitchControl
             android:id="@+id/customized_items_toggle_switch2"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_weight="1"
+            android:layout_height="48dp"
             android:layout_gravity="center"
+            android:background="@drawable/ic_border_toggle_switch"
             android:textSize="18sp"
             app:activeBgColor="@android:color/holo_blue_dark"
             app:activeTextColor="@android:color/white"
-            app:cornerRadius="8dp"
+            app:cornerRadius="0dp"
             app:inactiveBgColor="@android:color/white"
             app:inactiveTextColor="@android:color/black"
             app:separatorColor="@color/lightGray"
             app:textToggleLeft="DIRECT ONLY"
-            app:textToggleRight="INCLUDE INDIRECT"
-            app:toggleWidth="210dp" />
+            app:textToggleRight="INCLUDE INDIRECT">
 
-        <Button
-            android:id="@+id/button4"
+        </com.moshkou.md.controls.ToggleSwitchControl>
+
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_weight="1.5"
-            android:background="@android:color/transparent"
-            android:text="SEARCH"
-            android:textColor="@android:color/black"
-            android:textSize="30sp"
-            android:textStyle="bold" />
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7">
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_weight="2"
+            android:background="@color/colorPrimaryDark">
+
+            <Button
+                android:id="@+id/button4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@drawable/ripple_effect"
+                android:text="SEARCH"
+                android:textColor="@android:color/white"
+                android:textSize="30sp" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5">
+
+        </FrameLayout>
     </LinearLayout>
 </ScrollView>

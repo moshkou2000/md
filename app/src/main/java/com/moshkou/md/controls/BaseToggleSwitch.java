@@ -9,6 +9,7 @@ import android.graphics.drawable.shapes.RoundRectShape;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.moshkou.md.R;
+import com.moshkou.md.configs.Settings;
 
 import java.util.ArrayList;
 
@@ -36,7 +38,6 @@ public abstract class BaseToggleSwitch extends LinearLayout implements View.OnCl
 
         protected static final int CORNER_RADIUS_DP = 4;
         protected static final float TEXT_SIZE = 12;
-        protected static final float TOGGLE_WIDTH = 64;
     }
 
     private OnToggleSwitchChangeListener mOnToggleSwitchChangeListener = null;
@@ -49,6 +50,7 @@ public abstract class BaseToggleSwitch extends LinearLayout implements View.OnCl
     private int textSize;
     private float cornerRadius;
     private float toggleWidth;
+    private float toggleHeight;
 
     private LayoutInflater mInflater;
     private LinearLayout toggleSwitchesContainer;
@@ -82,7 +84,11 @@ public abstract class BaseToggleSwitch extends LinearLayout implements View.OnCl
                 this.inactiveTextColor = attributes.getColor(R.styleable.ToggleSwitchOptions_inactiveTextColor, ContextCompat.getColor(context, BaseToggleSwitch.Default.INACTIVE_TEXT_COLOR));
                 this.separatorColor = attributes.getColor(R.styleable.ToggleSwitchOptions_separatorColor, ContextCompat.getColor(context, BaseToggleSwitch.Default.SEPARATOR_COLOR));
                 this.textSize = attributes.getDimensionPixelSize(R.styleable.ToggleSwitchOptions_android_textSize, (int) dp2px(context, BaseToggleSwitch.Default.TEXT_SIZE));
-                this.toggleWidth = attributes.getDimension(R.styleable.ToggleSwitchOptions_toggleWidth, dp2px(getContext(), BaseToggleSwitch.Default.TOGGLE_WIDTH));
+                this.toggleWidth = 0;//attributes.getDimension(R.styleable.ToggleSwitchOptions_toggleWidth, (float) (dp2px(getContext(), (float) Settings.DEVICE_WIDTH / 2) / Settings.DEVICE_DENSITY ) - dppx(getContext(), 40));
+                //this.toggleHeight = attributes.getDimension(R.styleable.ToggleSwitchOptions_toggleHeight, dp2px(getContext(), 36));
+
+                this.toggleHeight = (int) (48.0 * Settings.DEVICE_DENSITY);// 1.646);
+
                 this.cornerRadius = attributes.getDimensionPixelSize(R.styleable.ToggleSwitchOptions_cornerRadius, (int) dp2px(context, BaseToggleSwitch.Default.CORNER_RADIUS_DP));
 
                 if (leftToggleText != null && !leftToggleText.isEmpty() &&
@@ -179,7 +185,7 @@ public abstract class BaseToggleSwitch extends LinearLayout implements View.OnCl
         TextView toggleBtnTxt = toggleSwitchButton.getTextView();
         toggleBtnTxt.setText(text);
         toggleBtnTxt.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams((int) toggleWidth, LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams((int) toggleWidth, (int) toggleHeight);
         if (toggleWidth == 0f) params.weight = 1f;
         toggleBtnTxt.setLayoutParams(params);
 
@@ -187,7 +193,7 @@ public abstract class BaseToggleSwitch extends LinearLayout implements View.OnCl
 
         toggleSwitchButton.getTextView().setOnClickListener(this);
 
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams((int) toggleWidth, LayoutParams.MATCH_PARENT);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams((int) toggleWidth, (int) toggleHeight);
         if (toggleWidth == 0f) layoutParams.weight = 1f;
         toggleSwitchesContainer.addView(toggleSwitchButton.getView(), layoutParams);
 
@@ -295,6 +301,13 @@ public abstract class BaseToggleSwitch extends LinearLayout implements View.OnCl
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
         float px = dp * (metrics.densityDpi / 160f);
+        return px;
+    }
+
+    private float dppx(Context context, float dp) {
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float px = dp * metrics.densityDpi;
         return px;
     }
 
