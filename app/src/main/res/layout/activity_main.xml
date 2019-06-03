@@ -116,6 +116,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="booking" />
+
+            <Button
+                android:id="@+id/map"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="map" />
         </LinearLayout>
     </ScrollView>
 

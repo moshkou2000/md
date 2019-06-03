@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.moshkou.md.App;
 import com.moshkou.md.activities.PreviewActivity;
 import com.moshkou.md.configs.Settings;
@@ -22,7 +23,14 @@ import com.moshkou.md.configs.Keys;
 import com.moshkou.md.configs.Enumerates;
 import com.moshkou.md.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Utils {
 
@@ -144,6 +152,26 @@ public class Utils {
         i.putExtra(Keys.NAME, name);
         i.putExtra(Keys.VIDEO, isVideo);
         context.startActivity(i);
+    }
+
+    public static ArrayList<LatLng> getMapData(Activity activity, int resource) {
+        ArrayList<LatLng> list = new ArrayList<>();
+
+        try {
+            InputStream inputStream = activity.getResources().openRawResource(resource);
+            String json = new Scanner(inputStream).useDelimiter("\\A").next();
+            JSONArray array = new JSONArray(json);
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject object = array.getJSONObject(i);
+                double lat = object.getDouble("lat");
+                double lng = object.getDouble("lng");
+                list.add(new LatLng(lat, lng));
+            }
+        } catch (JSONException e) {
+            Utils.toast(activity, Enumerates.Message.ERROR, "Problem reading list of locations.", Toast.LENGTH_LONG);
+        }
+
+        return list;
     }
 
 }

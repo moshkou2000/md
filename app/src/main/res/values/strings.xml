@@ -25,6 +25,7 @@
     <string name="title_activity_calendar">Calendar</string>
     <string name="title_activity_booking">Booking</string>
     <string name="title_activity_booking_list">Booking</string>
+    <string name="title_activity_map">Map</string>
 
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
@@ -33,6 +34,7 @@
     <string name="title_search">Search</string>
     <string name="title_person">Person</string>
     <string name="title_camera">Camera</string>
+    <string name="title_map">Map</string>
 
     <!--Header-->
     <string name="header_alert">Oops!!!</string>
@@ -47,7 +49,7 @@
     <string name="hint_register">Please confirm your name, phone number and email address then tap Next.\nYou will receive account verification code shortly.</string>
     <string name="hint_login">Please confirm your phone number or email address then tap Next.\nYou will receive account verification code shortly.</string>
     <string name="hint_login_verification">Just to make sure the account belongs to you,\nwe have sent you account verification code.</string>
-    <string name="hint_login_verification_request">You can request a code again in </string>
+    <string name="hint_login_verification_request">You can request a code again in %s</string>
     <string name="hint_login_verification_resend">Click &lt;font color="#00a8e6"&gt;here&lt;/font&gt; to send you verification code.</string>
     <string name="hint_login_suspicious">To secure your account, we will send you a security code to verify your identity.</string>
     <string name="hint_login_attempt">Someone attempted to login to your account recently. If it wasn\'t you, tell us so we can verify your account.</string>
@@ -95,6 +97,19 @@
     <string name="action_send_security_code">Send Security Code</string>
     <string name="action_it_was_me">It was me</string>
     <string name="action_it_was_not_me">It wasn\'t me</string>
+    <string name="action_retro">retro</string>
+    <string name="action_night">night</string>
+    <string name="action_grayscale">grayscale</string>
+    <string name="action_no_poi_and_transit">no POIs or transit</string>
+    <string name="action_default">default</string>
+    <string name="action_snapshot">snapshot</string>
+    <string name="action_normal">normal</string>
+    <string name="action_hybrid">hybrid</string>
+    <string name="action_satellite">satellite</string>
+    <string name="action_train">train</string>
+    <string name="action_heatmap">heatmap</string>
+    <string name="action_heatmap_remove">heatmap_remove</string>
+    <string name="action_heatmap_opacity">heatmap_opacity</string>
 
     <string name="action_link_help_center">Help Center</string>
     <string name="action_link_update_payment_method">Update Payment Method</string>
@@ -131,4 +146,9 @@
         <item>Y</item>
         <item>Z</item>
     </string-array>
+
+    <string name="google_maps_key" translatable="false" templateMergeStrategy="preserve">
+        AIzaSyCwug9o46v1nbDvn_3gdh8xUNB_DydP1cM
+    </string>
+
 </resources>

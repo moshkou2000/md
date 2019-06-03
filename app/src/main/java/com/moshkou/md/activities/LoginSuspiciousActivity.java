@@ -27,12 +27,7 @@ public class LoginSuspiciousActivity extends AppCompatActivity {
 
         send_security_code = findViewById(R.id.send_security_code);
 
-        send_security_code.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                gotoLoginVerification();
-            }
-        });
+        send_security_code.setOnClickListener(view -> gotoLoginVerification());
     }
 
     private void gotoLoginVerification() {

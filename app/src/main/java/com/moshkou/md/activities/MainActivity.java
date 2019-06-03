@@ -2,7 +2,6 @@ package com.moshkou.md.activities;
 
 import android.Manifest;
 import android.animation.Animator;
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -36,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private Button attempt;
     private Button carousel;
     private Button login;
-    private Button dialogh;
+    private Button dialog;
     private Button contacts;
     private Button datetime;
     private Button profile;
@@ -47,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private Button group;
     private Button calendar;
     private Button booking;
+    private Button map;
     private LinearLayout datetimePickerContainer;
     private DateTimePickerControl datetimePicker;
 
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         attempt = findViewById(R.id.attempt);
         carousel = findViewById(R.id.carousel);
         login = findViewById(R.id.login);
-        dialogh = findViewById(R.id.dialogh);
+        dialog = findViewById(R.id.dialogh);
         contacts = findViewById(R.id.contacts);
         datetime = findViewById(R.id.datetime);
         profile = findViewById(R.id.profile);
@@ -73,200 +73,127 @@ public class MainActivity extends AppCompatActivity {
         group = findViewById(R.id.group);
         calendar = findViewById(R.id.calendar);
         booking = findViewById(R.id.booking);
+        map = findViewById(R.id.map);
 
         datetimePickerContainer = findViewById(R.id.datetimePickerContainer);
         datetimePickerContainer.setTranslationY(1000);
 
-        snackbar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final View coordinatorLayout = findViewById(R.id.coordinatorLayout);
-                Snackbar snackbar = Snackbar
-                        .make(coordinatorLayout, "Message is deleted", Snackbar.LENGTH_LONG)
-                        .setAction("UNDO", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Snackbar snackbar1 = Snackbar.make(coordinatorLayout, "Message is restored!", Snackbar.LENGTH_SHORT);
-                                snackbar1.show();
-                            }
-                        });
-                snackbar.show();
-            }
-        });
-        toast.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Utils.toast(context, Enumerates.Message.ERROR, "Errorr dari na", Toast.LENGTH_LONG);
-            }
-        });
-        alert.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(context, AlertActivity.class));
-            }
-        });
-        attempt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(context, LoginAttemptActivity.class));
-            }
-        });
-        carousel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(context, CarouselTipsActivity.class));
-            }
-        });
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(context, LoginActivity.class));
-            }
-        });
-        dialogh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Dialog dialog = new Dialog(context);
-                dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setCancelable(false);
-                dialog.setContentView(R.layout.dialog);
-
-                TextView header_text = dialog.findViewById(R.id.header_text);
-                TextView text_body = dialog.findViewById(R.id.text_body);
-                Button cancel = dialog.findViewById(R.id.btn_cancel);
-                Button ok = dialog.findViewById(R.id.btn_ok);
-
-                header_text.setText("This is sample header");
-                text_body.setText("This is sample body text.");
-
-
-                ok.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //dialog.dismiss();
-                    }
-                });
-                cancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-
-                dialog.show();
-            }
-        });
-        contacts.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(context, ContactsActivity.class));
-                //datetimePicker.setDatetime(2017, 0, 1, 1, 1);
-            }
-        });
-        datetime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (datetimePicker == null) {
-                    datetimePicker = new DateTimePickerControl(context);
-                    datetimePicker.setOnTimeChangedListener(new DateTimePickerControl.OnTimeChangedListener() {
+        snackbar.setOnClickListener(view -> {
+            final View coordinatorLayout = findViewById(R.id.coordinatorLayout);
+            Snackbar snackbar = Snackbar
+                    .make(coordinatorLayout, "Message is deleted", Snackbar.LENGTH_LONG)
+                    .setAction("UNDO", new View.OnClickListener() {
                         @Override
-                        public void onTimeChanged(DateTimePickerControl view, Enumerates.ConfirmationState confirmationState, DatetimeModel datetimeModel) {
-                            if (confirmationState == Enumerates.ConfirmationState.NULL) {
-                                // value changed
-                            } else {
-                                if (confirmationState == Enumerates.ConfirmationState.OK) {
-                                    // DONE
-                                } else if (confirmationState == Enumerates.ConfirmationState.CANCEL) {
-                                    // CANCEL
-                                }
-
-                                datetimePickerContainer
-                                        .animate()
-                                        .translationY(datetimePicker.getHeight())
-                                        .alpha(1.0f)
-                                        .setListener(new Animator.AnimatorListener() {
-                                            @Override
-                                            public void onAnimationStart(Animator animation) {
-                                            }
-
-                                            @Override
-                                            public void onAnimationEnd(Animator animation) {
-                                                datetimePicker = null;
-                                                datetimePickerContainer.removeAllViews();
-                                            }
-
-                                            @Override
-                                            public void onAnimationCancel(Animator animation) {
-                                                datetimePicker = null;
-                                                datetimePickerContainer.removeAllViews();
-                                            }
-
-                                            @Override
-                                            public void onAnimationRepeat(Animator animation) {
-                                            }
-                                        });
-                            }
+                        public void onClick(View view) {
+                            Snackbar snackbar1 = Snackbar.make(coordinatorLayout, "Message is restored!", Snackbar.LENGTH_SHORT);
+                            snackbar1.show();
                         }
                     });
+            snackbar.show();
+        });
+        toast.setOnClickListener(view -> Utils.toast(context, Enumerates.Message.ERROR, "Error dari na", Toast.LENGTH_LONG));
+        alert.setOnClickListener(view -> startActivity(new Intent(context, AlertActivity.class)));
+        attempt.setOnClickListener(view -> startActivity(new Intent(context, LoginAttemptActivity.class)));
+        carousel.setOnClickListener(view -> startActivity(new Intent(context, CarouselTipsActivity.class)));
+        login.setOnClickListener(view -> startActivity(new Intent(context, LoginActivity.class)));
+        dialog.setOnClickListener(view -> {
+            final Dialog dialog = new Dialog(context);
 
-                    datetimePickerContainer.addView(datetimePicker);
-                    datetimePickerContainer.animate().translationY(0).alpha(1.0f).setListener(null);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setCancelable(false);
+            dialog.setContentView(R.layout.dialog);
+
+            TextView header_text = dialog.findViewById(R.id.header_text);
+            TextView text_body = dialog.findViewById(R.id.text_body);
+            Button cancel = dialog.findViewById(R.id.btn_cancel);
+            Button ok = dialog.findViewById(R.id.btn_ok);
+
+            header_text.setText("This is sample header");
+            text_body.setText("This is sample body text.");
+
+
+            ok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //dialog.dismiss();
                 }
-            }
-        });
-        profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(context, ProfileActivity.class));
-            }
-        });
-        level.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(context, LevelsActivity.class));
-            }
-        });
-        bottomNavigation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(context, BottomNavigationActivity.class));
-            }
-        });
-        camera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            });
+            cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
 
-                // TODO: camera fragment ******************************
-                //
-                //CameraControl camera = new CameraControl(activity);
+            dialog.show();
+        });
+        contacts.setOnClickListener(view -> {
+            startActivity(new Intent(context, ContactsActivity.class));
+            //datetimePicker.setDatetime(2017, 0, 1, 1, 1);
+        });
+        datetime.setOnClickListener(view -> {
+            if (datetimePicker == null) {
+                datetimePicker = new DateTimePickerControl(context);
+                datetimePicker.setOnTimeChangedListener(new DateTimePickerControl.OnTimeChangedListener() {
+                    @Override
+                    public void onTimeChanged(DateTimePickerControl view, Enumerates.ConfirmationState confirmationState, DatetimeModel datetimeModel) {
+                        if (confirmationState == Enumerates.ConfirmationState.NULL) {
+                            // value changed
+                        } else {
+                            if (confirmationState == Enumerates.ConfirmationState.OK) {
+                                // DONE
+                            } else if (confirmationState == Enumerates.ConfirmationState.CANCEL) {
+                                // CANCEL
+                            }
+
+                            datetimePickerContainer
+                                    .animate()
+                                    .translationY(datetimePicker.getHeight())
+                                    .alpha(1.0f)
+                                    .setListener(new Animator.AnimatorListener() {
+                                        @Override
+                                        public void onAnimationStart(Animator animation) {
+                                        }
+
+                                        @Override
+                                        public void onAnimationEnd(Animator animation) {
+                                            datetimePicker = null;
+                                            datetimePickerContainer.removeAllViews();
+                                        }
+
+                                        @Override
+                                        public void onAnimationCancel(Animator animation) {
+                                            datetimePicker = null;
+                                            datetimePickerContainer.removeAllViews();
+                                        }
+
+                                        @Override
+                                        public void onAnimationRepeat(Animator animation) {
+                                        }
+                                    });
+                        }
+                    }
+                });
+
+                datetimePickerContainer.addView(datetimePicker);
+                datetimePickerContainer.animate().translationY(0).alpha(1.0f).setListener(null);
             }
         });
-        activity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(context, ActivityActivity.class));
-            }
+        profile.setOnClickListener(view -> startActivity(new Intent(context, ProfileActivity.class)));
+        level.setOnClickListener(view -> startActivity(new Intent(context, LevelsActivity.class)));
+        bottomNavigation.setOnClickListener(view -> startActivity(new Intent(context, BottomNavigationActivity.class)));
+        camera.setOnClickListener(view -> {
+            // TODO: camera fragment ******************************
+            //
+            //CameraControl camera = new CameraControl(activity);
         });
-        group.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(context, GroupActivity.class));
-            }
-        });
-        calendar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(context, CalendarActivity.class));
-            }
-        });
-        booking.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(context, BookingActivity.class));
-            }
-        });
+        activity.setOnClickListener(view -> startActivity(new Intent(context, ActivityActivity.class)));
+        group.setOnClickListener(view -> startActivity(new Intent(context, GroupActivity.class)));
+        calendar.setOnClickListener(view -> startActivity(new Intent(context, CalendarActivity.class)));
+        booking.setOnClickListener(view -> startActivity(new Intent(context, BookingActivity.class)));
+        map.setOnClickListener(view -> startActivity(new Intent(context, MapActivity.class)));
 
     }
 

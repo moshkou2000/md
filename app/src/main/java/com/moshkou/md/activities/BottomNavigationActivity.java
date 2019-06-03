@@ -11,11 +11,9 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.moshkou.md.configs.Enumerates;
-import com.moshkou.md.configs.Keys;
 import com.moshkou.md.fragments.CarouselsFragment;
 import com.moshkou.md.fragments.HorizontalListsFragment;
 import com.moshkou.md.fragments.GalleryFragment;
@@ -34,7 +32,6 @@ public class BottomNavigationActivity extends AppCompatActivity implements
     private final Context context = this;
 
     private BottomNavigationView navigation;
-    private FrameLayout fragmentContainer;
 
     private GalleryFragment galleryFragment;
     private HorizontalListsFragment horizontalListsFragment;
@@ -86,7 +83,6 @@ public class BottomNavigationActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bottom_navigation);
 
-        fragmentContainer = findViewById(R.id.fragment_container);
         navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
@@ -124,13 +120,7 @@ public class BottomNavigationActivity extends AppCompatActivity implements
         } else {
             allowed = true;
             Utils.toast(context, Enumerates.Message.INFO, "Click BACK again to exit", Toast.LENGTH_SHORT);
-
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    allowed = false;
-                }
-            }, 2000);
+            new Handler().postDelayed(()-> allowed = false, 2000);
         }
     }
 

@@ -14,6 +14,7 @@ public class Keys {
     public final static String IMAGE        = "IMAGE";
     public final static String TAG          = "TAG";
     public final static String LEVELS       = "LEVELS";
+    public final static String STYLE        = "LEVELS";
 
 
 }

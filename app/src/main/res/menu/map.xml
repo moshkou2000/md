@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action0"
+        android:icon="@drawable/ic_view_list"
+        android:title="@string/action_default"
+        android:tooltipText="@string/action_default"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action1"
+        android:icon="@drawable/ic_view_day"
+        android:title="@string/action_retro"
+        android:tooltipText="@string/action_retro"
+        android:orderInCategory="99"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action2"
+        android:icon="@drawable/ic_apps"
+        android:title="@string/action_night"
+        android:tooltipText="@string/action_night"
+        android:orderInCategory="98"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action3"
+        android:icon="@drawable/ic_view_list"
+        android:title="@string/action_grayscale"
+        android:tooltipText="@string/action_grayscale"
+        android:orderInCategory="97"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action4"
+        android:icon="@drawable/ic_view_list"
+        android:title="@string/action_no_poi_and_transit"
+        android:tooltipText="@string/action_no_poi_and_transit"
+        android:orderInCategory="96"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action5"
+        android:icon="@drawable/ic_view_list"
+        android:title="@string/action_snapshot"
+        android:tooltipText="@string/action_snapshot"
+        android:orderInCategory="95"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action6"
+        android:icon="@drawable/ic_view_list"
+        android:title="@string/action_normal"
+        android:tooltipText="@string/action_normal"
+        android:orderInCategory="94"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action7"
+        android:icon="@drawable/ic_view_list"
+        android:title="@string/action_hybrid"
+        android:tooltipText="@string/action_hybrid"
+        android:orderInCategory="93"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action8"
+        android:icon="@drawable/ic_view_list"
+        android:title="@string/action_snapshot"
+        android:tooltipText="@string/action_satellite"
+        android:orderInCategory="92"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action9"
+        android:icon="@drawable/ic_view_list"
+        android:title="@string/action_train"
+        android:tooltipText="@string/action_train"
+        android:orderInCategory="91"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action10"
+        android:icon="@drawable/ic_view_list"
+        android:title="@string/action_heatmap"
+        android:tooltipText="@string/action_heatmap"
+        android:orderInCategory="90"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action11"
+        android:icon="@drawable/ic_view_list"
+        android:title="@string/action_heatmap_opacity"
+        android:tooltipText="@string/action_heatmap_opacity"
+        android:orderInCategory="89"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action12"
+        android:icon="@drawable/ic_view_list"
+        android:title="@string/action_heatmap_remove"
+        android:tooltipText="@string/action_heatmap_remove"
+        android:orderInCategory="88"
+        app:showAsAction="ifRoom" />
+
+</menu>

@@ -1187,14 +1187,8 @@ public class ImageViewControl extends AppCompatImageView {
         boolean isPreGingerbread;
 
         public CompatScroller(Context context) {
-            if (VERSION.SDK_INT < VERSION_CODES.GINGERBREAD) {
-                isPreGingerbread = true;
-                scroller = new Scroller(context);
-
-            } else {
-                isPreGingerbread = false;
-                overScroller = new OverScroller(context);
-            }
+            isPreGingerbread = false;
+            overScroller = new OverScroller(context);
         }
 
         public void fling(int startX, int startY, int velocityX, int velocityY, int minX, int maxX, int minY, int maxY) {
@@ -1249,12 +1243,7 @@ public class ImageViewControl extends AppCompatImageView {
 
     @TargetApi(VERSION_CODES.JELLY_BEAN)
     private void compatPostOnAnimation(Runnable runnable) {
-        if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
-            postOnAnimation(runnable);
-
-        } else {
-            postDelayed(runnable, 1000 / 60);
-        }
+        postDelayed(runnable, 1000 / 60);
     }
 
     private class ZoomVariables {

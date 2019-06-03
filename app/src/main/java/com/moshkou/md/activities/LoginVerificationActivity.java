@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -33,18 +32,8 @@ public class LoginVerificationActivity extends AppCompatActivity {
         error = findViewById(R.id.error);
         verify = findViewById(R.id.verify);
 
-        request.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                countDown();
-            }
-        });
-        verify.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                verification();
-            }
-        });
+        request.setOnClickListener(view -> countDown());
+        verify.setOnClickListener(view -> verification());
 
         countDown();
     }
@@ -81,8 +70,8 @@ public class LoginVerificationActivity extends AppCompatActivity {
 
         new CountDownTimer(120000, 1000) {
             public void onTick(long millisUntilFinished) {
-                request.setText(getString(R.string.hint_login_verification_request) +
-                        Utils.humanizerCountDown(millisUntilFinished / 1000));
+                request.setText(getString(R.string.hint_login_verification_request,
+                        Utils.humanizerCountDown(millisUntilFinished / 1000)));
             }
 
             public void onFinish() {

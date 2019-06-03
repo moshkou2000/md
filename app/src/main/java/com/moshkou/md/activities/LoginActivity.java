@@ -35,26 +35,12 @@ public class LoginActivity extends AppCompatActivity {
         signup = findViewById(R.id.signup);
         help = findViewById(R.id.help);
 
-        signin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (validation()) {
-                    gotoLoginVerification();
-                }
-            }
+        signin.setOnClickListener(view -> {
+            if (validation())
+                gotoLoginVerification();
         });
-        signup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                gotoRegister();
-            }
-        });
-        help.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                gotoHelp();
-            }
-        });
+        signup.setOnClickListener(view -> gotoRegister());
+        help.setOnClickListener(view -> gotoHelp());
     }
 
     private boolean validation() {
