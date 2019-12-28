@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -20,17 +19,14 @@ import com.google.android.gms.maps.model.TileOverlayOptions;
 import com.google.maps.android.heatmaps.Gradient;
 import com.google.maps.android.heatmaps.HeatmapTileProvider;
 import com.moshkou.md.R;
-import com.moshkou.md.configs.Enumerates;
 import com.moshkou.md.helpers.Utils;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
+
+import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_HYBRID;
+import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_NORMAL;
+import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_SATELLITE;
+import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_TERRAIN;
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -42,6 +38,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     private TileOverlay overlay = null;
 
     private MapStyleOptions mapStyle = null;
+    private int mapType = MAP_TYPE_NORMAL;
     private LatLng myLocation = new LatLng(37.774546, -122.433523);
 
 
@@ -117,11 +114,23 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             case R.id.action5:
                 takeSnapshot();
                 break;
+            case R.id.action6:
+                mapType = MAP_TYPE_NORMAL;
+                break;
+            case R.id.action7:
+                mapType = MAP_TYPE_HYBRID;
+                break;
+            case R.id.action8:
+                mapType = MAP_TYPE_SATELLITE;
+                break;
+            case R.id.action9:
+                mapType = MAP_TYPE_TERRAIN;
+                break;
             case R.id.action10:
                 addHeatMap();
                 break;
             case R.id.action11:
-                changeOpacity(0.7);
+                changeHeatMap(0.7);
                 break;
             case R.id.action12:
                 removeHeatMap();
@@ -130,6 +139,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 mapStyle = null;
                 break;
         }
+        //map.setMapType(mapType);
         map.setMapStyle(mapStyle);
 
         return true;
@@ -173,18 +183,18 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         overlay = map.addTileOverlay(new TileOverlayOptions().tileProvider(provider));
     }
 
-
-    private void changeOpacity(double opacity) {
-        provider.setOpacity(opacity);
-        overlay.clearTileCache();
-    }
-
-
     private void removeHeatMap() {
-        overlay.remove();
-        overlay.clearTileCache();
+        if (overlay != null) {
+            overlay.remove();
+            overlay.clearTileCache();
+        }
     }
 
-
+    private void changeHeatMap(double opacity) {
+        if (overlay != null) {
+            provider.setOpacity(opacity);
+            overlay.clearTileCache();
+        }
+    }
 
 }

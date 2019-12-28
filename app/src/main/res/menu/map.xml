@@ -69,7 +69,7 @@
     <item
         android:id="@+id/action8"
         android:icon="@drawable/ic_view_list"
-        android:title="@string/action_snapshot"
+        android:title="@string/action_satellite"
         android:tooltipText="@string/action_satellite"
         android:orderInCategory="92"
         app:showAsAction="ifRoom" />
