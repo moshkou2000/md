@@ -9,18 +9,17 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
-import android.support.v4.app.NotificationCompat;
-import android.util.Log;
-
-
+import androidx.core.app.NotificationCompat;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
+import android.util.Log;
+
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.moshkou.md.App;
 import com.moshkou.md.R;
 import com.moshkou.md.activities.MainActivity;
-import com.moshkou.md.configs.Config;
 
 import static com.android.volley.VolleyLog.TAG;
 
@@ -105,7 +104,7 @@ public class FCM extends FirebaseMessagingService {
     private void scheduleJob() {
         // [START dispatch_job]
         OneTimeWorkRequest work = new OneTimeWorkRequest.Builder(FCMWorker.class).build();
-        WorkManager.getInstance().beginWith(work).enqueue();
+        WorkManager.getInstance(App.getContext()).beginWith(work).enqueue();
         // [END dispatch_job]
     }
 
@@ -141,9 +140,9 @@ public class FCM extends FirebaseMessagingService {
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(this, Config.DEFAULT_NOTIFICATION_CHANNEL_1_ID)
+                new NotificationCompat.Builder(App.getContext(), getString(R.string.notification_channel_1_id))
                         .setSmallIcon(R.drawable.ic_camera)
-                        .setContentTitle(getString(R.string.message_fcm_test))
+                        .setContentTitle("TITLE")
                         .setContentText(messageBody)
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
@@ -154,7 +153,7 @@ public class FCM extends FirebaseMessagingService {
 
         // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(Config.DEFAULT_NOTIFICATION_CHANNEL_1_ID,
+            NotificationChannel channel = new NotificationChannel(getString(R.string.notification_channel_1_id),
                     "Channel human readable title",
                     NotificationManager.IMPORTANCE_DEFAULT);
             notificationManager.createNotificationChannel(channel);

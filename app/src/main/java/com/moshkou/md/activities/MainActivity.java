@@ -1,200 +1,128 @@
 package com.moshkou.md.activities;
 
 import android.Manifest;
-import android.animation.Animator;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.TileOverlay;
+import com.google.android.material.snackbar.Snackbar;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.tabs.TabLayout;
+import com.google.maps.android.heatmaps.HeatmapTileProvider;
+import com.moshkou.md.adapters.AutoCompleteAdapter;
 import com.moshkou.md.configs.Enumerates;
 import com.moshkou.md.configs.RequestCode;
-import com.moshkou.md.controls.DateTimePickerControl;
+import com.moshkou.md.controls.DraggingPanel;
+import com.moshkou.md.fragments.BillboardFragment;
+import com.moshkou.md.fragments.LocationFragment;
+import com.moshkou.md.fragments.MediaFragment;
+import com.moshkou.md.fragments.StatusFragment;
 import com.moshkou.md.helpers.Utils;
-import com.moshkou.md.models.DatetimeModel;
 import com.moshkou.md.R;
+import com.moshkou.md.interfaces.OnFragmentInteractionListener;
+import com.moshkou.md.interfaces.OnSearchListener;
+import com.moshkou.md.models.BillboardModel;
+import com.moshkou.md.models.LocationModel;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
 
+import static androidx.fragment.app.FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
+import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_HYBRID;
+import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_NORMAL;
+import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_SATELLITE;
+import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_TERRAIN;
+
+
+public class MainActivity extends FragmentActivity implements
+        OnMapReadyCallback, OnFragmentInteractionListener, OnSearchListener {
+
+
+    private static String TAG = "MAIN";
 
     private final Context context = this;
 
-    private Button snackbar;
-    private Button toast;
-    private Button alert;
-    private Button attempt;
-    private Button carousel;
-    private Button login;
-    private Button dialog;
-    private Button contacts;
-    private Button datetime;
-    private Button profile;
-    private Button level;
-    private Button bottomNavigation;
-    private Button camera;
-    private Button activity;
-    private Button group;
-    private Button calendar;
-    private Button booking;
-    private Button map;
-    private LinearLayout datetimePickerContainer;
-    private DateTimePickerControl datetimePicker;
+    private ViewPager pager;
+    private PagerAdapter pagerAdapter;
+    private TextView textSearch;
+    private RecyclerView listSearch;
+    private Button buttonFilter;
+    private Button buttonMore;
+
+    private DraggingPanel layoutInfo;
+    private FrameLayout layoutDetails;
+
+
+
+    private LocationFragment locationFragment;
+    private BillboardFragment billboardFragment;
+    private MediaFragment mediaFragment;
+    private StatusFragment statusFragment;
+
+    private DraggingPanel draggingPanel;
+
+    private GoogleMap map = null;
+    private HeatmapTileProvider provider = null;
+    private TileOverlay overlay = null;
+
+    private MapStyleOptions mapStyle = null;
+    private int mapType = MAP_TYPE_NORMAL;
+    private LatLng myLocation = new LatLng(37.774546, -122.433523);
+    private static final int[] TAB_TITLES = new int[] { R.string.placeholder_name, R.string.placeholder_email, R.string.placeholder_login, R.string.placeholder_phone };
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_map);
 
-        snackbar = findViewById(R.id.snackbar);
-        toast = findViewById(R.id.toast);
-        alert = findViewById(R.id.alert);
-        attempt = findViewById(R.id.attempt);
-        carousel = findViewById(R.id.carousel);
-        login = findViewById(R.id.login);
-        dialog = findViewById(R.id.dialogh);
-        contacts = findViewById(R.id.contacts);
-        datetime = findViewById(R.id.datetime);
-        profile = findViewById(R.id.profile);
-        level = findViewById(R.id.level);
-        bottomNavigation = findViewById(R.id.bottomNavigation);
-        camera = findViewById(R.id.camera);
-        activity = findViewById(R.id.activity);
-        group = findViewById(R.id.group);
-        calendar = findViewById(R.id.calendar);
-        booking = findViewById(R.id.booking);
-        map = findViewById(R.id.map);
+        pager = findViewById(R.id.pager);
+        draggingPanel = findViewById(R.id.layout_info);
+        textSearch = findViewById(R.id.text_search);
+        listSearch = findViewById(R.id.list_search);
+        buttonFilter = findViewById(R.id.button_filter);
+        buttonMore = findViewById(R.id.button_more);
+        layoutInfo = findViewById(R.id.layout_info);
+        layoutDetails = findViewById(R.id.layout_details);
 
-        datetimePickerContainer = findViewById(R.id.datetimePickerContainer);
-        datetimePickerContainer.setTranslationY(1000);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
 
-        snackbar.setOnClickListener(view -> {
-            final View coordinatorLayout = findViewById(R.id.coordinatorLayout);
-            Snackbar snackbar = Snackbar
-                    .make(coordinatorLayout, "Message is deleted", Snackbar.LENGTH_LONG)
-                    .setAction("UNDO", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Snackbar snackbar1 = Snackbar.make(coordinatorLayout, "Message is restored!", Snackbar.LENGTH_SHORT);
-                            snackbar1.show();
-                        }
-                    });
-            snackbar.show();
-        });
-        toast.setOnClickListener(view -> Utils.toast(context, Enumerates.Message.ERROR, "Error dari na", Toast.LENGTH_LONG));
-        alert.setOnClickListener(view -> startActivity(new Intent(context, AlertActivity.class)));
-        attempt.setOnClickListener(view -> startActivity(new Intent(context, LoginAttemptActivity.class)));
-        carousel.setOnClickListener(view -> startActivity(new Intent(context, CarouselTipsActivity.class)));
-        login.setOnClickListener(view -> startActivity(new Intent(context, LoginActivity.class)));
-        dialog.setOnClickListener(view -> {
-            final Dialog dialog = new Dialog(context);
-
-            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setCancelable(false);
-            dialog.setContentView(R.layout.dialog);
-
-            TextView header_text = dialog.findViewById(R.id.header_text);
-            TextView text_body = dialog.findViewById(R.id.text_body);
-            Button cancel = dialog.findViewById(R.id.btn_cancel);
-            Button ok = dialog.findViewById(R.id.btn_ok);
-
-            header_text.setText("This is sample header");
-            text_body.setText("This is sample body text.");
-
-
-            ok.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //dialog.dismiss();
-                }
-            });
-            cancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                }
-            });
-
-            dialog.show();
-        });
-        contacts.setOnClickListener(view -> {
-            startActivity(new Intent(context, ContactsActivity.class));
-            //datetimePicker.setDatetime(2017, 0, 1, 1, 1);
-        });
-        datetime.setOnClickListener(view -> {
-            if (datetimePicker == null) {
-                datetimePicker = new DateTimePickerControl(context);
-                datetimePicker.setOnTimeChangedListener(new DateTimePickerControl.OnTimeChangedListener() {
-                    @Override
-                    public void onTimeChanged(DateTimePickerControl view, Enumerates.ConfirmationState confirmationState, DatetimeModel datetimeModel) {
-                        if (confirmationState == Enumerates.ConfirmationState.NULL) {
-                            // value changed
-                        } else {
-                            if (confirmationState == Enumerates.ConfirmationState.OK) {
-                                // DONE
-                            } else if (confirmationState == Enumerates.ConfirmationState.CANCEL) {
-                                // CANCEL
-                            }
-
-                            datetimePickerContainer
-                                    .animate()
-                                    .translationY(datetimePicker.getHeight())
-                                    .alpha(1.0f)
-                                    .setListener(new Animator.AnimatorListener() {
-                                        @Override
-                                        public void onAnimationStart(Animator animation) {
-                                        }
-
-                                        @Override
-                                        public void onAnimationEnd(Animator animation) {
-                                            datetimePicker = null;
-                                            datetimePickerContainer.removeAllViews();
-                                        }
-
-                                        @Override
-                                        public void onAnimationCancel(Animator animation) {
-                                            datetimePicker = null;
-                                            datetimePickerContainer.removeAllViews();
-                                        }
-
-                                        @Override
-                                        public void onAnimationRepeat(Animator animation) {
-                                        }
-                                    });
-                        }
-                    }
-                });
-
-                datetimePickerContainer.addView(datetimePicker);
-                datetimePickerContainer.animate().translationY(0).alpha(1.0f).setListener(null);
-            }
-        });
-        profile.setOnClickListener(view -> startActivity(new Intent(context, ProfileActivity.class)));
-        level.setOnClickListener(view -> startActivity(new Intent(context, LevelsActivity.class)));
-        bottomNavigation.setOnClickListener(view -> startActivity(new Intent(context, BottomNavigationActivity.class)));
-        camera.setOnClickListener(view -> {
-            // TODO: camera fragment ******************************
-            //
-            //CameraControl camera = new CameraControl(activity);
-        });
-        activity.setOnClickListener(view -> startActivity(new Intent(context, ActivityActivity.class)));
-        group.setOnClickListener(view -> startActivity(new Intent(context, GroupActivity.class)));
-        calendar.setOnClickListener(view -> startActivity(new Intent(context, CalendarActivity.class)));
-        booking.setOnClickListener(view -> startActivity(new Intent(context, BookingActivity.class)));
-        map.setOnClickListener(view -> startActivity(new Intent(context, MapActivity.class)));
-
+        initPager();
+        initSearch();
     }
 
     @Override
@@ -210,6 +138,245 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
 
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        map = googleMap;
+        map.addMarker(new MarkerOptions().position(myLocation).title("Marker in myLocation"));
+        map.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
+    }
+
+
+    private void initSearch() {
+        textSearch.setOnFocusChangeListener((v, hasFocus) -> {
+            if (v.getId() == R.id.text_search) {
+                if (hasFocus) {
+                    layoutInfo.setVisibility(View.GONE);
+                    layoutDetails.setVisibility(View.GONE);
+                }
+            }
+        });
+        textSearch.setOnKeyListener((v, keyCode, event) -> {
+            // If the event is a key-down event on the "enter" button
+            //noinspection RedundantIfStatement
+            if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                layoutInfo.setVisibility(View.VISIBLE);
+                Utils.hideKeyboard(this);
+                return true;
+            }
+            return false;
+        });
+        textSearch.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Log.i(TAG, "a: " + s);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                Log.i(TAG, "b: " + s);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.length() != 0) {
+                    // TODO: search and filter
+                    Log.i(TAG, "o: " + s);
+                }
+            }
+        });
+
+        AutoCompleteAdapter adapter = new AutoCompleteAdapter(context, getData(), this);
+        listSearch.setAdapter(adapter);
+
+        buttonFilter.setOnClickListener(view ->
+                Log.i(TAG, "buttonFilter")
+        );
+        buttonMore.setOnClickListener(view ->
+                Log.i(TAG, "buttonMore")
+        );
+    }
+
+    @Override
+    public void onSearchInteraction(BillboardModel item) {
+        Log.i(TAG, "::::: " + item.name);
+    }
+
+    // TODO: sample data
+    // name, product, address
+    private List<BillboardModel> getData(){
+        List<BillboardModel> data = new ArrayList<>();
+
+        for (int i = 0; i < 3; i++) {
+            BillboardModel b = new BillboardModel();
+            b.name = "name " + i;
+            b.product = "product " + i;
+            b.location = new LocationModel();
+            b.location.address = "address " + i;
+        }
+
+        return data;
+    }
+
+
+    private boolean setSelectedStyle(int selectedStyleId) {
+        switch (selectedStyleId) {
+            case R.id.action1:
+                mapStyle = MapStyleOptions.loadRawResourceStyle(context, R.raw.mapstyle_retro);
+                break;
+            case R.id.action2:
+                mapStyle = MapStyleOptions.loadRawResourceStyle(context, R.raw.mapstyle_night);
+                break;
+            case R.id.action3:
+                mapStyle = MapStyleOptions.loadRawResourceStyle(context, R.raw.mapstyle_grayscale);
+                break;
+            case R.id.action4:
+                mapStyle = new MapStyleOptions("[" +
+                        "  {" +
+                        "    \"featureType\":\"poi.business\"," +
+                        "    \"elementType\":\"all\"," +
+                        "    \"stylers\":[" +
+                        "      {" +
+                        "        \"visibility\":\"off\"" +
+                        "      }" +
+                        "    ]" +
+                        "  }," +
+                        "  {" +
+                        "    \"featureType\":\"transit\"," +
+                        "    \"elementType\":\"all\"," +
+                        "    \"stylers\":[" +
+                        "      {" +
+                        "        \"visibility\":\"off\"" +
+                        "      }" +
+                        "    ]" +
+                        "  }" +
+                        "]");
+                break;
+            case R.id.action6:
+                mapType = MAP_TYPE_NORMAL;
+                break;
+            case R.id.action7:
+                mapType = MAP_TYPE_HYBRID;
+                break;
+            case R.id.action8:
+                mapType = MAP_TYPE_SATELLITE;
+                break;
+            case R.id.action9:
+                mapType = MAP_TYPE_TERRAIN;
+                break;
+            default:
+                mapStyle = null;
+                break;
+        }
+        //map.setMapType(mapType);
+        map.setMapStyle(mapStyle);
+
+        return true;
+    }
+
+
+
+    private void showToast() {
+        Utils.toast(context, Enumerates.Message.ERROR, "Error dari na", Toast.LENGTH_LONG);
+    }
+
+    private void showSnackbar() {
+        final View coordinatorLayout = findViewById(R.id.coordinatorLayout);
+        Snackbar snackbar = Snackbar
+                .make(coordinatorLayout, "Message is deleted", Snackbar.LENGTH_LONG)
+                .setAction("UNDO", (view1) -> Snackbar.make(coordinatorLayout, "Message is restored!", Snackbar.LENGTH_SHORT).show());
+        snackbar.show();
+    }
+
+    private void showDialog() {
+        final Dialog dialog = new Dialog(context);
+
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.dialog);
+
+        TextView header_text = dialog.findViewById(R.id.header_text);
+        TextView text_body = dialog.findViewById(R.id.text_body);
+        Button cancel = dialog.findViewById(R.id.btn_cancel);
+        Button ok = dialog.findViewById(R.id.btn_ok);
+
+        header_text.setText("This is sample header");
+        text_body.setText("This is sample body text.");
+
+
+        ok.setOnClickListener((view) -> {
+            dialog.dismiss();
+        });
+        cancel.setOnClickListener((view) -> {
+            dialog.dismiss();
+        });
+
+        dialog.show();
+    }
+
+
+
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
+    private void initPager() {
+        locationFragment = new LocationFragment();
+        billboardFragment = new BillboardFragment();
+        mediaFragment = new MediaFragment();
+        statusFragment = new StatusFragment();
+
+        pagerAdapter = new PagerAdapter(getSupportFragmentManager(), BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+
+        pager = findViewById(R.id.pager);
+        pager.setAdapter(pagerAdapter);
+
+
+        TabLayout tabs = findViewById(R.id.tabs);
+        tabs.setupWithViewPager(pager);
+    }
+
+    private class PagerAdapter extends FragmentPagerAdapter {
+
+        public PagerAdapter(@NonNull FragmentManager fm, int behavior) {
+            super(fm, behavior);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return locationFragment;
+                case 1:
+                    return billboardFragment;
+                case 2:
+                    return mediaFragment;
+                case 3:
+                    return statusFragment;
+                default:
+                    return null;
+            }
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return getResources().getString(TAB_TITLES[position]);
+        }
+
+        @Override
+        public int getCount() {
+            return 4;
         }
     }
 

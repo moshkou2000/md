@@ -1,8 +1,8 @@
 package com.moshkou.md.services;
 
-import android.support.annotation.GuardedBy;
-import android.support.annotation.Nullable;
-import android.support.v4.util.ArrayMap;
+import androidx.annotation.GuardedBy;
+import androidx.annotation.Nullable;
+import androidx.collection.ArrayMap;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;

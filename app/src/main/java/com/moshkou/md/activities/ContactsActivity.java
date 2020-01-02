@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -153,7 +153,7 @@ public class ContactsActivity extends Activity {
         grantedView.setVisibility(View.VISIBLE);
         permissionView.setVisibility(View.GONE);
 
-        alphabets = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.alphabets)));
+        alphabets = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.alphabets)));
         alphabetsAdapter = new AlphabetsAdapter(activity, alphabets);
         indicators.setAdapter(alphabetsAdapter);
 

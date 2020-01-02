@@ -1,8 +1,9 @@
 package com.moshkou.md.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 import com.moshkou.md.configs.Settings;
@@ -15,6 +16,9 @@ import com.moshkou.md.R;
 
 public class SplashActivity extends AppCompatActivity {
 
+    private final Context context = this;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,21 +28,21 @@ public class SplashActivity extends AppCompatActivity {
 
     private void launch() {
 
-        Utils.getDeviceSize(this);
+        Utils.getDeviceSize(context);
         Utils.getAppPictureDirectory();
 
-        String data = SharedPreferencesSupport.getString(this, Keys.USER);
+        String data = SharedPreferencesSupport.getString(context, Keys.USER);
         Gson gson = new Gson();
         Settings.user = gson.fromJson(data, UserModel.class);
 
         if (Settings.user != null) {
-            String token = SharedPreferencesSupport.getString(this, Keys.TOKEN);
+            String token = SharedPreferencesSupport.getString(context, Keys.TOKEN);
 
             if (!token.isEmpty())
                 Settings.user.setToken(token);
         }
 
-        Intent i = new Intent(this, MainActivity.class);
+        Intent i = new Intent(context, MainActivity.class);
         i.putExtra(Keys.FLAG, Flags.LOGIN);
         startActivity(i);
         finish();

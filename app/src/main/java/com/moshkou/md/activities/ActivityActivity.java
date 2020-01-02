@@ -2,20 +2,15 @@ package com.moshkou.md.activities;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
+
 import android.view.View;
-import android.widget.Toast;
 
 import com.moshkou.md.R;
 import com.moshkou.md.adapters.ActivityAdapter;
-import com.moshkou.md.adapters.ListMultiTypeItemAdapter;
-import com.moshkou.md.configs.Enumerates;
-import com.moshkou.md.helpers.Utils;
 import com.moshkou.md.models.BaseDataModel;
-import com.moshkou.md.models.ContactModel;
 
 import java.util.ArrayList;
 import java.util.List;

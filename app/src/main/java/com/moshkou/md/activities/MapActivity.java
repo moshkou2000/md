@@ -3,8 +3,8 @@ package com.moshkou.md.activities;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.fragment.app.FragmentActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.widget.ImageView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -151,11 +151,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             return;
         }
 
-        final ImageView snapshotHolder = findViewById(R.id.snapshot_holder);
-
-        final GoogleMap.SnapshotReadyCallback callback = snapshotHolder::setImageBitmap;
-
-        map.setOnMapLoadedCallback(() -> map.snapshot(callback));
+//        final ImageView snapshotHolder = findViewById(R.id.snapshot_holder);
+//        final GoogleMap.SnapshotReadyCallback callback = snapshotHolder::setImageBitmap;
+//        map.setOnMapLoadedCallback(() -> map.snapshot(callback));
     }
 
 

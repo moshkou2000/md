@@ -3,9 +3,9 @@ package com.moshkou.md.controls;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.LinearSmoothScroller;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSmoothScroller;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -75,7 +75,7 @@ public class DateTimePickerControl extends FrameLayout {
     private final NumberPicker hourPicker;
     private final NumberPicker minutePicker;
     private final NumberPicker amPmPicker;
-    private final android.support.v7.widget.RecyclerView dayMonth;
+    private final RecyclerView dayMonth;
 
     private final DayMonthAdapter dayMonthAdapter;
 

@@ -47,7 +47,7 @@
                         android:textColor="@color/hyperlinkText" />
                 </FrameLayout>
 
-                <android.support.v17.leanback.widget.HorizontalGridView
+                <androidx.leanback.widget.HorizontalGridView
                     android:id="@+id/gridView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -82,7 +82,7 @@
                         android:textColor="@color/hyperlinkText" />
                 </FrameLayout>
 
-                <android.support.v17.leanback.widget.HorizontalGridView
+                <androidx.leanback.widget.HorizontalGridView
                     android:id="@+id/gridView2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -117,7 +117,7 @@
                         android:textColor="@color/hyperlinkText" />
                 </FrameLayout>
 
-                <android.support.v17.leanback.widget.HorizontalGridView
+                <androidx.leanback.widget.HorizontalGridView
                     android:id="@+id/gridView3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -152,7 +152,7 @@
                         android:textColor="@color/hyperlinkText" />
                 </FrameLayout>
 
-                <android.support.v17.leanback.widget.HorizontalGridView
+                <androidx.leanback.widget.HorizontalGridView
                     android:id="@+id/gridView4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />

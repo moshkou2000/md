@@ -3,8 +3,8 @@ package com.moshkou.md.fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,10 +36,10 @@ public class HorizontalListsFragment extends Fragment {
 
     private com.moshkou.md.fragments.HorizontalListsFragment.OnFragmentInteractionListener mListener;
 
-    private android.support.v17.leanback.widget.HorizontalGridView gridView;
-    private android.support.v17.leanback.widget.HorizontalGridView gridView2;
-    private android.support.v17.leanback.widget.HorizontalGridView gridView3;
-    private android.support.v17.leanback.widget.HorizontalGridView gridView4;
+    private androidx.leanback.widget.HorizontalGridView gridView;
+    private androidx.leanback.widget.HorizontalGridView gridView2;
+    private androidx.leanback.widget.HorizontalGridView gridView3;
+    private androidx.leanback.widget.HorizontalGridView gridView4;
 
     private List<BaseDataModel> data = new ArrayList<>();
     private TopicsAdapter tAdapter;

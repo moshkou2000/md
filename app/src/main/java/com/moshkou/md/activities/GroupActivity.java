@@ -2,8 +2,8 @@ package com.moshkou.md.activities;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.moshkou.md.R;
 import com.moshkou.md.adapters.GroupAdapter;

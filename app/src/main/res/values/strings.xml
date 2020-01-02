@@ -55,7 +55,8 @@
     <string name="hint_login_attempt">Someone attempted to login to your account recently. If it wasn\'t you, tell us so we can verify your account.</string>
     <string name="hint_help">Don\'t bother about asking questions multiple times.</string>
     <string name="hint_help_call">Call and talk to a support agent</string>
-    <string name="hint_permission_contacts">&appname; syncs only phone numbers from your address book to connect to other &appname; users.</string>
+    <string name="hint_permission_contacts">&appname; syncs only phone numbers from your address book to connect to other &appname;
+        users.</string>
     <string name="hint_permission_camera">Set your profile picture and make a circle gallery.</string>
 
     <!--Messages-->
@@ -74,7 +75,9 @@
     <string name="placeholder_phone">Phone Number</string>
     <string name="placeholder_email">Email</string>
     <string name="placeholder_name">Full Name</string>
-    <string name="placeholder_search">Search</string>
+    <string name="placeholder_search">Address, Billboard Product Name</string>
+    <string name="placeholder_bottom_holder">Billboards</string>
+
 
     <!--Actions-->
     <string name="action_allow">Allow</string>
@@ -147,8 +150,10 @@
         <item>Z</item>
     </string-array>
 
-    <string name="google_maps_key" translatable="false" templateMergeStrategy="preserve">
-        AIzaSyCwug9o46v1nbDvn_3gdh8xUNB_DydP1cM
-    </string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyCwug9o46v1nbDvn_3gdh8xUNB_DydP1cM</string>
+    <string name="notification_channel_1_id">94cd274f604c</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

@@ -96,13 +96,13 @@
                 android:background="@color/dividerDialog" />
 
             <!-- day month -->
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/dayMonth"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_toStartOf="@+id/divider1"
                 android:layout_toEndOf="@+id/divider0"
-                app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
             <FrameLayout
                 android:id="@+id/divider1"

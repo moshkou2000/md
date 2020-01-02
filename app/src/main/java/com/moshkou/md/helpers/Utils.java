@@ -38,6 +38,7 @@ public class Utils {
     public static String humanizerFileSize(int bytes) {
         return String.format("%.2f MB", bytes * 1.0 / 1048576); // 1MB = 1048576 bytes
     }
+
     @SuppressLint("DefaultLocale")
     public static String humanizerCountDown(long seconds) {
         long s = seconds % 60;

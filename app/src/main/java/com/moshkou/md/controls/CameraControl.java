@@ -7,7 +7,7 @@ import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.moshkou.md.configs.Permission;
 import com.moshkou.md.helpers.CameraSupport;

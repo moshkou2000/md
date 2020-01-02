@@ -56,7 +56,7 @@
                     android:paddingTop="8dp"
                     android:paddingEnd="16dp">
 
-                    <android.support.v4.view.ViewPager
+                    <androidx.viewpager.widget.ViewPager
                         android:id="@+id/pager1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
                         android:layout_gravity="bottom"
                         android:layout_marginBottom="10dp">
 
-                        <android.support.design.widget.TabLayout
+                        <com.google.android.material.tabs.TabLayout
                             android:id="@+id/dots1"
                             android:layout_width="wrap_content"
                             android:layout_height="10dp"
@@ -124,7 +124,7 @@
                     android:paddingTop="8dp"
                     android:paddingEnd="16dp">
 
-                    <android.support.v4.view.ViewPager
+                    <androidx.viewpager.widget.ViewPager
                         android:id="@+id/pager2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -176,7 +176,7 @@
                     android:paddingTop="8dp"
                     android:paddingEnd="16dp">
 
-                    <android.support.v4.view.ViewPager
+                    <androidx.viewpager.widget.ViewPager
                         android:id="@+id/pager3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -228,7 +228,7 @@
                     android:paddingTop="8dp"
                     android:paddingEnd="16dp">
 
-                    <android.support.v4.view.ViewPager
+                    <androidx.viewpager.widget.ViewPager
                         android:id="@+id/pager4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

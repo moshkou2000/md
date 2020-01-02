@@ -1,28 +1,21 @@
 package com.moshkou.md.activities;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.moshkou.md.R;
 import com.moshkou.md.adapters.AlphabetsAdapter;
-import com.moshkou.md.adapters.ContactsAdapter;
 import com.moshkou.md.adapters.OriginDestinationAdapter;
-import com.moshkou.md.controls.ContactsControl;
-import com.moshkou.md.models.ContactModel;
 import com.moshkou.md.models.OriginDestinationModel;
 
 import java.util.ArrayList;
