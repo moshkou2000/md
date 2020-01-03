@@ -85,6 +85,16 @@
         </activity>
 
         <activity
+            android:name=".activities.FilterActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/title_activity_filter"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:parentActivityName=".activities.MainActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+        <activity
             android:name=".activities.PreviewActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_preview"

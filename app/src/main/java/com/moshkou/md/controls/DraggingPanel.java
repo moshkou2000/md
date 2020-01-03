@@ -2,9 +2,9 @@ package com.moshkou.md.controls;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -16,6 +16,7 @@ import com.moshkou.md.R;
 public class DraggingPanel extends RelativeLayout {
     private final double AUTO_OPEN_SPEED_LIMIT = 800.0;
     private int mDraggingState = 0;
+    private int mQueenId;
     private LinearLayout mQueenButton;
     private ViewDragHelper mDragHelper;
     private int mDraggingBorder;
@@ -56,7 +57,7 @@ public class DraggingPanel extends RelativeLayout {
 
         @Override
         public boolean tryCaptureView(View view, int i) {
-            return (view.getId() == R.id.main_layout);
+            return (view.getId() == mQueenId);
         }
 
         @Override
@@ -103,7 +104,6 @@ public class DraggingPanel extends RelativeLayout {
 
     @Override
     protected void onFinishInflate() {
-        mQueenButton  = findViewById(R.id.bottom_holder);
         mDragHelper = ViewDragHelper.create(this, 1.0f, new DragHelperCallback());
         mIsOpen = false;
         super.onFinishInflate();
@@ -111,17 +111,13 @@ public class DraggingPanel extends RelativeLayout {
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        mVerticalRange = (int) (h * 0.84);
+        mVerticalRange = (int) (h * 0.66);
         super.onSizeChanged(w, h, oldw, oldh);
     }
 
-    private void onStopDraggingToClosed() {
-        // To be implemented
-    }
+    private void onStopDraggingToClosed() { }
 
-    private void onStartDragging() {
-
-    }
+    private void onStartDragging() { }
 
     private boolean isQueenTarget(MotionEvent event) {
         int[] queenLocation = new int[2];
@@ -156,6 +152,11 @@ public class DraggingPanel extends RelativeLayout {
         if (mDragHelper.continueSettling(true)) {
             ViewCompat.postInvalidateOnAnimation(this);
         }
+    }
+
+    public void setQueenButton(int id) {
+        mQueenId = id;
+        mQueenButton  = findViewById(id);
     }
 
     public boolean isMoving() {

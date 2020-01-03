@@ -9,6 +9,7 @@
     <color name="success">#6a875a</color>
     <color name="warning">#2B2B2B</color>
     <color name="error">#da324c</color>
+    <color name="orange">#E67E22</color>
 
     <color name="lightWhite">#8cffffff</color>
     <color name="notWhite">#bfffffff</color>
@@ -17,6 +18,7 @@
     <color name="lightGray">#DDDDDD</color>
 
     <color name="dark">#2B2B2B</color>
+    <color name="tagBorder">#b7b7b7</color>
     <color name="gold">#ffb808</color>
 
     <color name="bgWindow">#FFFFFF</color>

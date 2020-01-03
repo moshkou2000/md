@@ -15,6 +15,12 @@ public class Keys {
     public final static String TAG          = "TAG";
     public final static String LEVELS       = "LEVELS";
     public final static String STYLE        = "LEVELS";
+    public final static String FILTER       = "FILTER";
+    public final static String TYPE         = "TYPE";
 
-
+    public final static String STATE       = "state";
+    public final static String CITY         = "city";
+    public final static String MEDIA_OWNER  = "media_owner";
+    public final static String FORMAT       = "format";
+    public final static String ADVERTISER   = "advertiser";
 }

@@ -1,5 +1,6 @@
 package com.moshkou.md.configs;
 
+import com.moshkou.md.models.BillboardModel;
 import com.moshkou.md.models.UserModel;
 
 public class Settings {
@@ -12,4 +13,6 @@ public class Settings {
     public static double DEVICE_WIDTH                       = 0;
     public static double DEVICE_HEIGHT                      = 0;
     public static double DEVICE_DENSITY                     = 0;
+
+    public static BillboardModel FILTER_ITEMS               = new BillboardModel();
 }

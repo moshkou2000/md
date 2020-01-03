@@ -28,7 +28,7 @@ public class AutoCompleteAdapter extends RecyclerView.Adapter<AutoCompleteAdapte
 
     public AutoCompleteAdapter(Context context, List<BillboardModel> data, OnSearchListener searchListener) {
         this.data = data;
-        this.inflater = LayoutInflater.from(context);//.inflate(R.layout.item_gallery, null);
+        this.inflater = LayoutInflater.from(context);
         this.searchListener = searchListener;
     }
 
@@ -61,9 +61,8 @@ public class AutoCompleteAdapter extends RecyclerView.Adapter<AutoCompleteAdapte
         itemRowHolder.name.setText(item.name);
         itemRowHolder.product.setText(item.product);
         itemRowHolder.address.setText(item.location.address);
-        itemRowHolder.itemView.setOnClickListener(view -> {
-            // TODO: search result selected
-        });
+        if (!itemRowHolder.itemView.hasOnClickListeners())
+            itemRowHolder.itemView.setOnClickListener(view -> searchListener.onSearchInteraction(item));
     }
 
     public class ItemRowHolder extends RecyclerView.ViewHolder {

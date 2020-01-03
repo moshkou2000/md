@@ -12,6 +12,7 @@
     <string name="title_activity_login_suspicious">Suspicious Login Attempt</string>
     <string name="title_activity_login_attempt">Suspicious Login Attempt</string>
     <string name="title_activity_alert">Oops</string>
+    <string name="title_activity_filter">Filter</string>
     <string name="title_activity_main">@string/app_name</string>
     <string name="title_activity_preview">Preview</string>
     <string name="title_activity_carousel">Carousel</string>
@@ -78,6 +79,12 @@
     <string name="placeholder_search">Address, Billboard Product Name</string>
     <string name="placeholder_bottom_holder">Billboards</string>
 
+    <string name="placeholder_state">State</string>
+    <string name="placeholder_city">City</string>
+    <string name="placeholder_media_owner">Media Owner</string>
+    <string name="placeholder_format">Format</string>
+    <string name="placeholder_advertiser">Advertiser</string>
+
 
     <!--Actions-->
     <string name="action_allow">Allow</string>
@@ -90,6 +97,9 @@
     <string name="action_more">More</string>
     <string name="action_sign_in">Sign in</string>
     <string name="action_sign_up">Sign up</string>
+    <string name="action_exit">Exit</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_clear">Clear</string>
     <string name="action_login_button_1">Yahoo Mail</string>
     <string name="action_login_button_2">Gmail</string>
     <string name="action_login_button_3">Outlook</string>
@@ -148,6 +158,11 @@
         <item>X</item>
         <item>Y</item>
         <item>Z</item>
+    </string-array>
+
+    <string-array name="more_menu_items">
+        <item>Nothing</item>
+        <item>Logout</item>
     </string-array>
 
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyCwug9o46v1nbDvn_3gdh8xUNB_DydP1cM</string>
