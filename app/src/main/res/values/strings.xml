@@ -76,9 +76,10 @@
     <string name="placeholder_phone">Phone Number</string>
     <string name="placeholder_email">Email</string>
     <string name="placeholder_name">Full Name</string>
-    <string name="placeholder_search">Address, Billboard Product Name</string>
     <string name="placeholder_bottom_holder">Billboards</string>
-
+    <string name="placeholder_search">Address, Billboard Product Name</string>
+    <string name="placeholder_search_hint_header">Search for</string>
+    <string name="placeholder_search_hint_body">Type address, billboard and product name</string>
     <string name="placeholder_state">State</string>
     <string name="placeholder_city">City</string>
     <string name="placeholder_media_owner">Media Owner</string>

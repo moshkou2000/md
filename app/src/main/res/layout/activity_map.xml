@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!--map-->
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -17,6 +18,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+    <!--search bar-->
     <androidx.cardview.widget.CardView
         android:id="@+id/search_box"
         android:layout_width="match_parent"
@@ -26,6 +29,7 @@
         android:layout_marginTop="35dp"
         android:layout_marginEnd="10dp"
         android:background="@drawable/ic_tag_white"
+        android:focusable="true"
         app:cardCornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,6 +40,16 @@
             android:layout_height="50dp">
 
             <EditText
+                android:id="@+id/text_search_just_for_focus"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:textColor="#FFFFFF"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"/>
+
+            <EditText
                 android:id="@+id/text_search"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -43,17 +57,29 @@
                 android:layout_centerVertical="true"
                 android:layout_toStartOf="@id/button_filter"
                 android:background="@drawable/bg_placeholder_search"
+                android:drawableStart="@drawable/bg_search"
                 android:clickable="true"
-                android:drawableStart="@drawable/ic_search"
                 android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:hint="@string/placeholder_search"
                 android:inputType="text"
-                android:maxLines="1"
                 android:paddingStart="12dp"
                 android:paddingEnd="8dp"
+                android:maxLines="1"
                 android:singleLine="true"
                 android:textColor="#333"
                 android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/button_back"
+                android:layout_width="30dp"
+                android:layout_height="26dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="12dp"
+                android:visibility="gone"
+                style="?android:attr/borderlessButtonStyle"
+                android:background="@drawable/bg_back" />
 
             <Button
                 android:id="@+id/button_filter"
@@ -61,6 +87,7 @@
                 android:layout_height="30dp"
                 android:layout_centerVertical="true"
                 android:layout_toStartOf="@id/spinner_more"
+                style="?android:attr/borderlessButtonStyle"
                 android:background="@drawable/ic_notifications" />
 
             <Spinner
@@ -69,27 +96,11 @@
                 android:layout_height="30dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
+                style="?android:attr/borderlessButtonStyle"
                 android:background="@drawable/ic_more_vert" />
+
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/list_search"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:paddingStart="10dp"
-        android:paddingTop="70dp"
-        android:paddingEnd="10dp"
-        android:paddingBottom="10dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.leanback.widget.HorizontalGridView
         android:id="@+id/grid_view_filter"
@@ -100,6 +111,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/search_box" />
 
+
+    <!--buttons-->
     <Button
         android:id="@+id/button_filter_clear"
         android:layout_width="38dp"
@@ -114,34 +127,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/grid_view_filter" />
 
-    <Button
-        android:id="@+id/action_button_my_location"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="12dp"
-        android:background="@drawable/bg_my_location"
-        android:clickable="true"
-        android:focusable="true"
-        android:visibility="visible"
-        app:borderWidth="2dp"
-        app:layout_constraintBottom_toTopOf="@id/action_button_add"
-        app:layout_constraintEnd_toEndOf="parent" />
 
-    <Button
-        android:id="@+id/action_button_add"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="111dp"
-        android:background="@drawable/bg_add"
-        android:clickable="true"
-        android:elevation="0dp"
-        android:focusable="true"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
+    <!--data layouts-->
     <LinearLayout
         android:id="@+id/bottom"
         android:layout_width="match_parent"
@@ -157,78 +144,112 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <FrameLayout
+        <RelativeLayout
             android:id="@+id/layout_gap"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="3" />
+            android:layout_weight="3"/>
+
+        <RelativeLayout
+            android:id="@+id/layout_details"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="7"
+            android:visibility="gone"
+            android:background="#FFFFFF">
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="48dp" />
+        </RelativeLayout>
 
         <com.moshkou.md.controls.DraggingPanel
             android:id="@+id/layout_info"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2"
-            android:outlineProvider="bounds"
-            android:visibility="visible">
+            android:layout_weight="3"
+            android:outlineProvider="bounds">
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/layout_info_main"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/bg_dragging_panel"
-                android:orientation="vertical">
-
-                <androidx.leanback.widget.HorizontalGridView
-                    android:id="@+id/grid_view_info_images"
-                    android:layout_width="wrap_content"
-                    android:layout_height="100dp" />
-
-                <TextView
-                    android:id="@+id/text_view_info_product"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:id="@+id/text_view_info_advertiser"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:id="@+id/text_view_info_last_update"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout_buttons">
 
                 <Button
-                    android:id="@+id/grid_view_info_edit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/action_edit"/>
-            </LinearLayout>
-        </com.moshkou.md.controls.DraggingPanel>
+                    android:id="@+id/action_button_my_location"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/bg_my_location"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:visibility="visible"
+                    app:borderWidth="2dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true" />
 
-        <com.moshkou.md.controls.DraggingPanel
-            android:id="@+id/layout_details"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="7"
-            android:outlineProvider="bounds"
-            android:visibility="gone">
+                <Button
+                    android:id="@+id/action_button_add"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/bg_add"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:visibility="visible"
+                    app:borderWidth="0dp"
+                    android:layout_below="@id/action_button_my_location"
+                    android:layout_alignParentEnd="true"/>
 
-            <FrameLayout
-                android:id="@+id/layout_details_main"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#FFFFFF">
-
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tabs"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <androidx.viewpager.widget.ViewPager
-                    android:id="@+id/pager"
+                <LinearLayout
+                    android:id="@+id/layout_info_main_content"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="48dp" />
-            </FrameLayout>
+                    android:orientation="vertical"
+                    android:visibility="visible"
+                    android:background="@drawable/bg_dragging_panel"
+                    android:layout_below="@id/action_button_add" >
+
+                    <androidx.leanback.widget.HorizontalGridView
+                        android:id="@+id/grid_view_info_images"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"/>
+
+                    <TextView
+                        android:id="@+id/text_view_info_product"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/text_view_info_advertiser"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/text_view_info_last_update"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <Button
+                        android:id="@+id/grid_view_info_edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginEnd="12dp"
+                        android:layout_marginStart="0dp"
+                        android:text="@string/action_edit" />
+                </LinearLayout>
+            </RelativeLayout>
         </com.moshkou.md.controls.DraggingPanel>
 
         <com.moshkou.md.controls.DraggingPanel
@@ -239,50 +260,82 @@
             android:outlineProvider="bounds"
             android:visibility="gone">
 
-            <FrameLayout
+            <RelativeLayout
                 android:id="@+id/layout_list_main"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@drawable/bg_dragging_panel"
                 android:visibility="visible">
 
-                <LinearLayout
-                    android:id="@+id/bottom_holder_list"
+                <FrameLayout
+                    android:id="@+id/layout_list_header"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/bg_dragging_panel"
-                    android:orientation="vertical">
+                    android:layout_height="50dp">
 
                     <FrameLayout
+                        android:layout_width="44dp"
+                        android:layout_height="4dp"
+                        android:layout_gravity="center_horizontal|top"
+                        android:layout_marginTop="10dp"
+                        android:background="#DFDFDF" />
+
+                    <TextView
+                        android:id="@+id/textView35"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp">
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="6dp"
+                        android:text="@string/placeholder_bottom_holder"
+                        android:textAlignment="center"
+                        android:textColor="#707070"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </FrameLayout>
 
-                        <FrameLayout
-                            android:layout_width="44dp"
-                            android:layout_height="4dp"
-                            android:layout_gravity="center_horizontal|top"
-                            android:layout_marginTop="10dp"
-                            android:background="#DFDFDF" />
-
-                        <TextView
-                            android:id="@+id/textView35"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginTop="6dp"
-                            android:text="@string/placeholder_bottom_holder"
-                            android:textAlignment="center"
-                            android:textColor="#707070"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-                    </FrameLayout>
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-
-                </LinearLayout>
-            </FrameLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/layout_list_header"/>
+            </RelativeLayout>
         </com.moshkou.md.controls.DraggingPanel>
     </LinearLayout>
 
+
+    <!--search layout-->
+    <RelativeLayout
+        android:id="@+id/layout_search"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="100dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="10dp"
+        android:background="#FFFFFF"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/text_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:textSize="22sp"
+            android:text="@string/placeholder_search_hint_header"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_1"
+            android:layout_marginTop="4dp"
+            android:textSize="16sp"
+            android:text="@string/placeholder_search_hint_body"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

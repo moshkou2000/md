@@ -4,24 +4,109 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import androidx.core.view.ViewCompat;
 import androidx.customview.widget.ViewDragHelper;
 
-import com.moshkou.md.R;
 
 public class DraggingPanel extends RelativeLayout {
+
+
     private final double AUTO_OPEN_SPEED_LIMIT = 800.0;
+
+    private RelativeLayout mQueenButton;
+    private ViewDragHelper mDragHelper;
+
     private int mDraggingState = 0;
     private int mQueenId;
-    private LinearLayout mQueenButton;
-    private ViewDragHelper mDragHelper;
     private int mDraggingBorder;
     private int mVerticalRange;
     private boolean mIsOpen;
+    private boolean mIsDraggable = true;
+
+
+    public DraggingPanel(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        mIsOpen = false;
+    }
+
+    @Override
+    protected void onFinishInflate() {
+        mDragHelper = ViewDragHelper.create(this, 1.0f, new DragHelperCallback());
+        mIsOpen = false;
+        super.onFinishInflate();
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        mVerticalRange = (int) (h * 0.66);
+        super.onSizeChanged(w, h, oldw, oldh);
+    }
+
+    private void onStopDraggingToClosed() { }
+
+    private void onStartDragging() { }
+
+    private boolean isQueenTarget(MotionEvent event) {
+        int[] queenLocation = new int[2];
+        mQueenButton.getLocationOnScreen(queenLocation);
+        int upperLimit = queenLocation[1] + mQueenButton.getMeasuredHeight();
+        int lowerLimit = queenLocation[1];
+        int y = (int) event.getRawY();
+        return (y > lowerLimit && y < upperLimit);
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent event) {
+        if (isQueenTarget(event) && mDragHelper.shouldInterceptTouchEvent(event)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (!mIsDraggable) {
+            return true;
+        } else if (isQueenTarget(event) || isMoving()) {
+            mDragHelper.processTouchEvent(event);
+            return true;
+        } else {
+            return super.onTouchEvent(event);
+        }
+    }
+
+    @Override
+    public void computeScroll() { // needed for automatic settling.
+        if (mDragHelper.continueSettling(true)) {
+            ViewCompat.postInvalidateOnAnimation(this);
+        }
+    }
+
+    public void setQueenButton(int id) {
+        mQueenId = id;
+        mQueenButton  = findViewById(id);
+    }
+
+    public boolean isMoving() {
+        return (mDraggingState == ViewDragHelper.STATE_DRAGGING ||
+                mDraggingState == ViewDragHelper.STATE_SETTLING);
+    }
+
+    public boolean isOpen() {
+        return mIsOpen;
+    }
+
+    public void freeze() {
+        mIsDraggable = false;
+    }
+
+    public void release() {
+        mIsDraggable = true;
+    }
+
 
 
     public class DragHelperCallback extends ViewDragHelper.Callback {
@@ -95,76 +180,5 @@ public class DraggingPanel extends RelativeLayout {
                 ViewCompat.postInvalidateOnAnimation(DraggingPanel.this);
             }
         }
-    }
-
-    public DraggingPanel(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        mIsOpen = false;
-    }
-
-    @Override
-    protected void onFinishInflate() {
-        mDragHelper = ViewDragHelper.create(this, 1.0f, new DragHelperCallback());
-        mIsOpen = false;
-        super.onFinishInflate();
-    }
-
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        mVerticalRange = (int) (h * 0.66);
-        super.onSizeChanged(w, h, oldw, oldh);
-    }
-
-    private void onStopDraggingToClosed() { }
-
-    private void onStartDragging() { }
-
-    private boolean isQueenTarget(MotionEvent event) {
-        int[] queenLocation = new int[2];
-        mQueenButton.getLocationOnScreen(queenLocation);
-        int upperLimit = queenLocation[1] + mQueenButton.getMeasuredHeight();
-        int lowerLimit = queenLocation[1];
-        int y = (int) event.getRawY();
-        return (y > lowerLimit && y < upperLimit);
-    }
-
-    @Override
-    public boolean onInterceptTouchEvent(MotionEvent event) {
-        if (isQueenTarget(event) && mDragHelper.shouldInterceptTouchEvent(event)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (isQueenTarget(event) || isMoving()) {
-            mDragHelper.processTouchEvent(event);
-            return true;
-        } else {
-            return super.onTouchEvent(event);
-        }
-    }
-
-    @Override
-    public void computeScroll() { // needed for automatic settling.
-        if (mDragHelper.continueSettling(true)) {
-            ViewCompat.postInvalidateOnAnimation(this);
-        }
-    }
-
-    public void setQueenButton(int id) {
-        mQueenId = id;
-        mQueenButton  = findViewById(id);
-    }
-
-    public boolean isMoving() {
-        return (mDraggingState == ViewDragHelper.STATE_DRAGGING ||
-                mDraggingState == ViewDragHelper.STATE_SETTLING);
-    }
-
-    public boolean isOpen() {
-        return mIsOpen;
     }
 }

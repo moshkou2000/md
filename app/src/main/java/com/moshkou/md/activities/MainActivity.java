@@ -38,6 +38,9 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -82,12 +85,16 @@ public class MainActivity extends FragmentActivity implements
 
     private View mapView;
     private DraggingPanel layoutInfo;
-    private DraggingPanel layoutDetails;
+    private RelativeLayout layoutDetails;
     private DraggingPanel layoutList;
+    private LinearLayout layoutInfoMainContent;
     private ViewPager pager;
-    private TextView textSearch;
+    private EditText textSearch;
+    private EditText textSearchJustForFocus;
     private RecyclerView listSearch;
+    private RelativeLayout layoutSearch;
     private Spinner spinnerMore;
+    private Button buttonBack;
     private Button buttonFilter;
     private Button buttonFilterClear;
     private Button actionButtonAdd;
@@ -104,7 +111,7 @@ public class MainActivity extends FragmentActivity implements
 
     private GoogleMap map = null;
     private MapStyleOptions mapStyle = null;
-    private LatLng myLocation = new LatLng(37.774546, -122.433523);
+    private LatLng myLocation = new LatLng(3.129489, 101.594188);
     private Marker myMarker;
     private static final int[] TAB_TITLES = new int[] { R.string.placeholder_name, R.string.placeholder_email, R.string.placeholder_login, R.string.placeholder_phone };
 
@@ -112,6 +119,17 @@ public class MainActivity extends FragmentActivity implements
     private BillboardModel selectedBillboard;
 
 
+    /**
+    * Override functions ->
+    * onCreate
+    * onActivityResult
+    * onNewIntent
+    * onRequestPermissionsResult
+    * onSearchInteraction
+    * onFilterInteraction
+    * onMapReady
+    * onMarkerClick
+    */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,18 +139,40 @@ public class MainActivity extends FragmentActivity implements
         pager = findViewById(R.id.pager);
         mapView = findViewById(R.id.map);
         textSearch = findViewById(R.id.text_search);
+        textSearchJustForFocus = findViewById(R.id.text_search_just_for_focus);
         listSearch = findViewById(R.id.list_search);
+        layoutSearch = findViewById(R.id.layout_search);
         buttonFilter = findViewById(R.id.button_filter);
         layoutInfo = findViewById(R.id.layout_info);
         layoutDetails = findViewById(R.id.layout_details);
         layoutList = findViewById(R.id.layout_list);
+        layoutInfoMainContent = findViewById(R.id.layout_info_main_content);
         gridViewFilter = findViewById(R.id.grid_view_filter);
         spinnerMore = findViewById(R.id.spinner_more);
         buttonFilterClear = findViewById(R.id.button_filter_clear);
+        buttonBack = findViewById(R.id.button_back);
         actionButtonAdd = findViewById(R.id.action_button_add);
         actionButtonMyLocation = findViewById(R.id.action_button_my_location);
 
         init();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+
+        String type = intent.getStringExtra(Keys.TYPE);
+
+        if (type != null && type.equals(Keys.FILTER)) {
+            filterAdapter.setItems();
+            filter();
+        }
     }
 
     @Override
@@ -151,8 +191,16 @@ public class MainActivity extends FragmentActivity implements
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    public void onSearchInteraction(BillboardModel item) {
+        Log.i(TAG, "::::: " + item.name);
+        // goto item clicked
+    }
+
+    @Override
+    public void onFilterInteraction() {
+        Log.i(TAG, "onFilterInteraction");
+
+        filter();
     }
 
     @Override
@@ -190,55 +238,31 @@ public class MainActivity extends FragmentActivity implements
         return true;
     }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        setIntent(intent);
-        getExtra();
-    }
-
-    private void getExtra() {
-        Intent i = getIntent();
-        String type = i.getStringExtra(Keys.TYPE);
-
-        if (type != null && type.equals(Keys.FILTER)) {
-            filterAdapter.setItems();
-            filter();
-        }
-    }
 
 
-    @Override
-    public void onSearchInteraction(BillboardModel item) {
-        Log.i(TAG, "::::: " + item.name);
-        // goto item clicked
-    }
 
-    @Override
-    public void onFilterInteraction() {
-        Log.i(TAG, "onFilterInteraction");
-
-        filter();
-    }
-
-
+    /**
+     * Init functions ->
+     * init
+     * initPager
+     * initMap
+     * initSearch
+     * initFilter
+     * initMore
+     */
 
     private void init() {
         initMap();
         initPager();
-        initSearch();
         initFilter();
         initMore();
+        initSearch();
 
         layoutInfo.setQueenButton(R.id.layout_info_main);
-        layoutDetails.setQueenButton(R.id.layout_details_main);
         layoutList.setQueenButton(R.id.layout_list_main);
 
         actionButtonAdd.setOnClickListener(view -> {
-            layoutInfo.setVisibility(View.GONE);
-            layoutDetails.setVisibility(View.VISIBLE);
-            listSearch.setVisibility(View.GONE);
-            Utils.hideKeyboard(this);
+            showLayoutDetails();
         });
     }
 
@@ -267,12 +291,16 @@ public class MainActivity extends FragmentActivity implements
         autoCompleteAdapter = new AutoCompleteAdapter(context, getData(), this);
         listSearch.setAdapter(autoCompleteAdapter);
 
+        buttonBack.setOnClickListener(view -> {
+            textSearch.setText("");
+            textSearchJustForFocus.requestFocus();
+            showLayoutList();
+        });
+
         textSearch.setOnFocusChangeListener((v, hasFocus) -> {
             if (v.getId() == R.id.text_search) {
                 if (hasFocus) {
-                    layoutInfo.setVisibility(View.GONE);
-                    layoutDetails.setVisibility(View.GONE);
-                    listSearch.setVisibility(View.VISIBLE);
+                    showSearchList();
                 }
             }
         });
@@ -280,9 +308,9 @@ public class MainActivity extends FragmentActivity implements
             // If the event is a key-down event on the "enter" button
             //noinspection RedundantIfStatement
             if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                layoutInfo.setVisibility(View.GONE);
-                layoutDetails.setVisibility(View.GONE);
-                Utils.hideKeyboard(this);
+
+                // TODO: search and display result in search list
+
                 return true;
             }
             return false;
@@ -307,6 +335,8 @@ public class MainActivity extends FragmentActivity implements
                 }
             }
         });
+
+        textSearch.clearFocus();
     }
 
     private void initFilter() {
@@ -319,9 +349,7 @@ public class MainActivity extends FragmentActivity implements
         });
 
         buttonFilterClear.setOnClickListener(view -> {
-            Settings.FILTER_ITEMS = new BillboardModel();
-            filterAdapter.setItems();
-            buttonFilterClear.setVisibility(View.GONE);
+            clearFilter();
         });
     }
 
@@ -356,6 +384,14 @@ public class MainActivity extends FragmentActivity implements
 
 
 
+
+    /**
+     * Helper functions ->
+     * filter
+     * addMarker
+     * findBillboard
+     */
+
     private void filter() {
         Log.i(TAG, "filter");
 
@@ -374,6 +410,12 @@ public class MainActivity extends FragmentActivity implements
         }
     }
 
+    private void clearFilter() {
+        Settings.FILTER_ITEMS = new BillboardModel();
+        filterAdapter.setItems();
+        buttonFilterClear.setVisibility(View.GONE);
+    }
+
     private void addMarker(Marker marker, LatLng latLng, String title, String id) {
         marker = map.addMarker(new MarkerOptions()
                 .position(latLng)
@@ -386,69 +428,175 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private boolean findBillboard(String id) {
-        for (BillboardModel b : allBillboards) {
-            if (b._id.equals(id)) {
-                selectedBillboard = b;
-                return true;
+        if (allBillboards != null)
+            for (BillboardModel b : allBillboards) {
+                if (b._id.equals(id)) {
+                    selectedBillboard = b;
+                    return true;
+                }
             }
-        }
         selectedBillboard = null;
         return false;
     }
 
 
+
+
+    /**
+     * Populate billboards data ->
+     * setBillboardInfo
+     * setBillboardDetails
+     * setBillboardList
+     */
+
     private void setBillboardInfo() {
 
     }
+
     private void setBillboardDetails() {}
+
     private void setBillboardList() {}
 
 
+
+
+    /**
+     * Layouts Visibility ->
+     * showLayoutInfo
+     * showLayoutDetails
+     * showLayoutList
+     */
+
     private void showLayoutInfo() {
-        if (layoutInfo.getVisibility() != View.VISIBLE)
-            layoutInfo.setVisibility(View.VISIBLE);
+        if (layoutInfoMainContent.getVisibility() != View.VISIBLE) {
+            layoutInfoMainContent.setVisibility(View.VISIBLE);
+            layoutInfo.release();
+        }
 
         if (layoutDetails.getVisibility() != View.GONE)
             layoutDetails.setVisibility(View.GONE);
 
-        if (listSearch.getVisibility() != View.GONE)
-            listSearch.setVisibility(View.GONE);
+        if (layoutList.getVisibility() != View.GONE)
+            layoutList.setVisibility(View.GONE);
+
+        if (layoutSearch.getVisibility() != View.GONE)
+            layoutSearch.setVisibility(View.GONE);
+
+        if (actionButtonAdd.getVisibility() != View.VISIBLE)
+            actionButtonAdd.setVisibility(View.VISIBLE);
+
+        if (actionButtonMyLocation.getVisibility() != View.VISIBLE)
+            actionButtonMyLocation.setVisibility(View.VISIBLE);
 
         Utils.hideKeyboard(this);
     }
 
     private void showLayoutDetails() {
-        if (layoutInfo.getVisibility() != View.GONE)
-            layoutInfo.setVisibility(View.GONE);
+        if (layoutInfoMainContent.getVisibility() != View.GONE) {
+            layoutInfoMainContent.setVisibility(View.GONE);
+            layoutInfo.freeze();
+        }
 
         if (layoutDetails.getVisibility() != View.VISIBLE)
             layoutDetails.setVisibility(View.VISIBLE);
 
-        if (listSearch.getVisibility() != View.GONE)
-            listSearch.setVisibility(View.GONE);
+        if (layoutList.getVisibility() != View.GONE)
+            layoutList.setVisibility(View.GONE);
+
+        if (layoutSearch.getVisibility() != View.GONE)
+            layoutSearch.setVisibility(View.GONE);
+
+        if (actionButtonAdd.getVisibility() != View.GONE)
+            actionButtonAdd.setVisibility(View.GONE);
+
+        if (actionButtonMyLocation.getVisibility() != View.GONE)
+            actionButtonMyLocation.setVisibility(View.GONE);
 
         Utils.hideKeyboard(this);
     }
 
     private void showLayoutList() {
-        if (layoutInfo.getVisibility() != View.GONE)
-            layoutInfo.setVisibility(View.GONE);
+        if (layoutInfoMainContent.getVisibility() != View.GONE) {
+            layoutInfoMainContent.setVisibility(View.GONE);
+            layoutInfo.freeze();
+        }
 
         if (layoutDetails.getVisibility() != View.GONE)
             layoutDetails.setVisibility(View.GONE);
 
-        if (listSearch.getVisibility() != View.VISIBLE)
-            listSearch.setVisibility(View.VISIBLE);
+        if (layoutList.getVisibility() != View.VISIBLE)
+            layoutList.setVisibility(View.VISIBLE);
+
+        if (layoutSearch.getVisibility() != View.GONE)
+            layoutSearch.setVisibility(View.GONE);
+
+        if (actionButtonAdd.getVisibility() != View.VISIBLE)
+            actionButtonAdd.setVisibility(View.VISIBLE);
+
+        if (actionButtonMyLocation.getVisibility() != View.VISIBLE)
+            actionButtonMyLocation.setVisibility(View.VISIBLE);
+
+
+
+        if (buttonBack.getVisibility() != View.GONE)
+            buttonBack.setVisibility(View.GONE);
+
+        if (buttonFilter.getVisibility() != View.VISIBLE)
+            buttonFilter.setVisibility(View.VISIBLE);
+
+        if (spinnerMore.getVisibility() != View.VISIBLE)
+            spinnerMore.setVisibility(View.VISIBLE);
+
+        Utils.hideKeyboard(this);
+    }
+
+    private void showSearchList() {
+        if (layoutInfoMainContent.getVisibility() != View.GONE) {
+            layoutInfoMainContent.setVisibility(View.GONE);
+            layoutInfo.freeze();
+        }
+
+        if (layoutDetails.getVisibility() != View.GONE)
+            layoutDetails.setVisibility(View.GONE);
+
+        if (layoutList.getVisibility() != View.GONE)
+            layoutList.setVisibility(View.GONE);
+
+        if (layoutSearch.getVisibility() != View.VISIBLE)
+            layoutSearch.setVisibility(View.VISIBLE);
+
+        if (actionButtonAdd.getVisibility() != View.GONE)
+            actionButtonAdd.setVisibility(View.GONE);
+
+        if (actionButtonMyLocation.getVisibility() != View.GONE)
+            actionButtonMyLocation.setVisibility(View.GONE);
+
+
+        if (buttonBack.getVisibility() != View.VISIBLE)
+            buttonBack.setVisibility(View.VISIBLE);
+
+        if (buttonFilter.getVisibility() != View.GONE)
+            buttonFilter.setVisibility(View.GONE);
+
+        if (spinnerMore.getVisibility() != View.GONE)
+            spinnerMore.setVisibility(View.GONE);
     }
 
 
 
+
+    /**
+     * Alert ->
+     * showToast
+     * showSnackBar
+     * showDialog
+     */
 
     private void showToast(String message) {
         Utils.toast(context, Enumerates.Message.ERROR, message, Toast.LENGTH_LONG);
     }
 
-    private void showSnackbar() {
+    private void showSnackBar() {
         final View coordinatorLayout = findViewById(R.id.coordinatorLayout);
         Snackbar snackbar = Snackbar
                 .make(coordinatorLayout, "Message is deleted", Snackbar.LENGTH_LONG)
@@ -485,6 +633,13 @@ public class MainActivity extends FragmentActivity implements
     }
 
 
+
+
+    /**
+     * Fragments functions ->
+     * onFragmentInteraction
+     * PagerAdapter
+     */
 
     public void onFragmentInteraction(Uri uri) {
 
@@ -527,7 +682,12 @@ public class MainActivity extends FragmentActivity implements
 
 
 
-    // TODO: sample data
+    /**
+     * TODO: testing mode only
+     * Sample data ->
+     * getData: name, product, address
+     */
+
     // name, product, address
     private List<BillboardModel> getData(){
         List<BillboardModel> data = new ArrayList<>();
