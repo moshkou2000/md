@@ -2,37 +2,46 @@ package com.moshkou.md.controls;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import androidx.core.view.ViewCompat;
-import androidx.customview.widget.ViewDragHelper;
+
+import com.moshkou.md.R;
+import com.moshkou.md.configs.Settings;
 
 
-public class DraggingPanel extends RelativeLayout {
+public class DraggingPanel extends LinearLayout {
+
+
+    private static String TAG = "DRAGGING";
 
 
     private final double AUTO_OPEN_SPEED_LIMIT = 800.0;
+    private final int mQueenId = R.id.layout_draggable_content;
 
-    private RelativeLayout mQueenButton;
+    private FrameLayout mQueenButton;
     private ViewDragHelper mDragHelper;
 
     private int mDraggingState = 0;
-    private int mQueenId;
     private int mDraggingBorder;
     private int mVerticalRange;
     private boolean mIsOpen;
-    private boolean mIsDraggable = true;
+    private boolean mIsClose = true;
 
 
     public DraggingPanel(Context context, AttributeSet attrs) {
         super(context, attrs);
+        setOrientation(VERTICAL);
         mIsOpen = false;
     }
 
     @Override
     protected void onFinishInflate() {
+        new DragHelperCallback();
         mDragHelper = ViewDragHelper.create(this, 1.0f, new DragHelperCallback());
         mIsOpen = false;
         super.onFinishInflate();
@@ -40,7 +49,8 @@ public class DraggingPanel extends RelativeLayout {
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        mVerticalRange = (int) (h * 0.66);
+        mVerticalRange = h - (int) (96 * Settings.DEVICE_DENSITY); // 96dp: double size of height of bottom navigation-bar (48dp)
+        close();
         super.onSizeChanged(w, h, oldw, oldh);
     }
 
@@ -68,7 +78,7 @@ public class DraggingPanel extends RelativeLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (!mIsDraggable) {
+        if (!mIsOpen) {
             return true;
         } else if (isQueenTarget(event) || isMoving()) {
             mDragHelper.processTouchEvent(event);
@@ -85,11 +95,6 @@ public class DraggingPanel extends RelativeLayout {
         }
     }
 
-    public void setQueenButton(int id) {
-        mQueenId = id;
-        mQueenButton  = findViewById(id);
-    }
-
     public boolean isMoving() {
         return (mDraggingState == ViewDragHelper.STATE_DRAGGING ||
                 mDraggingState == ViewDragHelper.STATE_SETTLING);
@@ -99,14 +104,22 @@ public class DraggingPanel extends RelativeLayout {
         return mIsOpen;
     }
 
-    public void freeze() {
-        mIsDraggable = false;
+    public void initQueenButton() {
+        mQueenButton = findViewById(mQueenId);
     }
 
-    public void release() {
-        mIsDraggable = true;
+    public void close() {
+        mIsOpen = true;
+        mDragHelper.captureChildView(mQueenButton, mQueenId);
+        mDragHelper.dragTo(0, 200, 0, 300);
+//        ViewCompat.offsetTopAndBottom(mQueenButton, 300);
+
+//        mQueenButton.setY(mVerticalRange);
     }
 
+    public void hide() {
+        mQueenButton.setY(mVerticalRange + (int) (48 * Settings.DEVICE_DENSITY));
+    }
 
 
     public class DragHelperCallback extends ViewDragHelper.Callback {
@@ -134,6 +147,7 @@ public class DraggingPanel extends RelativeLayout {
         @Override
         public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy) {
             mDraggingBorder = top;
+            Log.i(TAG, "top: " + top);
         }
 
         public int getViewVerticalDragRange(View child) {
@@ -180,5 +194,7 @@ public class DraggingPanel extends RelativeLayout {
                 ViewCompat.postInvalidateOnAnimation(DraggingPanel.this);
             }
         }
+
+
     }
 }

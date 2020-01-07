@@ -84,15 +84,17 @@ public class MainActivity extends FragmentActivity implements
     private final Context context = this;
 
     private View mapView;
-    private DraggingPanel layoutInfo;
-    private RelativeLayout layoutDetails;
-    private DraggingPanel layoutList;
-    private LinearLayout layoutInfoMainContent;
+
+    private DraggingPanel layoutDraggable;
+    private LinearLayout layoutInfoContent;
+    private LinearLayout layoutDetails;
+
     private ViewPager pager;
     private EditText textSearch;
     private EditText textSearchJustForFocus;
     private RecyclerView listSearch;
     private RelativeLayout layoutSearch;
+
     private Spinner spinnerMore;
     private Button buttonBack;
     private Button buttonFilter;
@@ -119,6 +121,7 @@ public class MainActivity extends FragmentActivity implements
     private BillboardModel selectedBillboard;
 
 
+
     /**
     * Override functions ->
     * onCreate
@@ -136,23 +139,25 @@ public class MainActivity extends FragmentActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-        pager = findViewById(R.id.pager);
         mapView = findViewById(R.id.map);
+
+        layoutDraggable = findViewById(R.id.layout_draggable);
+        layoutInfoContent = findViewById(R.id.layout_info_content);
+        layoutDetails = findViewById(R.id.layout_details);
+
+        pager = findViewById(R.id.pager);
         textSearch = findViewById(R.id.text_search);
         textSearchJustForFocus = findViewById(R.id.text_search_just_for_focus);
         listSearch = findViewById(R.id.list_search);
         layoutSearch = findViewById(R.id.layout_search);
-        buttonFilter = findViewById(R.id.button_filter);
-        layoutInfo = findViewById(R.id.layout_info);
-        layoutDetails = findViewById(R.id.layout_details);
-        layoutList = findViewById(R.id.layout_list);
-        layoutInfoMainContent = findViewById(R.id.layout_info_main_content);
-        gridViewFilter = findViewById(R.id.grid_view_filter);
+
         spinnerMore = findViewById(R.id.spinner_more);
-        buttonFilterClear = findViewById(R.id.button_filter_clear);
         buttonBack = findViewById(R.id.button_back);
+        buttonFilter = findViewById(R.id.button_filter);
+        buttonFilterClear = findViewById(R.id.button_filter_clear);
         actionButtonAdd = findViewById(R.id.action_button_add);
         actionButtonMyLocation = findViewById(R.id.action_button_my_location);
+        gridViewFilter = findViewById(R.id.grid_view_filter);
 
         init();
     }
@@ -207,9 +212,11 @@ public class MainActivity extends FragmentActivity implements
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
         map.setOnMarkerClickListener(this);
-        map.setMyLocationEnabled(true);
         map.getUiSettings().setMapToolbarEnabled(false);
         map.getUiSettings().setZoomControlsEnabled(false);
+
+        if (Permission.ACCESS_FINE_LOCATION)
+            map.setMyLocationEnabled(true);
 
         // MyLocation button
         View locationButton = ((View) mapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
@@ -258,8 +265,7 @@ public class MainActivity extends FragmentActivity implements
         initMore();
         initSearch();
 
-        layoutInfo.setQueenButton(R.id.layout_info_main);
-        layoutList.setQueenButton(R.id.layout_list_main);
+        layoutDraggable.initQueenButton();
 
         actionButtonAdd.setOnClickListener(view -> {
             showLayoutDetails();
@@ -463,79 +469,37 @@ public class MainActivity extends FragmentActivity implements
     /**
      * Layouts Visibility ->
      * showLayoutInfo
-     * showLayoutDetails
      * showLayoutList
+     * showLayoutDetails
+     * showSearchList
      */
 
     private void showLayoutInfo() {
-        if (layoutInfoMainContent.getVisibility() != View.VISIBLE) {
-            layoutInfoMainContent.setVisibility(View.VISIBLE);
-            layoutInfo.release();
-        }
+        if (layoutInfoContent.getVisibility() != View.VISIBLE)
+            layoutInfoContent.setVisibility(View.VISIBLE);
+
+        // layoutDraggableList -> go down
 
         if (layoutDetails.getVisibility() != View.GONE)
             layoutDetails.setVisibility(View.GONE);
 
-        if (layoutList.getVisibility() != View.GONE)
-            layoutList.setVisibility(View.GONE);
-
         if (layoutSearch.getVisibility() != View.GONE)
             layoutSearch.setVisibility(View.GONE);
-
-        if (actionButtonAdd.getVisibility() != View.VISIBLE)
-            actionButtonAdd.setVisibility(View.VISIBLE);
-
-        if (actionButtonMyLocation.getVisibility() != View.VISIBLE)
-            actionButtonMyLocation.setVisibility(View.VISIBLE);
-
-        Utils.hideKeyboard(this);
-    }
-
-    private void showLayoutDetails() {
-        if (layoutInfoMainContent.getVisibility() != View.GONE) {
-            layoutInfoMainContent.setVisibility(View.GONE);
-            layoutInfo.freeze();
-        }
-
-        if (layoutDetails.getVisibility() != View.VISIBLE)
-            layoutDetails.setVisibility(View.VISIBLE);
-
-        if (layoutList.getVisibility() != View.GONE)
-            layoutList.setVisibility(View.GONE);
-
-        if (layoutSearch.getVisibility() != View.GONE)
-            layoutSearch.setVisibility(View.GONE);
-
-        if (actionButtonAdd.getVisibility() != View.GONE)
-            actionButtonAdd.setVisibility(View.GONE);
-
-        if (actionButtonMyLocation.getVisibility() != View.GONE)
-            actionButtonMyLocation.setVisibility(View.GONE);
 
         Utils.hideKeyboard(this);
     }
 
     private void showLayoutList() {
-        if (layoutInfoMainContent.getVisibility() != View.GONE) {
-            layoutInfoMainContent.setVisibility(View.GONE);
-            layoutInfo.freeze();
-        }
+        if (layoutInfoContent.getVisibility() != View.GONE)
+            layoutInfoContent.setVisibility(View.GONE);
+
+        // layoutDraggableList -> go down
 
         if (layoutDetails.getVisibility() != View.GONE)
             layoutDetails.setVisibility(View.GONE);
 
-        if (layoutList.getVisibility() != View.VISIBLE)
-            layoutList.setVisibility(View.VISIBLE);
-
         if (layoutSearch.getVisibility() != View.GONE)
             layoutSearch.setVisibility(View.GONE);
-
-        if (actionButtonAdd.getVisibility() != View.VISIBLE)
-            actionButtonAdd.setVisibility(View.VISIBLE);
-
-        if (actionButtonMyLocation.getVisibility() != View.VISIBLE)
-            actionButtonMyLocation.setVisibility(View.VISIBLE);
-
 
 
         if (buttonBack.getVisibility() != View.GONE)
@@ -550,26 +514,32 @@ public class MainActivity extends FragmentActivity implements
         Utils.hideKeyboard(this);
     }
 
-    private void showSearchList() {
-        if (layoutInfoMainContent.getVisibility() != View.GONE) {
-            layoutInfoMainContent.setVisibility(View.GONE);
-            layoutInfo.freeze();
-        }
+    private void showLayoutDetails() {
+        if (layoutDetails.getVisibility() != View.VISIBLE)
+            layoutDetails.setVisibility(View.VISIBLE);
 
+        if (layoutSearch.getVisibility() != View.GONE)
+            layoutSearch.setVisibility(View.GONE);
+
+
+        if (buttonBack.getVisibility() != View.VISIBLE)
+            buttonBack.setVisibility(View.VISIBLE);
+
+        if (buttonFilter.getVisibility() != View.GONE)
+            buttonFilter.setVisibility(View.GONE);
+
+        if (spinnerMore.getVisibility() != View.GONE)
+            spinnerMore.setVisibility(View.GONE);
+
+        Utils.hideKeyboard(this);
+    }
+
+    private void showSearchList() {
         if (layoutDetails.getVisibility() != View.GONE)
             layoutDetails.setVisibility(View.GONE);
 
-        if (layoutList.getVisibility() != View.GONE)
-            layoutList.setVisibility(View.GONE);
-
         if (layoutSearch.getVisibility() != View.VISIBLE)
             layoutSearch.setVisibility(View.VISIBLE);
-
-        if (actionButtonAdd.getVisibility() != View.GONE)
-            actionButtonAdd.setVisibility(View.GONE);
-
-        if (actionButtonMyLocation.getVisibility() != View.GONE)
-            actionButtonMyLocation.setVisibility(View.GONE);
 
 
         if (buttonBack.getVisibility() != View.VISIBLE)
