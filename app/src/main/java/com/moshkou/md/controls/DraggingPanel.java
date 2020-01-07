@@ -21,7 +21,7 @@ public class DraggingPanel extends LinearLayout {
 
 
     private final double AUTO_OPEN_SPEED_LIMIT = 800.0;
-    private final int mQueenId = R.id.layout_draggable_content;
+    private final int mQueenId = 123;//R.id.layout_draggable_content;
 
     private FrameLayout mQueenButton;
     private ViewDragHelper mDragHelper;

@@ -19,350 +19,268 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!--search bar-->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/search_box"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="35dp"
-        android:layout_marginEnd="10dp"
-        android:background="@drawable/ic_tag_white"
-        android:focusable="true"
-        android:visibility="gone"
-        app:cardCornerRadius="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/root">
+        android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp">
-
-            <EditText
-                android:id="@+id/text_search_just_for_focus"
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:layout_alignParentStart="true"
-                android:clickable="true"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:textColor="#FFFFFF" />
-
-            <EditText
-                android:id="@+id/text_search"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:layout_toStartOf="@id/button_filter"
-                android:background="@drawable/bg_placeholder_search"
-                android:clickable="true"
-                android:drawableStart="@drawable/bg_search"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:hint="@string/placeholder_search"
-                android:inputType="text"
-                android:maxLines="1"
-                android:paddingStart="12dp"
-                android:paddingEnd="8dp"
-                android:singleLine="true"
-                android:textColor="#333"
-                android:textSize="18sp" />
-
-            <Button
-                android:id="@+id/button_back"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="30dp"
-                android:layout_height="26dp"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="12dp"
-                android:background="@drawable/bg_back"
-                android:visibility="gone" />
-
-            <Button
-                android:id="@+id/button_filter"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_centerVertical="true"
-                android:layout_toStartOf="@id/spinner_more"
-                android:background="@drawable/ic_notifications" />
-
-            <Spinner
-                android:id="@+id/spinner_more"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/ic_more_vert" />
-
-        </RelativeLayout>
-    </androidx.cardview.widget.CardView>
-
-    <!--filter bar-->
-    <androidx.leanback.widget.HorizontalGridView
-        android:id="@+id/grid_view_filter"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:paddingTop="4dp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_box" />
-
-    <!--filter clear buttons-->
-    <Button
-        android:id="@+id/button_filter_clear"
-        android:layout_width="38dp"
-        android:layout_height="38dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="10dp"
-        android:background="@drawable/bg_clear"
-        android:ellipsize="end"
-        android:lines="1"
-        android:textColor="#FFFFFF"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/grid_view_filter" />
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <!--info layout-->
-        <LinearLayout
-            android:id="@+id/layout_draggable_info"
+        <!--search bar-->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/search_box"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:minHeight="240dp"
-            android:orientation="vertical">
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/ic_tag_white"
+            android:focusable="true"
+            app:cardCornerRadius="10dp">
 
-            <Button
-                android:id="@+id/action_button_my_location"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_gravity="top|end"
-                android:layout_marginEnd="12dp"
-                android:layout_marginBottom="12dp"
-                android:background="@drawable/bg_my_location"
-                android:clickable="true"
-                android:focusable="true"
-                app:borderWidth="2dp" />
-
-            <Button
-                android:id="@+id/action_button_add"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_gravity="top|end"
-                android:layout_marginEnd="12dp"
-                android:layout_marginBottom="12dp"
-                android:background="@drawable/bg_add"
-                android:clickable="true"
-                android:focusable="true"
-                app:borderWidth="0dp" />
-
-            <LinearLayout
-                android:id="@+id/layout_info_content"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/bg_dragging_panel"
-                android:orientation="vertical"
-                android:visibility="gone">
+                android:layout_height="50dp">
 
-                <androidx.leanback.widget.HorizontalGridView
-                    android:id="@+id/grid_view_info_images"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp" />
+                <EditText
+                    android:id="@+id/text_search_just_for_focus"
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:textColor="#FFFFFF" />
 
-                <TextView
-                    android:id="@+id/text_view_info_product"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp" />
-
-                <TextView
-                    android:id="@+id/text_view_info_advertiser"
+                <EditText
+                    android:id="@+id/text_search"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp" />
-
-                <TextView
-                    android:id="@+id/text_view_info_last_update"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp" />
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toStartOf="@id/button_filter"
+                    android:background="@drawable/bg_placeholder_search"
+                    android:clickable="true"
+                    android:drawableStart="@drawable/bg_search"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:hint="@string/placeholder_search"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="8dp"
+                    android:singleLine="true"
+                    android:textColor="#333"
+                    android:textSize="18sp" />
 
                 <Button
-                    android:id="@+id/grid_view_info_edit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginStart="0dp"
-                    android:layout_marginEnd="12dp"
-                    android:layout_marginBottom="48dp"
-                    android:text="@string/action_edit" />
-            </LinearLayout>
-        </LinearLayout>
+                    android:id="@+id/button_back"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="30dp"
+                    android:layout_height="26dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="12dp"
+                    android:background="@drawable/bg_back"
+                    android:visibility="gone" />
 
-        <!--draggable layout-->
+                <Button
+                    android:id="@+id/button_filter"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toStartOf="@id/spinner_more"
+                    android:background="@drawable/ic_notifications" />
+
+                <Spinner
+                    android:id="@+id/spinner_more"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/ic_more_vert" />
+
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!--filter bar-->
+        <androidx.leanback.widget.HorizontalGridView
+            android:id="@+id/grid_view_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:paddingTop="4dp"
+            android:visibility="visible" />
+
+        <!--filter clear buttons-->
+        <Button
+            android:id="@+id/button_filter_clear"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/bg_clear"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="#FFFFFF"
+            android:visibility="gone"
+            android:layout_gravity="end"/>
+    </LinearLayout>
+
+    <!--info layout-->
+    <LinearLayout
+        android:id="@+id/layout_draggable_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:minHeight="240dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/action_button_my_location"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="top|end"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_my_location"
+            android:clickable="true"
+            android:focusable="true"
+            app:borderWidth="2dp" />
+
+        <Button
+            android:id="@+id/action_button_add"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="top|end"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_add"
+            android:clickable="true"
+            android:focusable="true"
+            app:borderWidth="0dp" />
+
         <LinearLayout
-            android:id="@+id/bottom"
+            android:id="@+id/layout_info_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <!--gap-->
-            <RelativeLayout
-                android:id="@+id/layout_gap"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="3" />
-
-            <!--draggable-->
-            <com.moshkou.md.controls.DraggingPanel
-                android:id="@+id/layout_draggable"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="7"
-                android:outlineProvider="bounds">
-
-                <FrameLayout
-                    android:id="@+id/layout_draggable_content"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <!--list-->
-                    <RelativeLayout
-                        android:id="@+id/layout_draggable_list"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/bg_dragging_panel"
-                        android:visibility="visible">
-
-                        <FrameLayout
-                            android:id="@+id/layout_list_header"
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp">
-
-                            <FrameLayout
-                                android:layout_width="44dp"
-                                android:layout_height="4dp"
-                                android:layout_gravity="center_horizontal|top"
-                                android:layout_marginTop="10dp"
-                                android:background="#DFDFDF" />
-
-                            <TextView
-                                android:id="@+id/textView35"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginTop="6dp"
-                                android:text="@string/placeholder_bottom_holder"
-                                android:textAlignment="center"
-                                android:textColor="#707070"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
-                        </FrameLayout>
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_below="@+id/layout_list_header" />
-                    </RelativeLayout>
-                </FrameLayout>
-            </com.moshkou.md.controls.DraggingPanel>
-        </LinearLayout>
-
-        <!--details layout-->
-        <LinearLayout
-            android:id="@+id/layout_details"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:background="@drawable/bg_dragging_panel"
             android:orientation="vertical"
             android:visibility="gone">
 
-            <!--gap-->
-            <RelativeLayout
-                android:id="@+id/layout_gap2"
+            <androidx.leanback.widget.HorizontalGridView
+                android:id="@+id/grid_view_info_images"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="3" />
+                android:layout_height="100dp" />
 
-            <!--details-->
-            <RelativeLayout
-                android:id="@+id/layout_details_content"
+            <TextView
+                android:id="@+id/text_view_info_product"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="7"
-                android:background="#FFFFFF">
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp" />
 
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tabs"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/text_view_info_advertiser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp" />
 
-                <androidx.viewpager.widget.ViewPager
-                    android:id="@+id/pager"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="48dp" />
-            </RelativeLayout>
+            <TextView
+                android:id="@+id/text_view_info_last_update"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp" />
+
+            <Button
+                android:id="@+id/grid_view_info_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="48dp"
+                android:text="@string/action_edit" />
         </LinearLayout>
+    </LinearLayout>
 
-        <!--search layout-->
+    <!--details layout-->
+    <LinearLayout
+        android:id="@+id/layout_details"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <!--gap-->
         <RelativeLayout
-            android:id="@+id/layout_search"
+            android:id="@+id/layout_gap2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#FFFFFF"
-            android:paddingStart="10dp"
-            android:paddingTop="100dp"
-            android:paddingEnd="10dp"
-            android:paddingBottom="10dp"
-            android:visibility="gone">
+            android:layout_height="0dp"
+            android:layout_weight="3" />
 
-            <!--search hint header-->
-            <TextView
-                android:id="@+id/text_1"
+        <!--details-->
+        <RelativeLayout
+            android:id="@+id/layout_details_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="7"
+            android:background="#FFFFFF">
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabs"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:text="@string/placeholder_search_hint_header"
-                android:textSize="22sp" />
+                android:layout_height="wrap_content" />
 
-            <!--search hint body-->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/text_1"
-                android:layout_marginTop="4dp"
-                android:text="@string/placeholder_search_hint_body"
-                android:textSize="16sp" />
-
-            <!--search data-->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/list_search"
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/pager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_marginTop="48dp" />
         </RelativeLayout>
-    </FrameLayout>
+    </LinearLayout>
+
+    <!--search layout-->
+    <RelativeLayout
+        android:id="@+id/layout_search"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF"
+        android:paddingStart="10dp"
+        android:paddingTop="100dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="10dp"
+        android:visibility="gone">
+
+        <!--search hint header-->
+        <TextView
+            android:id="@+id/text_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:text="@string/placeholder_search_hint_header"
+            android:textSize="22sp" />
+
+        <!--search hint body-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_1"
+            android:layout_marginTop="4dp"
+            android:text="@string/placeholder_search_hint_body"
+            android:textSize="16sp" />
+
+        <!--search data-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </RelativeLayout>
 
     <include layout="@layout/fragment_bottom_sheet" />
 

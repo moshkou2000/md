@@ -85,7 +85,6 @@ public class MainActivity extends FragmentActivity implements
 
     private View mapView;
 
-    private DraggingPanel layoutDraggable;
     private LinearLayout layoutInfoContent;
     private LinearLayout layoutDetails;
 
@@ -141,7 +140,6 @@ public class MainActivity extends FragmentActivity implements
 
         mapView = findViewById(R.id.map);
 
-        layoutDraggable = findViewById(R.id.layout_draggable);
         layoutInfoContent = findViewById(R.id.layout_info_content);
         layoutDetails = findViewById(R.id.layout_details);
 
@@ -264,8 +262,6 @@ public class MainActivity extends FragmentActivity implements
         initFilter();
         initMore();
         initSearch();
-
-        layoutDraggable.initQueenButton();
 
         actionButtonAdd.setOnClickListener(view -> {
             showLayoutDetails();
