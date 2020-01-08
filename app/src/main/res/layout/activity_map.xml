@@ -13,12 +13,174 @@
         class="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="96dp"
+        android:layout_marginBottom="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!--info layout-->
+    <LinearLayout
+        android:id="@+id/layout_draggable_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:minHeight="198dp"
+        android:elevation="4dp"
+        android:translationZ="4dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/action_button_my_location"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="top|end"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_my_location"
+            android:clickable="true"
+            android:focusable="true"
+            app:borderWidth="2dp" />
+
+        <Button
+            android:id="@+id/action_button_add"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="top|end"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_add"
+            android:clickable="true"
+            android:focusable="true"
+            app:borderWidth="0dp" />
+
+        <LinearLayout
+            android:id="@+id/layout_info_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_dragging_panel"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <androidx.leanback.widget.HorizontalGridView
+                android:id="@+id/grid_view_info_images"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/text_view_info_product"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="text_view_info_product" />
+
+                <TextView
+                    android:id="@+id/text_view_info_advertiser"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="text_view_info_advertiser" />
+
+                <TextView
+                    android:id="@+id/text_view_info_last_update"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="text_view_info_last_update" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/layout_info_close"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:background="@drawable/ic_keyboard_arrow_down"/>
+
+                    <Button
+                        android:id="@+id/layout_info_edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:borderWidth="2dp"
+                        android:layout_toStartOf="@id/layout_info_close"
+                        android:text="@string/action_edit" />
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!--list of billboards layout-->
+    <include layout="@layout/fragment_bottom_sheet_billboards" />
+
+    <!--details layout-->
+    <RelativeLayout
+        android:id="@+id/layout_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:layout_gravity="bottom"
+        android:visibility="gone">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="48dp" />
+    </RelativeLayout>
+
+    <!--search layout-->
+    <RelativeLayout
+        android:id="@+id/layout_search"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF"
+        android:paddingStart="10dp"
+        android:paddingTop="100dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="10dp"
+        android:visibility="gone">
+
+        <!--search hint header-->
+        <TextView
+            android:id="@+id/text_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:text="@string/placeholder_search_hint_header"
+            android:textSize="22sp" />
+
+        <!--search hint body-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_1"
+            android:layout_marginTop="4dp"
+            android:text="@string/placeholder_search_hint_body"
+            android:textSize="16sp" />
+
+        <!--search data-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </RelativeLayout>
+
+    <!--search bar-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -125,163 +287,4 @@
             android:visibility="gone"
             android:layout_gravity="end"/>
     </LinearLayout>
-
-    <!--info layout-->
-    <LinearLayout
-        android:id="@+id/layout_draggable_info"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:minHeight="240dp"
-        android:orientation="vertical">
-
-        <Button
-            android:id="@+id/action_button_my_location"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_gravity="top|end"
-            android:layout_marginEnd="12dp"
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/bg_my_location"
-            android:clickable="true"
-            android:focusable="true"
-            app:borderWidth="2dp" />
-
-        <Button
-            android:id="@+id/action_button_add"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_gravity="top|end"
-            android:layout_marginEnd="12dp"
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/bg_add"
-            android:clickable="true"
-            android:focusable="true"
-            app:borderWidth="0dp" />
-
-        <LinearLayout
-            android:id="@+id/layout_info_content"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_dragging_panel"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <androidx.leanback.widget.HorizontalGridView
-                android:id="@+id/grid_view_info_images"
-                android:layout_width="match_parent"
-                android:layout_height="100dp" />
-
-            <TextView
-                android:id="@+id/text_view_info_product"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp" />
-
-            <TextView
-                android:id="@+id/text_view_info_advertiser"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp" />
-
-            <TextView
-                android:id="@+id/text_view_info_last_update"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp" />
-
-            <Button
-                android:id="@+id/grid_view_info_edit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginStart="0dp"
-                android:layout_marginEnd="12dp"
-                android:layout_marginBottom="48dp"
-                android:text="@string/action_edit" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <!--details layout-->
-    <LinearLayout
-        android:id="@+id/layout_details"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <!--gap-->
-        <RelativeLayout
-            android:id="@+id/layout_gap2"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="3" />
-
-        <!--details-->
-        <RelativeLayout
-            android:id="@+id/layout_details_content"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="7"
-            android:background="#FFFFFF">
-
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <androidx.viewpager.widget.ViewPager
-                android:id="@+id/pager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="48dp" />
-        </RelativeLayout>
-    </LinearLayout>
-
-    <!--search layout-->
-    <RelativeLayout
-        android:id="@+id/layout_search"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#FFFFFF"
-        android:paddingStart="10dp"
-        android:paddingTop="100dp"
-        android:paddingEnd="10dp"
-        android:paddingBottom="10dp"
-        android:visibility="gone">
-
-        <!--search hint header-->
-        <TextView
-            android:id="@+id/text_1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:text="@string/placeholder_search_hint_header"
-            android:textSize="22sp" />
-
-        <!--search hint body-->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/text_1"
-            android:layout_marginTop="4dp"
-            android:text="@string/placeholder_search_hint_body"
-            android:textSize="16sp" />
-
-        <!--search data-->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/list_search"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </RelativeLayout>
-
-    <include layout="@layout/fragment_bottom_sheet" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
