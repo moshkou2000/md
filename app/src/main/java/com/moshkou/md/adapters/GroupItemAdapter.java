@@ -74,14 +74,9 @@ public class GroupItemAdapter extends RecyclerView.Adapter<GroupItemAdapter.Item
                 .error(R.drawable.bg_placeholder_image)
                 .into(itemRowHolder.image);
 
-        if (!itemRowHolder.button.hasOnClickListeners())
-            itemRowHolder.button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // TODO: item click ************************
-                    Log.i("XXXXX", "card clicked!!!");
-                }
-            });
+        itemRowHolder.button.setOnClickListener(view -> {
+            // TODO: item click ************************
+        });
 
     }
 

@@ -12,14 +12,16 @@
     <FrameLayout
         android:id="@+id/layout_list_header"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="50dp"
+        android:elevation="4dp"
+        android:background="@drawable/bg_shadow_light">
 
         <FrameLayout
             android:layout_width="44dp"
             android:layout_height="4dp"
             android:layout_gravity="center_horizontal|top"
             android:layout_marginTop="10dp"
-            android:background="#DFDFDF" />
+            android:background="#999" />
 
         <TextView
             android:id="@+id/textView35"
@@ -35,9 +37,11 @@
     </FrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_billboards"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="12dp"
-        android:layout_below="@+id/layout_list_header" />
+        android:layout_below="@+id/layout_list_header"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
 
 </RelativeLayout>

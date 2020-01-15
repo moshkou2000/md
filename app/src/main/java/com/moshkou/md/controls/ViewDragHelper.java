@@ -37,7 +37,7 @@ import java.util.Arrays;
 
 /**
  * ViewDragHelper is a utility class for writing custom ViewGroups. It offers a number
- * of useful operations and state tracking for allowing a user to drag and reposition
+ * of useful operations and state tracking for allowing a USER to drag and reposition
  * views within their parent ViewGroup.
  */
 public class ViewDragHelper {
@@ -55,7 +55,7 @@ public class ViewDragHelper {
 
     /**
      * A view is currently being dragged. The position is currently changing as a result
-     * of user input or simulated user input.
+     * of USER input or simulated USER input.
      */
     public static final int STATE_DRAGGING = 1;
 
@@ -209,7 +209,7 @@ public class ViewDragHelper {
 
         /**
          * Called when one of the subscribed edges in the parent view has been touched
-         * by the user while no child view is currently captured.
+         * by the USER while no child view is currently captured.
          *
          * @param edgeFlags A combination of edge flags describing the edge(s) currently touched
          * @param pointerId ID of the pointer touching the described edge(s)
@@ -234,7 +234,7 @@ public class ViewDragHelper {
         }
 
         /**
-         * Called when the user has started a deliberate drag away from one
+         * Called when the USER has started a deliberate drag away from one
          * of the subscribed edges in the parent view while no child view is currently captured.
          *
          * @param edgeFlags A combination of edge flags describing the edge(s) dragged
@@ -279,8 +279,8 @@ public class ViewDragHelper {
         }
 
         /**
-         * Called when the user's input indicates that they want to capture the given child view
-         * with the pointer indicated by pointerId. The callback should return true if the user
+         * Called when the USER's input indicates that they want to capture the given child view
+         * with the pointer indicated by pointerId. The callback should return true if the USER
          * is permitted to drag the given view with the indicated pointer.
          *
          * <p>ViewDragHelper may call this method multiple times for the same view even if
@@ -290,7 +290,7 @@ public class ViewDragHelper {
          * <p>If this method returns true, a call to {@link #onViewCaptured(android.view.View, int)}
          * will follow if the capture is successful.</p>
          *
-         * @param child Child the user is attempting to capture
+         * @param child Child the USER is attempting to capture
          * @param pointerId ID of the pointer attempting the capture
          * @return true if capture should be allowed, false otherwise
          */
@@ -497,7 +497,7 @@ public class ViewDragHelper {
     }
 
     /**
-     * @return The minimum distance in pixels that the user must travel to initiate a drag
+     * @return The minimum distance in pixels that the USER must travel to initiate a drag
      */
     @Px
     public int getTouchSlop() {
@@ -753,7 +753,7 @@ public class ViewDragHelper {
 
             if (keepGoing && x == mScroller.getFinalX() && y == mScroller.getFinalY()) {
                 // Close enough. The interpolator/scroller might think we're still moving
-                // but the user sure doesn't.
+                // but the USER sure doesn't.
                 mScroller.abortAnimation();
                 keepGoing = false;
             }

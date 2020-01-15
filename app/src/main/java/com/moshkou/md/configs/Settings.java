@@ -5,7 +5,7 @@ import com.moshkou.md.models.UserModel;
 
 public class Settings {
 
-    public static UserModel user;
+    public static UserModel USER;
 
     public static String APP_PICTURE_DIRECTORY              = "";
     public static Enumerates.Connectivity CONNECTIVITY      = Enumerates.Connectivity.NO_CONNECTIVITY;
@@ -15,4 +15,6 @@ public class Settings {
     public static double DEVICE_DENSITY                     = 0;
 
     public static BillboardModel FILTER_ITEMS               = new BillboardModel();
+
+    public static Enumerates.LayoutStatus LAYOUT_STATUS     = Enumerates.LayoutStatus.NULL;
 }

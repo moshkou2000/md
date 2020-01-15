@@ -17,13 +17,16 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.leanback.widget.HorizontalGridView;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
@@ -46,28 +49,35 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
-import com.moshkou.md.adapters.AutoCompleteAdapter;
+import com.moshkou.md.adapters.BillboardsAdapter;
+import com.moshkou.md.adapters.SearchAdapter;
 import com.moshkou.md.adapters.FilterAdapter;
 import com.moshkou.md.configs.Enumerates;
 import com.moshkou.md.configs.Keys;
 import com.moshkou.md.configs.Permission;
 import com.moshkou.md.configs.RequestCode;
 import com.moshkou.md.configs.Settings;
-import com.moshkou.md.controls.DraggingPanel;
 import com.moshkou.md.fragments.BillboardFragment;
+import com.moshkou.md.fragments.InfoItemFragment;
 import com.moshkou.md.fragments.LocationFragment;
 import com.moshkou.md.fragments.MediaFragment;
 import com.moshkou.md.fragments.StatusFragment;
 import com.moshkou.md.helpers.Utils;
 import com.moshkou.md.R;
+import com.moshkou.md.interfaces.OnBillboardListener;
+import com.moshkou.md.interfaces.OnBillboardsListener;
 import com.moshkou.md.interfaces.OnFilterListener;
 import com.moshkou.md.interfaces.OnFragmentInteractionListener;
 import com.moshkou.md.interfaces.OnSearchListener;
+import com.moshkou.md.models.BillboardMediaModel;
 import com.moshkou.md.models.BillboardModel;
-import com.moshkou.md.models.LocationModel;
+import com.moshkou.md.models.BillboardLocationModel;
+import com.moshkou.md.models.BillboardStatusModel;
+import com.moshkou.md.models.KeyValue;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -76,7 +86,8 @@ import static androidx.fragment.app.FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CU
 
 
 public class MainActivity extends FragmentActivity implements
-        OnMapReadyCallback, GoogleMap.OnMarkerClickListener, OnFragmentInteractionListener, OnSearchListener, OnFilterListener {
+        OnMapReadyCallback, GoogleMap.OnMarkerClickListener, OnFragmentInteractionListener,
+        OnSearchListener, OnFilterListener, OnBillboardsListener, OnBillboardListener {
 
 
     private static String TAG = "MAIN";
@@ -86,7 +97,9 @@ public class MainActivity extends FragmentActivity implements
     private View mapView;
 
     private LinearLayout layoutInfoContent;
-    private LinearLayout layoutDetails;
+    private RelativeLayout layoutDetails;
+    private RelativeLayout layoutBottomSheet;
+    private BottomSheetBehavior layoutList;
 
     private ViewPager pager;
     private EditText textSearch;
@@ -98,12 +111,23 @@ public class MainActivity extends FragmentActivity implements
     private Button buttonBack;
     private Button buttonFilter;
     private Button buttonFilterClear;
+    private Button buttonSearchClear;
+    private Button buttonInfoClose;
+    private Button buttonInfoEdit;
     private Button actionButtonAdd;
     private Button actionButtonMyLocation;
-    private androidx.leanback.widget.HorizontalGridView gridViewFilter;
+    private RecyclerView recyclerViewBillboards;
+    private HorizontalGridView gridViewFilter;
+    private ViewPager viewPagerInfo;
 
-    private AutoCompleteAdapter autoCompleteAdapter;
+    private TextView textInfoBillboardName;
+    private TextView textInfoLastUpdate;
+    private TextView textSearchNothing;
+
+    private SearchAdapter searchAdapter;
     private FilterAdapter filterAdapter;
+    private BillboardsAdapter billboardsAdapter;
+    private InfoPagerAdapter pagerAdapterInfo;
 
     private LocationFragment locationFragment;
     private BillboardFragment billboardFragment;
@@ -116,22 +140,24 @@ public class MainActivity extends FragmentActivity implements
     private Marker myMarker;
     private static final int[] TAB_TITLES = new int[] { R.string.placeholder_name, R.string.placeholder_email, R.string.placeholder_login, R.string.placeholder_phone };
 
-    private List<BillboardModel> allBillboards;
+
+    private List<Fragment> infoPages = new ArrayList<>();
+
+    private List<BillboardModel> allBillboards = new ArrayList<>();
     private BillboardModel selectedBillboard;
 
 
 
     /**
-    * Override functions ->
-    * onCreate
-    * onActivityResult
-    * onNewIntent
-    * onRequestPermissionsResult
-    * onSearchInteraction
-    * onFilterInteraction
-    * onMapReady
-    * onMarkerClick
-    */
+     * Override functions ->
+     * onCreate
+     * onActivityResult
+     * onNewIntent
+     * onBackPressed
+     * onRequestPermissionsResult
+     * onMapReady
+     * onMarkerClick
+     **/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,6 +168,8 @@ public class MainActivity extends FragmentActivity implements
 
         layoutInfoContent = findViewById(R.id.layout_info_content);
         layoutDetails = findViewById(R.id.layout_details);
+        layoutBottomSheet = findViewById(R.id.bottom_sheet);
+        layoutList = BottomSheetBehavior.from(layoutBottomSheet);
 
         pager = findViewById(R.id.pager);
         textSearch = findViewById(R.id.text_search);
@@ -149,13 +177,23 @@ public class MainActivity extends FragmentActivity implements
         listSearch = findViewById(R.id.list_search);
         layoutSearch = findViewById(R.id.layout_search);
 
+        textInfoBillboardName = findViewById(R.id.text_view_info_billboard_name);
+        textInfoLastUpdate = findViewById(R.id.text_view_info_last_update);
+        textSearchNothing = findViewById(R.id.text_search_nothing);
+
         spinnerMore = findViewById(R.id.spinner_more);
         buttonBack = findViewById(R.id.button_back);
         buttonFilter = findViewById(R.id.button_filter);
         buttonFilterClear = findViewById(R.id.button_filter_clear);
+        buttonSearchClear = findViewById(R.id.button_search_clear);
         actionButtonAdd = findViewById(R.id.action_button_add);
         actionButtonMyLocation = findViewById(R.id.action_button_my_location);
+        recyclerViewBillboards = findViewById(R.id.recycler_view_billboards);
         gridViewFilter = findViewById(R.id.grid_view_filter);
+        viewPagerInfo = findViewById(R.id.view_pager_info);
+        buttonInfoClose = findViewById(R.id.layout_info_close);
+        buttonInfoEdit = findViewById(R.id.layout_info_edit);
+
 
         init();
     }
@@ -179,6 +217,18 @@ public class MainActivity extends FragmentActivity implements
     }
 
     @Override
+    public void onBackPressed() {
+        if (Settings.LAYOUT_STATUS != Enumerates.LayoutStatus.NULL) {
+            showLayoutList();
+            clearSearchFocus();
+            clearFilter();
+            clearSelected();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
@@ -194,19 +244,6 @@ public class MainActivity extends FragmentActivity implements
     }
 
     @Override
-    public void onSearchInteraction(BillboardModel item) {
-        Log.i(TAG, "::::: " + item.name);
-        // goto item clicked
-    }
-
-    @Override
-    public void onFilterInteraction() {
-        Log.i(TAG, "onFilterInteraction");
-
-        filter();
-    }
-
-    @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
         map.setOnMarkerClickListener(this);
@@ -218,7 +255,8 @@ public class MainActivity extends FragmentActivity implements
 
         // MyLocation button
         View locationButton = ((View) mapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
-        locationButton.setVisibility(View.GONE);
+        if (locationButton.getVisibility() != View.GONE)
+            locationButton.setVisibility(View.GONE);
         actionButtonMyLocation.setOnClickListener(view -> {
             Permission.Check.LOCATION(this);
             if (Permission.ACCESS_FINE_LOCATION)
@@ -232,7 +270,8 @@ public class MainActivity extends FragmentActivity implements
         // 1915: sunset time in KL
         mapStyle = currentTime < 1915 ? null : MapStyleOptions.loadRawResourceStyle(context, R.raw.mapstyle_night);
 
-        addMarker(myMarker, myLocation, ":D", "1233213123123123");
+        // TODO: just for testing
+        addMarker(myMarker, myLocation, ":D", "billboard_id_3");
     }
 
     @Override
@@ -251,19 +290,37 @@ public class MainActivity extends FragmentActivity implements
      * init
      * initPager
      * initMap
+     * initBillboards
      * initSearch
      * initFilter
      * initMore
+     * initInfo
      */
 
     private void init() {
-        initMap();
+        getData();
+
         initPager();
+        initMap();
+        initBillboards();
+        initSearch();
         initFilter();
         initMore();
-        initSearch();
+        initInfo();
+
+
+        // set the height to 70%
+        int height = (int) (Settings.DEVICE_HEIGHT * 0.64);
+        CoordinatorLayout.LayoutParams paramsDetails = (CoordinatorLayout.LayoutParams) layoutDetails.getLayoutParams();
+        paramsDetails.height = height;
+        layoutDetails.setLayoutParams(paramsDetails);
+
+        CoordinatorLayout.LayoutParams paramsBottomSheet = (CoordinatorLayout.LayoutParams) layoutBottomSheet.getLayoutParams();
+        paramsBottomSheet.height = height;
+        layoutBottomSheet.setLayoutParams(paramsBottomSheet);
 
         actionButtonAdd.setOnClickListener(view -> {
+            clearSelected();
             showLayoutDetails();
         });
     }
@@ -289,14 +346,24 @@ public class MainActivity extends FragmentActivity implements
         mapFragment.getMapAsync(this);
     }
 
+    private void initBillboards() {
+        billboardsAdapter = new BillboardsAdapter(allBillboards, this);
+        recyclerViewBillboards.setAdapter(billboardsAdapter);
+    }
+
     private void initSearch() {
-        autoCompleteAdapter = new AutoCompleteAdapter(context, getData(), this);
-        listSearch.setAdapter(autoCompleteAdapter);
+        searchAdapter = new SearchAdapter(allBillboards, this);
+        listSearch.setAdapter(searchAdapter);
 
         buttonBack.setOnClickListener(view -> {
-            textSearch.setText("");
-            textSearchJustForFocus.requestFocus();
+            clearSearchFocus();
             showLayoutList();
+        });
+        buttonSearchClear.setOnClickListener(view -> {
+            if (buttonSearchClear.getVisibility() != View.GONE)
+                buttonSearchClear.setVisibility(View.GONE);
+            textSearch.setText("");
+            // TODO: clear search
         });
 
         textSearch.setOnFocusChangeListener((v, hasFocus) -> {
@@ -321,24 +388,21 @@ public class MainActivity extends FragmentActivity implements
 
             @Override
             public void afterTextChanged(Editable s) {
-                Log.i(TAG, "a: " + s);
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                Log.i(TAG, "b: " + s);
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.length() != 0) {
-                    // TODO: search and filter
-                    Log.i(TAG, "o: " + s);
+                if (s.length() == 0) {
+                    toggleListSearch(View.INVISIBLE);
+                    searchAdapter.restore();
+                } else {
+                    toggleListSearch(View.VISIBLE);
+                    searchAdapter.search(s.toString());
                 }
             }
-        });
 
-        textSearch.clearFocus();
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+        });
     }
 
     private void initFilter() {
@@ -384,6 +448,20 @@ public class MainActivity extends FragmentActivity implements
         });
     }
 
+    private void initInfo() {
+        pagerAdapterInfo = new InfoPagerAdapter(getSupportFragmentManager(), BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        viewPagerInfo.setAdapter(pagerAdapterInfo);
+
+        buttonInfoEdit.setOnClickListener(view -> {
+            showLayoutDetails();
+        });
+
+        buttonInfoClose.setOnClickListener(view -> {
+            showLayoutList();
+        });
+
+    }
+
 
 
 
@@ -392,6 +470,8 @@ public class MainActivity extends FragmentActivity implements
      * filter
      * addMarker
      * findBillboard
+     * toggleListSearch
+     * hasSearchText
      */
 
     private void filter() {
@@ -415,7 +495,12 @@ public class MainActivity extends FragmentActivity implements
     private void clearFilter() {
         Settings.FILTER_ITEMS = new BillboardModel();
         filterAdapter.setItems();
-        buttonFilterClear.setVisibility(View.GONE);
+        if (buttonFilterClear.getVisibility() != View.GONE)
+            buttonFilterClear.setVisibility(View.GONE);
+    }
+
+    private void clearSelected() {
+        selectedBillboard = new BillboardModel();
     }
 
     private void addMarker(Marker marker, LatLng latLng, String title, String id) {
@@ -441,6 +526,26 @@ public class MainActivity extends FragmentActivity implements
         return false;
     }
 
+    private void toggleListSearch(int visibility) {
+        if (listSearch.getVisibility() != visibility)
+            listSearch.setVisibility(visibility);
+
+        if (buttonSearchClear.getVisibility() != visibility)
+            buttonSearchClear.setVisibility(visibility);
+    }
+
+    private boolean hasSearchText() {
+        return textSearch.getText().length() > 0;
+    }
+
+    private void clearSearchFocus() {
+        textSearchJustForFocus.requestFocus();
+
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) buttonSearchClear.getLayoutParams();
+        params.removeRule(RelativeLayout.ALIGN_PARENT_END);
+        params.addRule(RelativeLayout.ALIGN_PARENT_START, RelativeLayout.TRUE);
+        buttonSearchClear.setLayoutParams(params);
+    }
 
 
 
@@ -471,10 +576,15 @@ public class MainActivity extends FragmentActivity implements
      */
 
     private void showLayoutInfo() {
+        populateInfo();
+
+        Settings.LAYOUT_STATUS = Enumerates.LayoutStatus.INFO;
+
         if (layoutInfoContent.getVisibility() != View.VISIBLE)
             layoutInfoContent.setVisibility(View.VISIBLE);
 
-        // layoutDraggableList -> go down
+        if (layoutBottomSheet.getVisibility() != View.GONE)
+            layoutBottomSheet.setVisibility(View.GONE);
 
         if (layoutDetails.getVisibility() != View.GONE)
             layoutDetails.setVisibility(View.GONE);
@@ -486,10 +596,13 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void showLayoutList() {
+        Settings.LAYOUT_STATUS = Enumerates.LayoutStatus.NULL;
+
         if (layoutInfoContent.getVisibility() != View.GONE)
             layoutInfoContent.setVisibility(View.GONE);
 
-        // layoutDraggableList -> go down
+        if (layoutBottomSheet.getVisibility() != View.VISIBLE)
+            layoutBottomSheet.setVisibility(View.VISIBLE);
 
         if (layoutDetails.getVisibility() != View.GONE)
             layoutDetails.setVisibility(View.GONE);
@@ -507,10 +620,15 @@ public class MainActivity extends FragmentActivity implements
         if (spinnerMore.getVisibility() != View.VISIBLE)
             spinnerMore.setVisibility(View.VISIBLE);
 
+        layoutList.setState(BottomSheetBehavior.STATE_COLLAPSED);
         Utils.hideKeyboard(this);
     }
 
     private void showLayoutDetails() {
+        populateDetails();
+
+        Settings.LAYOUT_STATUS = Enumerates.LayoutStatus.DETAILS;
+
         if (layoutDetails.getVisibility() != View.VISIBLE)
             layoutDetails.setVisibility(View.VISIBLE);
 
@@ -531,6 +649,8 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void showSearchList() {
+        Settings.LAYOUT_STATUS = Enumerates.LayoutStatus.SEARCH;
+
         if (layoutDetails.getVisibility() != View.GONE)
             layoutDetails.setVisibility(View.GONE);
 
@@ -546,6 +666,164 @@ public class MainActivity extends FragmentActivity implements
 
         if (spinnerMore.getVisibility() != View.GONE)
             spinnerMore.setVisibility(View.GONE);
+
+        if (spinnerMore.getVisibility() != View.GONE)
+            spinnerMore.setVisibility(View.GONE);
+
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) buttonSearchClear.getLayoutParams();
+        params.removeRule(RelativeLayout.ALIGN_PARENT_START);
+        params.addRule(RelativeLayout.ALIGN_PARENT_END, RelativeLayout.TRUE);
+        buttonSearchClear.setLayoutParams(params);
+    }
+
+
+
+
+    /**
+     * Populate layouts ->
+     * populateInfo
+     */
+
+    private void populateInfo() {
+        infoPages.clear();
+
+        textInfoBillboardName.setText(selectedBillboard.product);
+        textInfoLastUpdate.setText(Utils.humanizerDateTime(selectedBillboard.updated_at) + " was last update.");
+
+        List<Fragment> temp = new ArrayList<>();
+        for (BillboardMediaModel media: selectedBillboard.medias) {
+            InfoItemFragment infoItemFragment = new InfoItemFragment();
+            infoItemFragment.setData(media);
+            temp.add(infoItemFragment);
+        }
+
+        if (temp.size() > 0) {
+            infoPages.addAll(temp);
+            pagerAdapterInfo.notifyDataSetChanged();
+        }
+    }
+
+    private void populateDetails() {
+        locationFragment.setSelectedBillboard(selectedBillboard);
+        billboardFragment.setSelectedBillboard(selectedBillboard);
+        mediaFragment.setSelectedBillboard(selectedBillboard);
+        statusFragment.setSelectedBillboard(selectedBillboard);
+    }
+
+
+
+
+    /**
+     * Interfaces callback ->
+     * onSearchInteraction
+     * onFilterInteraction
+     */
+
+    @Override
+    public void onSearchInteraction(BillboardModel billboard) {
+        selectedBillboard = billboard;
+
+        LatLng location = new LatLng(billboard.location.latitude, billboard.location.longitude);
+        addMarker(myMarker, location, billboard.name, billboard._id);
+
+        clearSearchFocus();
+        showLayoutInfo();
+    }
+
+    @Override
+    public void onSearchHasResult(boolean isNothing) {
+        if (isNothing) {
+            if (textSearchNothing.getVisibility() != View.VISIBLE)
+                textSearchNothing.setVisibility(View.VISIBLE);
+        } else {
+            if (textSearchNothing.getVisibility() != View.GONE)
+                textSearchNothing.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onFilterInteraction() {
+        Log.i(TAG, "onFilterInteraction");
+
+        filter();
+    }
+
+    @Override
+    public void onBillboardInteraction(BillboardModel billboard) {
+        Log.i(TAG, "onBillboardInteraction.billboard.name: " + billboard.name);
+    }
+
+
+
+
+    /**
+     * Fragments functions ->
+     * onFragmentInteraction
+     */
+
+    public void onFragmentInteraction(BillboardModel selectedBillboard) {
+
+    }
+
+
+
+
+    /**
+     * API callback ->
+     * onGetBillboards
+     * onCreateBillboardLocation
+     * onUpdateBillboardLocation
+     * onCreateBillboardInfo
+     * onUpdateBillboardInfo
+     * onCreateBillboardMedia
+     * onUpdateBillboardMedia
+     * onCreateBillboardStatus
+     * onUpdateBillboardStatus
+     */
+
+    @Override
+    public void onGetBillboards(List<BillboardModel> billboards) {
+
+    }
+
+    @Override
+    public void onCreateBillboardLocation(BillboardLocationModel location) {
+
+    }
+
+    @Override
+    public void onUpdateBillboardLocation(BillboardLocationModel location) {
+
+    }
+
+    @Override
+    public void onCreateBillboardInfo(BillboardModel billboard) {
+
+    }
+
+    @Override
+    public void onUpdateBillboardInfo(BillboardModel billboard) {
+
+    }
+
+    @Override
+    public void onCreateBillboardMedia(BillboardMediaModel media) {
+
+    }
+
+    @Override
+    public void onUpdateBillboardMedia(BillboardMediaModel media) {
+
+    }
+
+    @Override
+    public void onCreateBillboardStatus(BillboardStatusModel status) {
+
+    }
+
+    @Override
+    public void onUpdateBillboardStatus(BillboardStatusModel status) {
+
     }
 
 
@@ -602,14 +880,10 @@ public class MainActivity extends FragmentActivity implements
 
 
     /**
-     * Fragments functions ->
-     * onFragmentInteraction
+     * Private classes ->
      * PagerAdapter
+     * InfoPagerAdapter
      */
-
-    public void onFragmentInteraction(Uri uri) {
-
-    }
 
     private class PagerAdapter extends FragmentPagerAdapter {
 
@@ -645,6 +919,22 @@ public class MainActivity extends FragmentActivity implements
         }
     }
 
+    private class InfoPagerAdapter extends FragmentPagerAdapter {
+
+        public InfoPagerAdapter(@NonNull FragmentManager fm, int behavior) {
+            super(fm, behavior);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return infoPages.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return infoPages.size();
+        }
+    }
 
 
 
@@ -655,19 +945,55 @@ public class MainActivity extends FragmentActivity implements
      */
 
     // name, product, address
-    private List<BillboardModel> getData(){
-        List<BillboardModel> data = new ArrayList<>();
-
-        for (int i = 0; i < 3; i++) {
+    private void getData() {
+        for (int i = 0; i < 30; i++) {
             BillboardModel b = new BillboardModel();
-            b.name = "name " + i;
-            b.product = "product " + i;
-            b.location = new LocationModel();
-            b.location.address = "address " + i;
-            data.add(b);
+            b._id = "billboard_id_" + i;
+            b.name = "billboard name " + i;
+            b.media_owner = "billboard  media owner" + i;
+            b.product = "billboard product " + i;
+            b.advertiser = "billboard advertiser " + i;
+            b.format = "billboard format " + i;
+            b.size = "billboard size " + i;
+            b.environment = "billboard environment " + i;
+            b.lighting = true;
+            b.no_panels = 3;
+            b.speed_limit = "<30";
+            b.type = "static";
+            b.created_at = "2020-01-11T08:15:39.736Z";
+            b.updated_at = "2020-01-14T08:15:39.736Z";
+
+            b.location = new BillboardLocationModel();
+            b.location._id = "location_id_" + i;
+            b.location.name = "location name " + i;
+            b.location.state = "location state " + i;
+            b.location.city = "location city " + i;
+            b.location.address = "location address " + i;
+            b.location.postcode = 123123123;
+            b.location.latitude = 3.124636;
+            b.location.longitude = 101.588264;
+            b.location.by = "321331231123";
+
+
+            for (int j = 0; j < 3; j++) {
+                BillboardMediaModel m = new BillboardMediaModel();
+                m._id = "status_id_" + i;
+                m.media = "https://media.gettyimages.com/photos/powder-explosion-picture-id642320289?s=2048x2048";
+                m.tags = new ArrayList<>(Arrays.asList(
+                        new KeyValue("brand 0", " product 0"),
+                        new KeyValue("brand 1", " product 1"),
+                        new KeyValue("brand 2", " product 2")));
+                m.is_interesting = false;
+
+                b.medias.add(m);
+            }
+
+            b.status = new BillboardStatusModel();
+            b.status._id = "status_id_" + i;
+            b.status.status = "status " + i;
+            b.status.comment = "comment " + i;
+
+            allBillboards.add(b);
         }
-
-        return data;
     }
-
 }

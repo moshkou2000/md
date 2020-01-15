@@ -111,13 +111,9 @@ public class GalleryAdapter extends BaseAdapter {
                 .error(R.drawable.bg_placeholder_image)
                 .into(viewHolder.image);
 
-        if (!viewHolder.button.hasOnClickListeners())
-            viewHolder.button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // TODO: item click ************************
-                }
-            });
+        viewHolder.button.setOnClickListener(view -> {
+            // TODO: item click ************************
+        });
 
         return convertView;
     }

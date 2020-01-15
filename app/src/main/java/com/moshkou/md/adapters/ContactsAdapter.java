@@ -120,7 +120,7 @@ public class ContactsAdapter extends BaseAdapter {
 //        import java.util.List;
 //
 //
-//public class AutoCompleteAdapter extends ArrayAdapter {
+//public class SearchAdapter extends ArrayAdapter {
 //
 //    private static String TAG = "AC_ADP";
 //
@@ -133,7 +133,7 @@ public class ContactsAdapter extends BaseAdapter {
 //
 //
 //
-//    public AutoCompleteAdapter(Context context, int resource, List<String> storeDataLst) {
+//    public SearchAdapter(Context context, int resource, List<String> storeDataLst) {
 //        super(context, resource, storeDataLst);
 //
 //        dataList = storeDataLst;

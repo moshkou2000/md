@@ -9,8 +9,8 @@
         <item name="android:windowBackground">@color/bgWindow</item>
 
         <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
 
@@ -19,6 +19,13 @@
         <item name="android:fontFamily">@font/roboto_light</item>
 
         <item name="buttonStyle">@style/Widget.AppCompat.Button.Colored</item>
+    </style>
+
+    <style name="AppPreview" parent="Theme.AppCompat.Light">
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:navigationBarColor">@color/shadow</item>
     </style>
 
     <style name="AppBottomNavigation" parent="AppTheme">
@@ -31,6 +38,13 @@
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
+    </style>
+
+    <style name="AppMap" parent="AppTheme">
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:navigationBarColor">@color/shadow</item>
     </style>
 
     <style name="AppAuth" parent="AppTheme">
@@ -121,6 +135,18 @@
         <item name="android:textColor">@color/hyperlinkText</item>
         <item name="android:textSize">@dimen/hyperlinkText</item>
         <item name="android:layout_gravity">bottom|center_horizontal</item>
+    </style>
+
+    <style name="FullscreenTheme" parent="AppTheme">
+        <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
+        <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
+    </style>
+
+    <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/black_overlay</item>
     </style>
 
 

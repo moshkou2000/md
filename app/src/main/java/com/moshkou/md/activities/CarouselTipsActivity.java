@@ -98,15 +98,15 @@ public class CarouselTipsActivity extends FragmentActivity {
     private void gotoAlert() {
 
 
-        JSONObject param = new JSONObject();
-        try {
-            param.put("email", "hassan.n@tractive.com.my");
-            param.put("password", "123456");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        Auth.create(param);
+//        JSONObject param = new JSONObject();
+//        try {
+//            param.put("email", "hassan.n@tractive.com.my");
+//            param.put("password", "123456");
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//        Auth.login(param);
 
 //        Intent i = new Intent(context, AlertActivity.class);
 //        startActivity(i);
@@ -116,7 +116,7 @@ public class CarouselTipsActivity extends FragmentActivity {
     @Override
     public void onBackPressed() {
         if (pager.getCurrentItem() == 0) {
-            // If the user is currently looking at the first step, allow the system to handle the
+            // If the USER is currently looking at the first step, allow the system to handle the
             // Back button. This calls finish() on this activity and pops the back stack.
             super.onBackPressed();
         } else {

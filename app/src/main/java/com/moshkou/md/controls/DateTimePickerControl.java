@@ -357,7 +357,7 @@ public class DateTimePickerControl extends FrameLayout {
     }
 
     /**
-     * Set the callback that indicates the time has been adjusted by the user.
+     * Set the callback that indicates the time has been adjusted by the USER.
      * onTimeChangedListener the callback, should not be null.
      */
     public void setOnTimeChangedListener(OnTimeChangedListener onTimeChangedListener) {

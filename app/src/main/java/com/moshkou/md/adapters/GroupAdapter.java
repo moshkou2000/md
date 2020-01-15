@@ -66,14 +66,9 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ItemRowHolde
 
         itemRowHolder.title.setText(item.getTitle());
 
-        if (!itemRowHolder.more.hasOnClickListeners())
-            itemRowHolder.more.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // TODO: item click ************************
-                    Log.i("XXXXX", "card clicked!!!");
-                }
-            });
+        itemRowHolder.more.setOnClickListener(view -> {
+            // TODO: item click ************************
+        });
 
         GroupItemAdapter groupItemAdapter = new GroupItemAdapter(context, item.getChildren());
         itemRowHolder.recyclerView.setAdapter(groupItemAdapter);

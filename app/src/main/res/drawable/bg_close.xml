@@ -3,14 +3,14 @@
     <item>
         <shape android:shape="oval">
             <size
-                android:width="250dp"
-                android:height="250dp" />
+                android:width="20dp"
+                android:height="20dp" />
 
-            <solid android:color="@color/orange" />
+            <solid android:color="@color/lightBlack" />
 
         </shape>
     </item>
     <item android:gravity="center">
-        <inset android:drawable="@drawable/ic_add" />
+        <inset android:drawable="@drawable/ic_keyboard_arrow_down" />
     </item>
 </layer-list>

@@ -1,21 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="ToggleSwitchOptions">
-        <attr name="toggleWidth"        format="dimension"/>
-        <attr name="toggleHeight"       format="dimension"/>
+        <attr name="toggleWidth" format="dimension" />
+        <attr name="toggleHeight" format="dimension" />
 
-        <attr name="textToggleCenter"   format="string" localization="suggested" />
-        <attr name="textToggleLeft"     format="string" localization="suggested" />
-        <attr name="textToggleRight"    format="string" localization="suggested" />
+        <attr name="textToggleCenter" format="string" localization="suggested" />
+        <attr name="textToggleLeft" format="string" localization="suggested" />
+        <attr name="textToggleRight" format="string" localization="suggested" />
 
-        <attr name="activeBgColor"      format="color"/>
-        <attr name="activeTextColor"    format="color"/>
-        <attr name="inactiveBgColor"    format="color"/>
-        <attr name="inactiveTextColor"  format="color"/>
-        <attr name="separatorColor"     format="color"/>
+        <attr name="activeBgColor" format="color" />
+        <attr name="activeTextColor" format="color" />
+        <attr name="inactiveBgColor" format="color" />
+        <attr name="inactiveTextColor" format="color" />
+        <attr name="separatorColor" format="color" />
 
-        <attr name="cornerRadius"       format="dimension"/>
+        <attr name="cornerRadius" format="dimension" />
 
-        <attr name="android:textSize"/>
+        <attr name="android:textSize" />
+    </declare-styleable>
+
+    <!-- Declare custom theme attributes that allow changing which styles are
+         used for button bars depending on the API level.
+         ?android:attr/buttonBarStyle is new as of API 11 so this is
+         necessary to support previous API levels. -->
+    <declare-styleable name="ButtonBarContainerTheme">
+        <attr name="metaButtonBarStyle" format="reference" />
+        <attr name="metaButtonBarButtonStyle" format="reference" />
     </declare-styleable>
 </resources>

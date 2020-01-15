@@ -4,6 +4,7 @@ package com.moshkou.md.helpers;
 import com.android.volley.NetworkResponse;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,8 +46,9 @@ public class Convertor {
 
     // sample input
     // Type >> new TypeToken<ArrayList<PlayerModel>>(){}.getType();
-    public static Object toObject(NetworkResponse response, Type type) {
+    public static <T> T toObject(NetworkResponse response) {
         try {
+            Type type = new TypeToken<T>(){}.getType();
             Gson gson = new Gson();
             return gson.fromJson(toString(response), type);
         } catch (Exception e) {

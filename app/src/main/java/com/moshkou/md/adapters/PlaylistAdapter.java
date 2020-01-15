@@ -72,12 +72,8 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ItemRo
                 .error(R.drawable.bg_placeholder_image)
                 .into(itemRowHolder.image);
 
-        if (!itemRowHolder.button.hasOnClickListeners())
-            itemRowHolder.button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO: item click ************************
-            }
+        itemRowHolder.button.setOnClickListener(view -> {
+            // TODO: item click ************************
         });
 
     }

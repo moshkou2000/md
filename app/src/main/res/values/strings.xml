@@ -77,9 +77,10 @@
     <string name="placeholder_email">Email</string>
     <string name="placeholder_name">Full Name</string>
     <string name="placeholder_bottom_holder">Billboards</string>
-    <string name="placeholder_search">Address, Billboard Product Name</string>
+    <string name="placeholder_search">Address, Billboard &amp; Product Name</string>
     <string name="placeholder_search_hint_header">Search for</string>
     <string name="placeholder_search_hint_body">Type address, billboard and product name</string>
+    <string name="placeholder_search_hint_nothing">No Item matched your search.\nTry to filter..</string>
     <string name="placeholder_state">State</string>
     <string name="placeholder_city">City</string>
     <string name="placeholder_media_owner">Media Owner</string>
@@ -95,7 +96,9 @@
     <string name="action_next">Next</string>
     <string name="action_done">Done</string>
     <string name="action_skip">SKIP</string>
-    <string name="action_more">More</string>
+    <string name="action_more">more</string>
+    <string name="action_less">less</string>
+    <string name="action_hide">hide</string>
     <string name="action_sign_in">Sign in</string>
     <string name="action_sign_up">Sign up</string>
     <string name="action_exit">Exit</string>
@@ -171,5 +174,9 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 
 </resources>

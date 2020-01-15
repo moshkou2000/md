@@ -1,41 +1,43 @@
 package com.moshkou.md.adapters;
 
 
-import android.content.Context;
 import android.net.Uri;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.moshkou.md.models.BaseDataModel;
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.moshkou.md.App;
 import com.moshkou.md.R;
+import com.moshkou.md.helpers.Utils;
+import com.moshkou.md.models.BillboardMediaModel;
+import com.moshkou.md.models.BillboardModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.ItemRowHolder> {
+public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.ItemRowHolder> {
 
 
-    private Context context;
-    private LayoutInflater inflater;
-    private List<BaseDataModel> data = new ArrayList<>();
+    BillboardModel billboard;
 
 
-    public TopicsAdapter(Context context, List<BaseDataModel> data) {
-        this.data = data;
-        this.inflater = LayoutInflater.from(context);//.inflate(R.layout.item_gallery, null);
+    public InfoAdapter(BillboardModel billboard) {
+        this.billboard = billboard;
     }
 
-    public BaseDataModel getItem(int position) {
-        return data.get(position);
+    public BillboardMediaModel getItem(int position) {
+        return billboard.medias.get(position);
     }
 
     @Override
@@ -45,57 +47,52 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.ItemRowHol
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return billboard.medias.size();
     }
 
 
     @NonNull
     @Override
     public ItemRowHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_topics, null);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_info, null);
         return new ItemRowHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ItemRowHolder itemRowHolder, int i) {
-        final BaseDataModel item = getItem(i);
+        final BillboardMediaModel item = getItem(i);
 
-        int right = i + 1 == getItemCount() ? 20 : 0;
-        itemRowHolder.root.setPadding(20, 20, right, 20);
+//        if (i + 1 == getItemCount()) {
+//            itemRowHolder.root.setPadding(0, 0, 0, 20);
+//        }
 
-        itemRowHolder.title.setText(item.getTitle());
-        itemRowHolder.description.setText(item.getDescription());
+        itemRowHolder.brand.setText("brand");
+        itemRowHolder.product.setText("product");
 
         Picasso.get()
-                .load(Uri.parse(item.getImage()))
+                .load(Uri.parse(item.media))
                 .placeholder(R.drawable.bg_placeholder_image)
                 .error(R.drawable.bg_placeholder_image)
                 .into(itemRowHolder.image);
 
-        if (!itemRowHolder.button.hasOnClickListeners())
-            itemRowHolder.button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO: item click ************************
-            }
-        });
-
+        itemRowHolder.button.setOnClickListener(view ->
+                Utils.activityPreview(App.getContext(), item.media, billboard.name, false));
     }
 
     public class ItemRowHolder extends RecyclerView.ViewHolder {
 
-        protected LinearLayout root;
-        protected TextView title;
-        protected TextView description;
+        protected FrameLayout root;
+        protected TextView brand;
+        protected TextView product;
         protected ImageView image;
-        protected Button button;
+        protected FrameLayout button;
 
         public ItemRowHolder(View view) {
             super(view);
 
-            root = (LinearLayout) view;
-            title = view.findViewById(R.id.title);
-            description = view.findViewById(R.id.description);
+            root = view.findViewById(R.id.root);
+            brand = view.findViewById(R.id.brand);
+            product = view.findViewById(R.id.product);
             image = view.findViewById(R.id.image);
             button = view.findViewById(R.id.button);
         }

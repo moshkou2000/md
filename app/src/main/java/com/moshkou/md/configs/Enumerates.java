@@ -14,6 +14,13 @@ public class Enumerates {
         UNSELECT
     }
 
+    public enum LayoutStatus {
+        NULL,
+        INFO,
+        DETAILS,
+        SEARCH
+    }
+
     public enum ConfirmationState {
         NULL,
         OK,

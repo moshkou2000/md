@@ -5,11 +5,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
+import android.text.format.DateUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 import com.google.android.gms.maps.model.LatLng;
 import com.moshkou.md.App;
 import com.moshkou.md.activities.PreviewActivity;
+import com.moshkou.md.configs.Config;
 import com.moshkou.md.configs.Settings;
 import com.moshkou.md.configs.Keys;
 import com.moshkou.md.configs.Enumerates;
@@ -29,10 +32,34 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 
 public class Utils {
+//    2020-01-14T02:28:45.480Z
+
+    @SuppressLint("DefaultLocale")
+    public static String humanizerDateTime(String dateTime) {
+
+        long now = System.currentTimeMillis();
+        long lastUpdated = now;
+
+        try {
+            @SuppressLint("SimpleDateFormat")
+            SimpleDateFormat sdf = new SimpleDateFormat(Config.PATTER_DATETIME);
+
+            Date date = sdf.parse(dateTime);
+            lastUpdated = date.getTime();
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return (String) DateUtils.getRelativeTimeSpanString(lastUpdated, now, DateUtils.DAY_IN_MILLIS);
+    }
 
     @SuppressLint("DefaultLocale")
     public static String humanizerFileSize(int bytes) {
@@ -85,7 +112,7 @@ public class Utils {
 
     public static Boolean makePublicExternalStoragePictureDirectory() {
         if (isExternalStorageWritable()) {
-            // Get the directory for the user's public pictures directory.
+            // Get the directory for the USER's public pictures directory.
             File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), App.getContext().getString(R.string.app_name));
             if (!file.mkdirs()) {
                 Log.i("UTILS", "Public Directory not created");
@@ -111,6 +138,33 @@ public class Utils {
         } catch (Exception ex) {
             Log.d("ERROR", "Unable to get device metrics");
         }
+    }
+
+    // slide the view from below itself to the current position
+    public void slideUp(View view) {
+        view.setVisibility(View.VISIBLE);
+        TranslateAnimation animate = new TranslateAnimation(
+
+                0,                 // fromXDelta
+                0,                 // toXDelta
+                view.getHeight(),  // fromYDelta
+                0);                // toYDelta
+        animate.setDuration(700);
+        animate.setFillAfter(true);
+        view.startAnimation(animate);
+    }
+
+    // slide the view from its current position to below itself
+    public void slideDown(View view) {
+        view.setVisibility(View.GONE);
+        TranslateAnimation animate = new TranslateAnimation(
+                0,                 // fromXDelta
+                0,                 // toXDelta
+                0,                 // fromYDelta
+                view.getHeight()); // toYDelta
+        animate.setDuration(700);
+        animate.setFillAfter(true);
+        view.startAnimation(animate);
     }
 
     public static void hideKeyboard(Activity activity) {
@@ -147,10 +201,10 @@ public class Utils {
         } catch(Exception ex) {}
     }
 
-    public static void activityPreview(Context context, String url, String name, boolean isVideo){
+    public static void activityPreview(Context context, String url, String title, boolean isVideo){
         Intent i = new Intent(context, PreviewActivity.class);
         i.putExtra(Keys.URL, url);
-        i.putExtra(Keys.NAME, name);
+        i.putExtra(Keys.NAME, title);
         i.putExtra(Keys.VIDEO, isVideo);
         context.startActivity(i);
     }

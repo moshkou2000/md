@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.moshkou.md">
 
-
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -14,20 +13,17 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
-
-    <uses-feature android:name="android.hardware.camera2" android:required="true" />
-    <uses-feature android:name="android.hardware.camera.autofocus" />
-    <!--<uses-feature android:name="android.hardware.telephony"/>-->
-
-
+    <uses-feature
+        android:name="android.hardware.camera2"
+        android:required="true" />
+    <uses-feature android:name="android.hardware.camera.autofocus" /> <!-- <uses-feature android:name="android.hardware.telephony"/> -->
     <supports-screens
         android:anyDensity="true"
+        android:largeScreens="false"
+        android:normalScreens="true"
         android:resizeable="true"
         android:smallScreens="true"
-        android:normalScreens="true"
-        android:largeScreens="false"
         android:xlargeScreens="false" />
-
 
     <application
         android:name=".App"
@@ -39,7 +35,9 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -55,7 +53,6 @@
             </intent-filter>
         </receiver>
 
-
         <activity
             android:name=".activities.SplashActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -66,43 +63,41 @@
             android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activities.MainActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_main"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/AppLevel"
+            android:theme="@style/AppMap"
             android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activities.FilterActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_filter"
             android:launchMode="singleTask"
+            android:parentActivityName=".activities.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:parentActivityName=".activities.MainActivity"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
         <activity
             android:name=".activities.PreviewActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_preview"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
+            android:parentActivityName=".activities.MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"
+            android:theme="@style/AppPreview"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
         <activity
             android:name=".activities.LoginActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -111,7 +106,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppAuth"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
         <activity
             android:name=".activities.RegisterActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -120,7 +114,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppAuth"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
         <activity
             android:name=".activities.AlertActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -129,7 +122,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppAuth"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
         <activity
             android:name=".activities.LoginVerificationActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -138,7 +130,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppAuth"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
         <activity
             android:name=".activities.LoginSuspiciousActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -147,7 +138,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppAuth"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
         <activity
             android:name=".activities.LoginAttemptActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -156,7 +146,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppAuth"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
         <activity
             android:name=".activities.CarouselTipsActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -165,7 +154,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTips"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
         <activity
             android:name=".activities.HelpActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -174,7 +162,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppAuth"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
         <activity
             android:name=".activities.ContactsActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -183,7 +170,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppAuth"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
         <activity
             android:name=".activities.ProfileActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -192,7 +178,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
         <activity
             android:name=".activities.ActivityActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -201,7 +186,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
         <activity
             android:name=".activities.LevelsActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -210,7 +194,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppLevel"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
         <activity
             android:name=".activities.BottomNavigationActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -219,7 +202,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppBottomNavigation"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
         <activity
             android:name=".activities.CameraActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -228,7 +210,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppAuth"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
         <activity
             android:name=".activities.GroupActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -237,7 +218,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppAuth"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
         <activity
             android:name=".activities.CalendarActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -246,7 +226,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppCalendar"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
         <activity
             android:name=".activities.BookingActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -255,7 +234,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppAuth"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
         <activity
             android:name=".activities.BookingListActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -264,7 +242,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppAuth"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
         <activity
             android:name=".activities.MapActivity"
             android:configChanges="orientation|keyboardHidden"

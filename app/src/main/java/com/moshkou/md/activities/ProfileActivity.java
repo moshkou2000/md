@@ -26,30 +26,21 @@ public class ProfileActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Test Title");
         toolbar.setSubtitle("Test Subtitle");
+        toolbar.setNavigationOnClickListener(view -> finish());
         toolbar.inflateMenu(R.menu.profile);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.action1:
-                        Utils.toast(context, Enumerates.Message.ERROR, "1", Toast.LENGTH_LONG);
-                        return true;
-                    case R.id.action2:
-                        Utils.toast(context, Enumerates.Message.ERROR, "22", Toast.LENGTH_LONG);
-                        return true;
-                    case R.id.actionMore:
-                        Utils.toast(context, Enumerates.Message.ERROR, "333", Toast.LENGTH_LONG);
-                        return true;
-                    default:
-                        return false;
-                }
+        toolbar.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.action1:
+                    Utils.toast(context, Enumerates.Message.ERROR, "1", Toast.LENGTH_LONG);
+                    return true;
+                case R.id.action2:
+                    Utils.toast(context, Enumerates.Message.ERROR, "22", Toast.LENGTH_LONG);
+                    return true;
+                case R.id.actionMore:
+                    Utils.toast(context, Enumerates.Message.ERROR, "333", Toast.LENGTH_LONG);
+                    return true;
+                default:
+                    return false;
             }
         });
     }

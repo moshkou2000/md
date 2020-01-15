@@ -3,9 +3,12 @@ package com.moshkou.md.activities;
 import android.content.Intent;
 import android.net.Uri;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.VideoView;
 
@@ -37,38 +40,34 @@ public class PreviewActivity extends AppCompatActivity {
 
         if (!isVideo) {
             ImageView image = findViewById(R.id.image);
-            image.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (!hasFocus) {
-                        hideSystemUI();
-                    } else {
-                        showSystemUI();
-                    }
-                    hasFocus = !hasFocus;
+            image.setOnClickListener(view -> {
+                if (!hasFocus) {
+                    hideSystemUI();
+                } else {
+                    showSystemUI();
                 }
+                hasFocus = !hasFocus;
             });
-            image.setVisibility(View.VISIBLE);
+            if (image.getVisibility() != View.VISIBLE)
+                image.setVisibility(View.VISIBLE);
             Picasso.get()
-                    .load("IMAGE URL")
+                    .load(url)
                     .placeholder(R.drawable.ic_image)
                     .error(R.drawable.ic_image)
                     .into(image);
         } else {
             VideoView video = findViewById(R.id.video);
-            video.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (!hasFocus) {
-                        hideSystemUI();
-                    } else {
-                        showSystemUI();
-                    }
-                    hasFocus = !hasFocus;
+            video.setOnClickListener(view -> {
+                if (!hasFocus) {
+                    hideSystemUI();
+                } else {
+                    showSystemUI();
                 }
+                hasFocus = !hasFocus;
             });
-            video.setVisibility(View.VISIBLE);
-            video.setVideoURI(Uri.parse("IMAGE URL"));
+            if (video.getVisibility() != View.VISIBLE)
+                video.setVisibility(View.VISIBLE);
+            video.setVideoURI(Uri.parse(url));
             video.start();
         }
     }

@@ -33,13 +33,13 @@ public class SplashActivity extends AppCompatActivity {
 
         String data = SharedPreferencesSupport.getString(context, Keys.USER);
         Gson gson = new Gson();
-        Settings.user = gson.fromJson(data, UserModel.class);
+        Settings.USER = gson.fromJson(data, UserModel.class);
 
-        if (Settings.user != null) {
+        if (Settings.USER != null) {
             String token = SharedPreferencesSupport.getString(context, Keys.TOKEN);
 
             if (!token.isEmpty())
-                Settings.user.setToken(token);
+                Settings.USER.setToken(token);
         }
 
         Intent i = new Intent(context, MainActivity.class);

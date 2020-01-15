@@ -9,6 +9,7 @@ import com.android.volley.NoConnectionError;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.moshkou.md.App;
+import com.moshkou.md.configs.Messages;
 import com.moshkou.md.configs.Settings;
 import com.moshkou.md.configs.Enumerates;
 import com.moshkou.md.configs.StatusCodes;
@@ -17,18 +18,21 @@ import com.moshkou.md.helpers.Utils;
 
 public class Error implements Response.ErrorListener {
 
+    private static String TAG = "VOLLEY_ERROR";
+
     @Override
     public void onErrorResponse(VolleyError error) {
-        Log.i("MY_ERROR", error.toString());
+
+        Log.i(TAG, error.toString());
 
         if (error instanceof NoConnectionError || error instanceof NetworkError) {
             Settings.CONNECTIVITY = Enumerates.Connectivity.NO_CONNECTIVITY;
-            Utils.toast(App.getContext(), Enumerates.Message.ERROR, "No Internet", Toast.LENGTH_SHORT);
+            Utils.toast(App.getContext(), Enumerates.Message.ERROR, Messages.NO_INTERNET, Toast.LENGTH_SHORT);
         } else {
             NetworkResponse response = error.networkResponse;
 
             if (response != null) {
-                Log.i("MY_ERROR", ">>" + response.statusCode);
+                Log.i(TAG, "statusCode: " + response.statusCode);
 
                 switch (response.statusCode) {
                     case StatusCodes._400:  // Bad Request

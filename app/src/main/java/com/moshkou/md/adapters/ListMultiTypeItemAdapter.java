@@ -81,23 +81,14 @@ public class ListMultiTypeItemAdapter extends RecyclerView.Adapter<ListMultiType
                     .into(itemRowHolder.image1);
 
             itemRowHolder.extra1.bringToFront();
-            if (!itemRowHolder.extra1.hasOnClickListeners())
-                itemRowHolder.extra1.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // TODO: item click ************************
-                        Log.i("XXXXX", "option clicked!!!");
-                    }
-                });
+            itemRowHolder.extra1.setOnClickListener(view -> {
+                // TODO: item click ************************
+            });
 
-            if (!itemRowHolder.button1.hasOnClickListeners())
-                itemRowHolder.button1.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // TODO: item click ************************
-                        Log.i("XXXXX", "card clicked!!!");
-                    }
-                });
+            itemRowHolder.button1.setOnClickListener(view -> {
+                // TODO: item click ************************
+            });
+
         } else {
             itemRowHolder.cardView1.setVisibility(View.GONE);
             itemRowHolder.cardView2.setVisibility(View.VISIBLE);
@@ -110,14 +101,9 @@ public class ListMultiTypeItemAdapter extends RecyclerView.Adapter<ListMultiType
                     .error(R.drawable.bg_placeholder_image)
                     .into(itemRowHolder.image2);
 
-            if (!itemRowHolder.button2.hasOnClickListeners())
-                itemRowHolder.button2.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // TODO: item click ************************
-                        Log.i("XXXXX", "card clicked!!!");
-                    }
-                });
+            itemRowHolder.button2.setOnClickListener(view -> {
+                // TODO: item click ************************
+            });
         }
 
     }

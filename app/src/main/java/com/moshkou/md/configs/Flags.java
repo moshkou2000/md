@@ -5,5 +5,7 @@ public class Flags {
     public final static String LOGIN                    = "LOGIN";
     public final static String NEW                      = "NEW";
     public final static String ORIGIN_DESTINATION       = "ORIGIN_DESTINATION";
+    public final static String STATIC                   = "static";
+    public final static String DIGITAL                  = "digital";
 
 }

@@ -862,7 +862,7 @@ public class ImageViewControl extends AppCompatImageView {
             }
 
             //
-            // OnImageViewControlListener is set: ImageViewControl dragged by user.
+            // OnImageViewControlListener is set: ImageViewControl dragged by USER.
             //
             if (ImageViewControlListener != null) {
                 ImageViewControlListener.onMove();
@@ -876,7 +876,7 @@ public class ImageViewControl extends AppCompatImageView {
     }
 
     /**
-     * ScaleListener detects user two finger scaling and scales image.
+     * ScaleListener detects USER two finger scaling and scales image.
      *
      * @author Ortiz
      */
@@ -892,7 +892,7 @@ public class ImageViewControl extends AppCompatImageView {
             scaleImage(detector.getScaleFactor(), detector.getFocusX(), detector.getFocusY(), true);
 
             //
-            // OnImageViewControlListener is set: ImageViewControl pinch zoomed by user.
+            // OnImageViewControlListener is set: ImageViewControl pinch zoomed by USER.
             //
             if (ImageViewControlListener != null) {
                 ImageViewControlListener.onMove();
@@ -1152,7 +1152,7 @@ public class ImageViewControl extends AppCompatImageView {
         public void run() {
 
             //
-            // OnImageViewControlListener is set: ImageViewControl listener has been flung by user.
+            // OnImageViewControlListener is set: ImageViewControl listener has been flung by USER.
             // Listener runnable updated with each frame of fling animation.
             //
             if (ImageViewControlListener != null) {

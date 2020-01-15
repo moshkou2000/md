@@ -52,8 +52,8 @@
                     android:id="@+id/coordinatorLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingStart="16dp"
                     android:paddingTop="8dp"
+                    android:paddingStart="16dp"
                     android:paddingEnd="16dp">
 
                     <androidx.viewpager.widget.ViewPager
