@@ -2,6 +2,7 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="headerText">24sp</dimen>
+    <dimen name="titleText">16sp</dimen>
     <dimen name="footerText">14sp</dimen>
     <dimen name="bodyText">14sp</dimen>
 

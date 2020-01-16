@@ -30,7 +30,6 @@ import androidx.leanback.widget.HorizontalGridView;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -97,10 +96,12 @@ public class MainActivity extends FragmentActivity implements
     private View mapView;
 
     private LinearLayout layoutInfoContent;
-    private RelativeLayout layoutDetails;
-    private RelativeLayout layoutBottomSheet;
+    private RelativeLayout layoutBottomSheetDetails;
+    private RelativeLayout layoutBottomSheetBillboards;
+    private BottomSheetBehavior layoutDetails;
     private BottomSheetBehavior layoutList;
 
+    private TabLayout tabs;
     private ViewPager pager;
     private EditText textSearch;
     private EditText textSearchJustForFocus;
@@ -127,7 +128,7 @@ public class MainActivity extends FragmentActivity implements
     private SearchAdapter searchAdapter;
     private FilterAdapter filterAdapter;
     private BillboardsAdapter billboardsAdapter;
-    private InfoPagerAdapter pagerAdapterInfo;
+    private InfoPagerAdapter infoPagerAdapter;
 
     private LocationFragment locationFragment;
     private BillboardFragment billboardFragment;
@@ -138,13 +139,13 @@ public class MainActivity extends FragmentActivity implements
     private MapStyleOptions mapStyle = null;
     private LatLng myLocation = new LatLng(3.129489, 101.594188);
     private Marker myMarker;
-    private static final int[] TAB_TITLES = new int[] { R.string.placeholder_name, R.string.placeholder_email, R.string.placeholder_login, R.string.placeholder_phone };
+    private static final int[] TAB_TITLES = new int[] { R.string.placeholder_location, R.string.placeholder_billboards, R.string.placeholder_media, R.string.placeholder_status };
 
 
     private List<Fragment> infoPages = new ArrayList<>();
 
     private List<BillboardModel> allBillboards = new ArrayList<>();
-    private BillboardModel selectedBillboard;
+    private BillboardModel selectedBillboard = new BillboardModel();
 
 
 
@@ -167,10 +168,12 @@ public class MainActivity extends FragmentActivity implements
         mapView = findViewById(R.id.map);
 
         layoutInfoContent = findViewById(R.id.layout_info_content);
-        layoutDetails = findViewById(R.id.layout_details);
-        layoutBottomSheet = findViewById(R.id.bottom_sheet);
-        layoutList = BottomSheetBehavior.from(layoutBottomSheet);
+        layoutBottomSheetDetails = findViewById(R.id.bottom_sheet_details);
+        layoutBottomSheetBillboards = findViewById(R.id.bottom_sheet_billboards);
+        layoutDetails = BottomSheetBehavior.from(layoutBottomSheetDetails);
+        layoutList = BottomSheetBehavior.from(layoutBottomSheetBillboards);
 
+        tabs = findViewById(R.id.tabs);
         pager = findViewById(R.id.pager);
         textSearch = findViewById(R.id.text_search);
         textSearchJustForFocus = findViewById(R.id.text_search_just_for_focus);
@@ -311,17 +314,36 @@ public class MainActivity extends FragmentActivity implements
 
         // set the height to 70%
         int height = (int) (Settings.DEVICE_HEIGHT * 0.64);
-        CoordinatorLayout.LayoutParams paramsDetails = (CoordinatorLayout.LayoutParams) layoutDetails.getLayoutParams();
-        paramsDetails.height = height;
-        layoutDetails.setLayoutParams(paramsDetails);
 
-        CoordinatorLayout.LayoutParams paramsBottomSheet = (CoordinatorLayout.LayoutParams) layoutBottomSheet.getLayoutParams();
-        paramsBottomSheet.height = height;
-        layoutBottomSheet.setLayoutParams(paramsBottomSheet);
+        CoordinatorLayout.LayoutParams paramsBillboards = (CoordinatorLayout.LayoutParams) layoutBottomSheetBillboards.getLayoutParams();
+        paramsBillboards.height = height;
+        layoutBottomSheetBillboards.setLayoutParams(paramsBillboards);
+
+        CoordinatorLayout.LayoutParams paramsDetails = (CoordinatorLayout.LayoutParams) layoutBottomSheetDetails.getLayoutParams();
+        paramsDetails.height = height;
+        layoutBottomSheetDetails.setLayoutParams(paramsDetails);
+        layoutDetails.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View view, int i) {
+                if (i == BottomSheetBehavior.STATE_COLLAPSED) {
+                    clearSearchFocus();
+                    showLayoutList();
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View view, float v) { }
+        });
 
         actionButtonAdd.setOnClickListener(view -> {
             clearSelected();
             showLayoutDetails();
+            tabs.getTabAt(0).select();
+        });
+
+        buttonBack.setOnClickListener(view -> {
+            clearSearchFocus();
+            showLayoutList();
         });
     }
 
@@ -333,9 +355,6 @@ public class MainActivity extends FragmentActivity implements
 
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager(), BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         pager.setAdapter(pagerAdapter);
-
-
-        TabLayout tabs = findViewById(R.id.tabs);
         tabs.setupWithViewPager(pager);
     }
 
@@ -355,10 +374,6 @@ public class MainActivity extends FragmentActivity implements
         searchAdapter = new SearchAdapter(allBillboards, this);
         listSearch.setAdapter(searchAdapter);
 
-        buttonBack.setOnClickListener(view -> {
-            clearSearchFocus();
-            showLayoutList();
-        });
         buttonSearchClear.setOnClickListener(view -> {
             if (buttonSearchClear.getVisibility() != View.GONE)
                 buttonSearchClear.setVisibility(View.GONE);
@@ -449,11 +464,12 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void initInfo() {
-        pagerAdapterInfo = new InfoPagerAdapter(getSupportFragmentManager(), BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        viewPagerInfo.setAdapter(pagerAdapterInfo);
+        infoPagerAdapter = new InfoPagerAdapter(getSupportFragmentManager(), BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        viewPagerInfo.setAdapter(infoPagerAdapter);
 
         buttonInfoEdit.setOnClickListener(view -> {
             showLayoutDetails();
+            tabs.getTabAt(2).select();
         });
 
         buttonInfoClose.setOnClickListener(view -> {
@@ -522,7 +538,7 @@ public class MainActivity extends FragmentActivity implements
                     return true;
                 }
             }
-        selectedBillboard = null;
+        selectedBillboard = new BillboardModel();
         return false;
     }
 
@@ -583,11 +599,11 @@ public class MainActivity extends FragmentActivity implements
         if (layoutInfoContent.getVisibility() != View.VISIBLE)
             layoutInfoContent.setVisibility(View.VISIBLE);
 
-        if (layoutBottomSheet.getVisibility() != View.GONE)
-            layoutBottomSheet.setVisibility(View.GONE);
+        if (layoutBottomSheetBillboards.getVisibility() != View.GONE)
+            layoutBottomSheetBillboards.setVisibility(View.GONE);
 
-        if (layoutDetails.getVisibility() != View.GONE)
-            layoutDetails.setVisibility(View.GONE);
+        if (layoutBottomSheetDetails.getVisibility() != View.GONE)
+            layoutBottomSheetDetails.setVisibility(View.GONE);
 
         if (layoutSearch.getVisibility() != View.GONE)
             layoutSearch.setVisibility(View.GONE);
@@ -601,11 +617,11 @@ public class MainActivity extends FragmentActivity implements
         if (layoutInfoContent.getVisibility() != View.GONE)
             layoutInfoContent.setVisibility(View.GONE);
 
-        if (layoutBottomSheet.getVisibility() != View.VISIBLE)
-            layoutBottomSheet.setVisibility(View.VISIBLE);
+        if (layoutBottomSheetBillboards.getVisibility() != View.VISIBLE)
+            layoutBottomSheetBillboards.setVisibility(View.VISIBLE);
 
-        if (layoutDetails.getVisibility() != View.GONE)
-            layoutDetails.setVisibility(View.GONE);
+        if (layoutBottomSheetDetails.getVisibility() != View.GONE)
+            layoutBottomSheetDetails.setVisibility(View.GONE);
 
         if (layoutSearch.getVisibility() != View.GONE)
             layoutSearch.setVisibility(View.GONE);
@@ -629,8 +645,14 @@ public class MainActivity extends FragmentActivity implements
 
         Settings.LAYOUT_STATUS = Enumerates.LayoutStatus.DETAILS;
 
-        if (layoutDetails.getVisibility() != View.VISIBLE)
-            layoutDetails.setVisibility(View.VISIBLE);
+        if (layoutInfoContent.getVisibility() != View.GONE)
+            layoutInfoContent.setVisibility(View.GONE);
+
+        if (layoutBottomSheetBillboards.getVisibility() != View.GONE)
+            layoutBottomSheetBillboards.setVisibility(View.GONE);
+
+        if (layoutBottomSheetDetails.getVisibility() != View.VISIBLE)
+            layoutBottomSheetDetails.setVisibility(View.VISIBLE);
 
         if (layoutSearch.getVisibility() != View.GONE)
             layoutSearch.setVisibility(View.GONE);
@@ -645,14 +667,15 @@ public class MainActivity extends FragmentActivity implements
         if (spinnerMore.getVisibility() != View.GONE)
             spinnerMore.setVisibility(View.GONE);
 
+        layoutDetails.setState(BottomSheetBehavior.STATE_EXPANDED);
         Utils.hideKeyboard(this);
     }
 
     private void showSearchList() {
         Settings.LAYOUT_STATUS = Enumerates.LayoutStatus.SEARCH;
 
-        if (layoutDetails.getVisibility() != View.GONE)
-            layoutDetails.setVisibility(View.GONE);
+        if (layoutBottomSheetDetails.getVisibility() != View.GONE)
+            layoutBottomSheetDetails.setVisibility(View.GONE);
 
         if (layoutSearch.getVisibility() != View.VISIBLE)
             layoutSearch.setVisibility(View.VISIBLE);
@@ -685,7 +708,6 @@ public class MainActivity extends FragmentActivity implements
      */
 
     private void populateInfo() {
-        infoPages.clear();
 
         textInfoBillboardName.setText(selectedBillboard.product);
         textInfoLastUpdate.setText(Utils.humanizerDateTime(selectedBillboard.updated_at) + " was last update.");
@@ -697,9 +719,11 @@ public class MainActivity extends FragmentActivity implements
             temp.add(infoItemFragment);
         }
 
+        infoPages.clear();
         if (temp.size() > 0) {
             infoPages.addAll(temp);
-            pagerAdapterInfo.notifyDataSetChanged();
+            infoPagerAdapter.notifyDataSetChanged();
+            viewPagerInfo.setCurrentItem(0);
         }
     }
 
@@ -966,13 +990,14 @@ public class MainActivity extends FragmentActivity implements
             b.location = new BillboardLocationModel();
             b.location._id = "location_id_" + i;
             b.location.name = "location name " + i;
+            b.location.country = "Malaysia";
             b.location.state = "location state " + i;
             b.location.city = "location city " + i;
             b.location.address = "location address " + i;
-            b.location.postcode = 123123123;
+            b.location.postcode = "47320";
             b.location.latitude = 3.124636;
             b.location.longitude = 101.588264;
-            b.location.by = "321331231123";
+            b.location.by = "h3j4h53hbh3r3hh3434hj34brrhbj34";
 
 
             for (int j = 0; j < 3; j++) {

@@ -124,29 +124,11 @@
         </LinearLayout>
     </LinearLayout>
 
+    <!--details layout-->
+    <include layout="@layout/fragment_bottom_sheet_details" />
+
     <!--list of billboards layout-->
     <include layout="@layout/fragment_bottom_sheet_billboards" />
-
-    <!--details layout-->
-    <RelativeLayout
-        android:id="@+id/layout_details"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#FFFFFF"
-        android:layout_gravity="bottom"
-        android:visibility="gone">
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/pager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="48dp" />
-    </RelativeLayout>
 
     <!--search layout-->
     <RelativeLayout
