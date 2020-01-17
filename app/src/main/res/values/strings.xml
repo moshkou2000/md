@@ -40,6 +40,14 @@
     <string name="title_city">City</string>
     <string name="title_address">Address</string>
     <string name="title_postcode">Postcode</string>
+    <string name="title_media_owner">Media Owner</string>
+    <string name="title_advertiser">Advertiser</string>
+    <string name="title_size">Size</string>
+    <string name="title_format">Format</string>
+    <string name="title_environment">Environment</string>
+    <string name="title_lighting">Lighting</string>
+    <string name="title_no_panels">No. of panels</string>
+    <string name="title_speed_limit">Speed Limit</string>
 
     <!--Header-->
     <string name="header_alert">Oops!!!</string>
@@ -85,17 +93,22 @@
     <string name="placeholder_search_hint_header">Search for</string>
     <string name="placeholder_search_hint_body">Type address, billboard and product name</string>
     <string name="placeholder_search_hint_nothing">No Item matched your search.\nTry to filter..</string>
-    <string name="placeholder_media_owner">Media Owner</string>
-    <string name="placeholder_format">Format</string>
+    <string name="placeholder_media_owner">Write Media Owner</string>
+    <string name="placeholder_format">Write Format</string>
+    <string name="placeholder_size">Write Size</string>
     <string name="placeholder_advertiser">Advertiser</string>
     <string name="placeholder_location">LOCATION</string>
     <string name="placeholder_billboards">BILLBOARD</string>
     <string name="placeholder_media">MEDIA</string>
     <string name="placeholder_status">STATUS</string>
-    <string name="placeholder_state">Select State</string>
-    <string name="placeholder_city">Select City</string>
-    <string name="placeholder_address">Write Address</string>
+    <string name="placeholder_state">Write State</string>
+    <string name="placeholder_city">Write City</string>
+    <string name="placeholder_address">Write the address</string>
     <string name="placeholder_postcode">Write Postcode</string>
+    <string name="placeholder_environment">Write Environment</string>
+    <string name="placeholder_billboard_details">Put the billboard details</string>
+    <string name="placeholder_digital_screen">It has digital screen</string>
+    <string name="placeholder_lighting">It has lighting</string>
 
 
     <!--Actions-->
@@ -145,6 +158,18 @@
     <string name="action_link_update_password">Update Password</string>
 
     <string name="alphabets">+\nA\nB\nC\nD\nE\nF\nG\nH\nI\nJ\nK\nL\nM\nN\nO\nP\nQ\nR\nS\nT\nU\nV\nW\nX\nY\nZ</string>
+
+    <string name="no_of_panels_1">1</string>
+    <string name="no_of_panels_2">2</string>
+    <string name="no_of_panels_3">3</string>
+    <string name="no_of_panels_4">4</string>
+    <string name="no_of_panels_5">5</string>
+
+    <string name="speed_limits_1">&lt; 30</string>
+    <string name="speed_limits_2">30 - 59</string>
+    <string name="speed_limits_3">60 - 79</string>
+    <string name="speed_limits_4">80 - 99</string>
+    <string name="speed_limits_5">> 100</string>
 
     <string-array name="alphabets">
         <item>+</item>

@@ -5,15 +5,22 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.moshkou.md.App;
 import com.moshkou.md.R;
+import com.moshkou.md.configs.Config;
+import com.moshkou.md.helpers.Utils;
 import com.moshkou.md.interfaces.OnFragmentInteractionListener;
 import com.moshkou.md.models.BillboardModel;
 
@@ -36,8 +43,8 @@ public class LocationFragment extends Fragment {
     private TextView textPostcode;
     private TextView textCountry;
 
-    private TextView textEditCity;
-    private TextView textEditState;
+    private AutoCompleteTextView textEditCity;
+    private AutoCompleteTextView textEditState;
     private EditText textEditAddress;
     private EditText textEditPostcode;
 
@@ -78,20 +85,11 @@ public class LocationFragment extends Fragment {
         textEditState = view.findViewById(R.id.text_edit_state);
         textEditAddress = view.findViewById(R.id.text_edit_address);
         textEditPostcode = view.findViewById(R.id.text_edit_postcode);
-
         buttonEdit = view.findViewById(R.id.button_edit);
-        buttonEdit.setOnClickListener(v -> toggleView());
-
         buttonCancel = view.findViewById(R.id.button_cancel);
-        buttonCancel.setOnClickListener(v -> toggleView());
-
         buttonSave = view.findViewById(R.id.button_save);
-        buttonSave.setOnClickListener(v -> {
-            // TODO: api call
 
-            toggleView();
-        });
-
+        init();
         populate();
 
         return view;
@@ -118,6 +116,31 @@ public class LocationFragment extends Fragment {
         this.selectedBillboard = selectedBillboard;
 
         populate();
+    }
+
+    private void init() {
+        buttonEdit.setOnClickListener(v -> toggleView());
+        buttonCancel.setOnClickListener(v -> toggleView());
+        buttonSave.setOnClickListener(v -> {
+            // TODO: api call
+
+            toggleView();
+        });
+
+        ArrayAdapter<String> adapterState = new ArrayAdapter<>(
+                App.getContext(),
+                android.R.layout.select_dialog_item,
+                Config.STATES);
+        textEditState.setThreshold(1);//will start working from first character
+        textEditState.setAdapter(adapterState);
+        textEditState.setOnItemClickListener((parent, v, position, id) -> {
+                ArrayAdapter<String> adapterCity = new ArrayAdapter<>(
+                        App.getContext(),
+                        android.R.layout.select_dialog_item,
+                        Utils.getCities(adapterState.getItem(position)));
+                textEditCity.setThreshold(1);//will start working from first character
+                textEditCity.setAdapter(adapterCity);
+        });
     }
 
     private void toggleView() {

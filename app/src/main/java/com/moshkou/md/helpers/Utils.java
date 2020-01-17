@@ -25,6 +25,7 @@ import com.moshkou.md.configs.Settings;
 import com.moshkou.md.configs.Keys;
 import com.moshkou.md.configs.Enumerates;
 import com.moshkou.md.R;
+import com.moshkou.md.models.KeyValue;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,6 +37,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 
 public class Utils {
@@ -227,6 +229,15 @@ public class Utils {
         }
 
         return list;
+    }
+
+    public static List<String> getCities(String state) {
+        for (KeyValue item: Config.CITIES) {
+            if (item.key.equals(state)) {
+                return (List<String>) item.value;
+            }
+        }
+        return new ArrayList<>();
     }
 
 }

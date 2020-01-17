@@ -95,9 +95,10 @@ public class MainActivity extends FragmentActivity implements
 
     private View mapView;
 
+    private LinearLayout layoutDetailsGap;
     private LinearLayout layoutInfoContent;
-    private RelativeLayout layoutBottomSheetDetails;
-    private RelativeLayout layoutBottomSheetBillboards;
+    private LinearLayout layoutBottomSheetDetails;
+    private LinearLayout layoutBottomSheetBillboards;
     private BottomSheetBehavior layoutDetails;
     private BottomSheetBehavior layoutList;
 
@@ -168,6 +169,7 @@ public class MainActivity extends FragmentActivity implements
         mapView = findViewById(R.id.map);
 
         layoutInfoContent = findViewById(R.id.layout_info_content);
+        layoutDetailsGap = findViewById(R.id.layout_details_gap);
         layoutBottomSheetDetails = findViewById(R.id.bottom_sheet_details);
         layoutBottomSheetBillboards = findViewById(R.id.bottom_sheet_billboards);
         layoutDetails = BottomSheetBehavior.from(layoutBottomSheetDetails);
@@ -311,20 +313,21 @@ public class MainActivity extends FragmentActivity implements
         initMore();
         initInfo();
 
-
-        // set the height to 70%
-        int height = (int) (Settings.DEVICE_HEIGHT * 0.64);
-
         CoordinatorLayout.LayoutParams paramsBillboards = (CoordinatorLayout.LayoutParams) layoutBottomSheetBillboards.getLayoutParams();
-        paramsBillboards.height = height;
+        paramsBillboards.height = (int) (Settings.DEVICE_HEIGHT * 0.64); // set the height to 64%
         layoutBottomSheetBillboards.setLayoutParams(paramsBillboards);
 
-        CoordinatorLayout.LayoutParams paramsDetails = (CoordinatorLayout.LayoutParams) layoutBottomSheetDetails.getLayoutParams();
-        paramsDetails.height = height;
-        layoutBottomSheetDetails.setLayoutParams(paramsDetails);
         layoutDetails.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View view, int i) {
+
+                // TODO: remove this part to unlock the BottomSheetBehavior layoutDetails
+                // {{{
+                if (i == BottomSheetBehavior.STATE_DRAGGING) {
+                    layoutDetails.setState(BottomSheetBehavior.STATE_EXPANDED);
+                }
+                // }}}
+
                 if (i == BottomSheetBehavior.STATE_COLLAPSED) {
                     clearSearchFocus();
                     showLayoutList();
@@ -340,7 +343,6 @@ public class MainActivity extends FragmentActivity implements
             showLayoutDetails();
             tabs.getTabAt(0).select();
         });
-
         buttonBack.setOnClickListener(view -> {
             clearSearchFocus();
             showLayoutList();
