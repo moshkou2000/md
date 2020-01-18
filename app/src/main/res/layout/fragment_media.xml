@@ -1,14 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.MediaFragment">
+    tools:context=".fragments.BillboardFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <FrameLayout
+        android:id="@+id/layout_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/shadow">
+
+        <Button
+            android:id="@+id/button_add"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+            android:background="@drawable/ripple_effect"
+            android:drawableTop="@drawable/bg_add_dark"
+            android:padding="8dp"
+            android:text="@string/action_add_media"
+            android:gravity="top|center_horizontal"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+    </FrameLayout>
+
     <TextView
+        android:id="@+id/text_hint"
+        android:layout_width="match_parent"
+        android:layout_height="88dp"
+        android:layout_toEndOf="@id/layout_add"
+        android:padding="8dp"
+        android:textSize="16sp"
+        android:gravity="center_vertical"
+        android:background="@color/bgDialog"
+        android:text="Please make sure the billboard and the advertisement is clear and not dark/blurry."/>
+
+    <GridView
+        android:id="@+id/grid_view_media"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-
-</FrameLayout>
+        android:layout_below="@id/text_hint"
+        android:listSelector="@android:color/transparent"
+        android:numColumns="2"
+        android:scrollbars="none"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="0dp" />
+</RelativeLayout>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <size
+                android:width="24dp"
+                android:height="24dp" />
+
+            <solid android:color="@color/success" />
+
+        </shape>
+    </item>
+    <item android:gravity="center">
+        <inset android:drawable="@drawable/ic_done" />
+    </item>
+</layer-list>

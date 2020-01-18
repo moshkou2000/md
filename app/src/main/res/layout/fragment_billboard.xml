@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="12dp"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <TextView
                     style="@style/titleText"
@@ -34,6 +34,18 @@
 
                 <TextView
                     android:id="@+id/text_media_owner"
+                    style="@style/contextText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    style="@style/titleText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_media_format" />
+
+                <TextView
+                    android:id="@+id/text_format"
                     style="@style/contextText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
@@ -105,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="12dp"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <TextView
                     style="@style/titleText"

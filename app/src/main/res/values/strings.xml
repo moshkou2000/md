@@ -6,6 +6,8 @@
     <string name="website">Moshkou.com</string>
 
     <!--Page Title-->
+    <string name="title_status">Status</string>
+    <string name="title_reason">Reason</string>
     <string name="title_register">Register</string>
     <string name="title_activity_login">Sign in</string>
     <string name="title_activity_login_verification">Verification</string>
@@ -41,6 +43,7 @@
     <string name="title_address">Address</string>
     <string name="title_postcode">Postcode</string>
     <string name="title_media_owner">Media Owner</string>
+    <string name="title_media_format">Format</string>
     <string name="title_advertiser">Advertiser</string>
     <string name="title_size">Size</string>
     <string name="title_format">Format</string>
@@ -120,6 +123,8 @@
     <string name="action_done">Done</string>
     <string name="action_skip">SKIP</string>
     <string name="action_more">more</string>
+    <string name="action_add_media">Add Media</string>
+    <string name="action_upload_media">Upload Media</string>
     <string name="action_save">save</string>
     <string name="action_less">less</string>
     <string name="action_hide">hide</string>
