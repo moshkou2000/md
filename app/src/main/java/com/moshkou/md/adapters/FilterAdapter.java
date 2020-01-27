@@ -42,16 +42,16 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.ItemRowHol
     public void setItems() {
         data = new ArrayList<>();
 
-        if (!Settings.FILTER_ITEMS.location.state.isEmpty())
-            data.add(new KeyValue(Keys.STATE, Settings.FILTER_ITEMS.location.state));
-        if (!Settings.FILTER_ITEMS.location.city.isEmpty())
-            data.add(new KeyValue(Keys.CITY, Settings.FILTER_ITEMS.location.city));
-        if (!Settings.FILTER_ITEMS.media_owner.isEmpty())
-            data.add(new KeyValue(Keys.MEDIA_OWNER, Settings.FILTER_ITEMS.media_owner));
-        if (!Settings.FILTER_ITEMS.format.isEmpty())
-            data.add(new KeyValue(Keys.FORMAT, Settings.FILTER_ITEMS.format));
-        if (!Settings.FILTER_ITEMS.advertiser.isEmpty())
-            data.add(new KeyValue(Keys.ADVERTISER, Settings.FILTER_ITEMS.advertiser));
+        if (!Settings.FILTER_BILLBOARD.location.state.isEmpty())
+            data.add(new KeyValue(Keys.STATE, Settings.FILTER_BILLBOARD.location.state));
+        if (!Settings.FILTER_BILLBOARD.location.city.isEmpty())
+            data.add(new KeyValue(Keys.CITY, Settings.FILTER_BILLBOARD.location.city));
+        if (!Settings.FILTER_BILLBOARD.media_owner.isEmpty())
+            data.add(new KeyValue(Keys.MEDIA_OWNER, Settings.FILTER_BILLBOARD.media_owner));
+        if (!Settings.FILTER_BILLBOARD.format.isEmpty())
+            data.add(new KeyValue(Keys.FORMAT, Settings.FILTER_BILLBOARD.format));
+        if (!Settings.FILTER_BILLBOARD.advertiser.isEmpty())
+            data.add(new KeyValue(Keys.ADVERTISER, Settings.FILTER_BILLBOARD.advertiser));
 
         notifyDataSetChanged();
     }
@@ -60,15 +60,15 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.ItemRowHol
         KeyValue item = data.get(position);
 
         if (item.key.equals(Keys.STATE))
-            Settings.FILTER_ITEMS.location.state = item.value.toString();
+            Settings.FILTER_BILLBOARD.location.state = item.value.toString();
         if (item.key.equals(Keys.CITY))
-            Settings.FILTER_ITEMS.location.city = item.value.toString();
+            Settings.FILTER_BILLBOARD.location.city = item.value.toString();
         if (item.key.equals(Keys.MEDIA_OWNER))
-            Settings.FILTER_ITEMS.media_owner = item.value.toString();
+            Settings.FILTER_BILLBOARD.media_owner = item.value.toString();
         if (item.key.equals(Keys.FORMAT))
-            Settings.FILTER_ITEMS.format = item.value.toString();
+            Settings.FILTER_BILLBOARD.format = item.value.toString();
         if (item.key.equals(Keys.ADVERTISER))
-            Settings.FILTER_ITEMS.advertiser = item.value.toString();
+            Settings.FILTER_BILLBOARD.advertiser = item.value.toString();
 
         return item;
     }
@@ -96,14 +96,11 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.ItemRowHol
         final KeyValue item = getItem(i);
 
         itemRowHolder.filter.setText(item.value.toString());
-        if (!itemRowHolder.filter.hasOnClickListeners())
-            itemRowHolder.filter.setOnClickListener(view -> {
-                Log.i(TAG, item.key + ", " + item.value);
-
-                data.remove(item);
-                filterListener.onFilterInteraction();
-                notifyDataSetChanged();
-            });
+        itemRowHolder.filter.setOnClickListener(view -> {
+            data.remove(item);
+            filterListener.onFilterInteraction();
+            notifyDataSetChanged();
+        });
 
     }
 

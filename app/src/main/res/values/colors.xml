@@ -39,5 +39,5 @@
 
     <color name="hyperlinkText">@android:color/holo_blue_dark</color>
 
-    <color name="black_overlay">#66000000</color>
+    <color name="black_overlay">#33000000</color>
 </resources>

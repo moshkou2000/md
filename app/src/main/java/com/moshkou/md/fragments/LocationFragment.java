@@ -53,7 +53,7 @@ public class LocationFragment extends Fragment {
     private Button buttonSave;
 
     private BillboardModel selectedBillboard;
-    private boolean isEdit = false;
+    private boolean isInitialized = false;
 
 
 
@@ -119,12 +119,14 @@ public class LocationFragment extends Fragment {
     }
 
     private void init() {
-        buttonEdit.setOnClickListener(v -> toggleView());
-        buttonCancel.setOnClickListener(v -> toggleView());
+        isInitialized = true;
+
+        buttonEdit.setOnClickListener(v -> toggleView(true));
+        buttonCancel.setOnClickListener(v -> toggleView(false));
         buttonSave.setOnClickListener(v -> {
             // TODO: api call
 
-            toggleView();
+            toggleView(false);
         });
 
         ArrayAdapter<String> adapterState = new ArrayAdapter<>(
@@ -143,35 +145,53 @@ public class LocationFragment extends Fragment {
         });
     }
 
-    private void toggleView() {
+    private void populate() {
+        if (isInitialized) {
+            if (selectedBillboard == null) {
+                toggleView(true);
+
+                textName.setText("");
+                textAddress.setText("");
+                textCity.setText("");
+                textState.setText("");
+                textPostcode.setText("");
+                textCountry.setText("");
+
+                textEditCity.setText("");
+                textEditState.setText("");
+                textEditAddress.setText("");
+                textEditPostcode.setText("");
+
+            } else if (selectedBillboard.location != null) {
+                toggleView(false);
+
+                textName.setText(selectedBillboard.location.name);
+                textAddress.setText(selectedBillboard.location.address);
+                textCity.setText(selectedBillboard.location.city);
+                textState.setText(selectedBillboard.location.state);
+                textPostcode.setText(String.valueOf(selectedBillboard.location.postcode));
+                textCountry.setText(selectedBillboard.location.country);
+
+                textEditCity.setText(selectedBillboard.location.city);
+                textEditState.setText(selectedBillboard.location.state);
+                textEditAddress.setText(selectedBillboard.location.address);
+                textEditPostcode.setText(String.valueOf(selectedBillboard.location.postcode));
+            }
+        }
+    }
+
+    private void toggleView(boolean isEdit) {
         if (isEdit) {
-            layoutEdit.setVisibility(View.GONE);
-            layoutView.setVisibility(View.VISIBLE);
-            buttonEdit.setVisibility(View.VISIBLE);
-            layoutSave.setVisibility(View.GONE);
-        } else {
             layoutEdit.setVisibility(View.VISIBLE);
             layoutView.setVisibility(View.GONE);
             buttonEdit.setVisibility(View.GONE);
             layoutSave.setVisibility(View.VISIBLE);
-        }
 
-        isEdit = !isEdit;
-    }
-
-    private void populate() {
-        if (selectedBillboard != null && selectedBillboard.location != null) {
-            textName.setText(selectedBillboard.location.name);
-            textAddress.setText(selectedBillboard.location.address);
-            textCity.setText(selectedBillboard.location.city);
-            textState.setText(selectedBillboard.location.state);
-            textPostcode.setText(String.valueOf(selectedBillboard.location.postcode));
-            textCountry.setText(selectedBillboard.location.country);
-
-            textEditCity.setText(selectedBillboard.location.city);
-            textEditState.setText(selectedBillboard.location.state);
-            textEditAddress.setText(selectedBillboard.location.address);
-            textEditPostcode.setText(String.valueOf(selectedBillboard.location.postcode));
+        } else if (selectedBillboard != null) {
+            layoutEdit.setVisibility(View.GONE);
+            layoutView.setVisibility(View.VISIBLE);
+            buttonEdit.setVisibility(View.VISIBLE);
+            layoutSave.setVisibility(View.GONE);
         }
     }
 }

@@ -142,6 +142,14 @@ public class Utils {
         }
     }
 
+    public static void openDefaultGalleryApp(Activity activity) {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("image/*");
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"image/*", "video/*"});
+        activity.startActivityForResult(intent, Config.MEDIA_REQUEST_CODE_KITKAT);
+    }
+
     // slide the view from below itself to the current position
     public void slideUp(View view) {
         view.setVisibility(View.VISIBLE);

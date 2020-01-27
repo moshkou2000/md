@@ -1,7 +1,10 @@
 package com.moshkou.md.activities;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -39,7 +42,9 @@ import android.view.TextureView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.moshkou.md.App;
 import com.moshkou.md.R;
+import com.moshkou.md.configs.Keys;
 import com.moshkou.md.configs.Settings;
 import com.moshkou.md.controls.AutoFitTextureViewControl;
 
@@ -60,7 +65,7 @@ import java.util.concurrent.TimeUnit;
 public class CameraActivity extends Activity {
 
 
-    private final Context context = this;
+    private static Activity activity;
 
     /**
      * Conversion from screen rotation to JPEG orientation.
@@ -342,7 +347,7 @@ public class CameraActivity extends Activity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -405,64 +410,45 @@ public class CameraActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
 
+        activity = this;
         mTextureView = findViewById(R.id.texture);
 
-        findViewById(R.id.capture).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                takePicture();
-            }
+        findViewById(R.id.capture).setOnClickListener(view -> takePicture());
+        findViewById(R.id.info).setOnClickListener(view -> {
+            final Dialog dialog = new Dialog(activity);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setCancelable(false);
+            dialog.setContentView(R.layout.dialog);
+
+            TextView header_text = dialog.findViewById(R.id.header_text);
+            TextView text_body = dialog.findViewById(R.id.text_body);
+            Button cancel = dialog.findViewById(R.id.btn_cancel);
+            Button ok = dialog.findViewById(R.id.btn_ok);
+
+            header_text.setText("This is sample header");
+            text_body.setText("This is sample body text.");
+            cancel.setVisibility(View.GONE);
+
+
+            ok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+
+            dialog.show();
         });
-        findViewById(R.id.info).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final Dialog dialog = new Dialog(context);
-                dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setCancelable(false);
-                dialog.setContentView(R.layout.dialog);
-
-                TextView header_text = dialog.findViewById(R.id.header_text);
-                TextView text_body = dialog.findViewById(R.id.text_body);
-                Button cancel = dialog.findViewById(R.id.btn_cancel);
-                Button ok = dialog.findViewById(R.id.btn_ok);
-
-                header_text.setText("This is sample header");
-                text_body.setText("This is sample body text.");
-                cancel.setVisibility(View.GONE);
-
-
-                ok.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-
-                dialog.show();
-            }
-        });
-
-
-//        Log.i("CAMERAA", "000000000000000000");
-//        Permission.Check.EXTERNAL_STORAGE(this);
-//        if(Permission.EXTERNAL_STORAGE) {
-//            Log.i("CAMERAA", "111111111111111111");
-//        }
-
-        // **********************************
-        // **********************************
-        // **********************************
-        // **********************************
-        // **********************************
-        // **********************************
-        // TODO: update where to save   **********************************
-        // **********************************
-        //          display picture after it has been taken
-        //          from capture button to pictures list
     }
 
+    @Override
+    protected void onDestroy() {
+        activity = null;
+
+        super.onDestroy();
+    }
 
     @Override
     public void onResume() {
@@ -490,7 +476,7 @@ public class CameraActivity extends Activity {
     private void requestCameraPermission() {
         if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
 
-            final Dialog dialog = new Dialog(context);
+            final Dialog dialog = new Dialog(activity);
             dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -532,7 +518,7 @@ public class CameraActivity extends Activity {
         if (requestCode == REQUEST_CAMERA_PERMISSION) {
             if (grantResults.length != 1 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
 
-                final Dialog dialog = new Dialog(context);
+                final Dialog dialog = new Dialog(activity);
                 dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -663,7 +649,7 @@ public class CameraActivity extends Activity {
         } catch (NullPointerException e) {
             // Currently an NPE is thrown when the Camera2API is used but not supported on the device this code runs.
 
-            final Dialog dialog = new Dialog(context);
+            final Dialog dialog = new Dialog(activity);
             dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -693,7 +679,7 @@ public class CameraActivity extends Activity {
     }
 
     private void openCamera(int width, int height) {
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             requestCameraPermission();
             return;
         }
@@ -972,10 +958,12 @@ public class CameraActivity extends Activity {
          */
         private final File mFile;
 
+        @SuppressLint("SimpleDateFormat")
         ImageSaver(Image image) {
             mImage = image;
-
-            mFile = new File(Settings.APP_PICTURE_DIRECTORY, "DCIM_" + (new SimpleDateFormat("yyyyMMdd_hhmmssSSS").format(new java.util.Date())) + ".png");
+            String now = new SimpleDateFormat("yyyyMMdd_hhmmssSSS")
+                    .format(new java.util.Date());
+            mFile = new File(Settings.APP_PICTURE_DIRECTORY, "ADEX_" + now + ".png");
         }
 
         @Override
@@ -998,9 +986,10 @@ public class CameraActivity extends Activity {
                         e.printStackTrace();
                     }
                 }
+
+                getResult(Uri.fromFile(mFile));
             }
         }
-
     }
 
     /**
@@ -1014,6 +1003,15 @@ public class CameraActivity extends Activity {
             return Long.signum((long) lhs.getWidth() * lhs.getHeight() - (long) rhs.getWidth() * rhs.getHeight());
         }
 
+    }
+
+    private static void getResult(Uri uri) {
+        Intent i = new Intent(App.getContext(), MediaActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Keys.URI, uri);
+        i.putExtras(bundle);
+        CameraActivity.activity.startActivity(i);
+        CameraActivity.activity.finish();
     }
 
 }

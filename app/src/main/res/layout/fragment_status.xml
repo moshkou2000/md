@@ -1,113 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.BillboardFragment">
 
-    <FrameLayout
-        android:id="@+id/layout_add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/shadow">
-
-        <Button
-            android:id="@+id/button_add"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="88dp"
-            android:layout_height="88dp"
-            android:background="@drawable/ripple_effect"
-            android:drawableTop="@drawable/bg_add_dark"
-            android:padding="0dp"
-            android:text="@string/action_upload_media"
-            android:gravity="top|center_horizontal"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold" />
-    </FrameLayout>
-
-    <TextView
-        android:id="@+id/text_hint"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/layout_add"
-        android:layout_alignParentTop="true"
-        android:layout_toStartOf="@+id/button_cancel"
-        android:gravity="center_vertical"
-        android:text="@string/title_status"/>
-
-    <AutoCompleteTextView
-        android:id="@+id/text_edit_status"
-        android:layout_width="wrap_content"
-        android:layout_height="24dp"
-        android:layout_below="@id/text_hint"
-        android:layout_toEndOf="@id/layout_add"
-        android:layout_toStartOf="@+id/button_cancel"/>
-
-    <Button
-        android:id="@+id/button_cancel"
-        android:layout_width="44dp"
-        android:layout_height="match_parent"
-        android:layout_toStartOf="@id/button_done"
-        android:layout_alignBottom="@id/text_edit_status"
-        android:background="@drawable/bg_delete"
-        android:visibility="visible"
-        style="?android:attr/borderlessButtonStyle" />
-
-    <Button
-        android:id="@+id/button_done"
-        android:layout_width="44dp"
-        android:layout_height="match_parent"
-        android:layout_alignParentEnd="true"
-        android:layout_alignBottom="@id/text_edit_status"
-        android:background="@drawable/bg_done"
-        android:visibility="visible"
-        style="?android:attr/borderlessButtonStyle" />
-
-    <TextView
-        android:id="@+id/text_hint2"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_toStartOf="@+id/button_cancel"
-        android:layout_toEndOf="@id/layout_add"
-        android:layout_below="@id/text_edit_status"
-        android:gravity="center_vertical"
-        android:text="@string/title_reason"/>
+        android:layout_height="89dp"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="4dp">
 
-    <AutoCompleteTextView
-        android:id="@+id/text_edit_reason"
-        android:layout_width="wrap_content"
-        android:layout_height="24dp"
-        android:layout_below="@id/text_hint2"
-        android:layout_toEndOf="@id/layout_add"
-        android:layout_toStartOf="@+id/button_cancel"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/button_reason_cancel"
-        android:layout_width="44dp"
-        android:layout_height="match_parent"
-        android:layout_toStartOf="@id/button_reason_done"
-        android:layout_alignTop="@id/text_hint2"
-        android:layout_alignBottom="@id/text_edit_reason"
-        android:background="@drawable/bg_delete"
-        android:visibility="visible"
-        style="?android:attr/borderlessButtonStyle" />
+            <Button
+                android:id="@+id/button_add"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="88dp"
+                android:layout_height="match_parent"
+                android:layout_margin="4dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/ripple_effect"
+                android:drawableTop="@drawable/bg_add_dark"
+                android:gravity="top|center_horizontal"
+                android:paddingTop="4dp"
+                android:text="@string/title_upload"
+                android:textStyle="bold"
+                android:visibility="visible"/>
 
-    <Button
-        android:id="@+id/button_reason_done"
-        android:layout_width="44dp"
-        android:layout_height="match_parent"
-        android:layout_alignTop="@id/text_hint2"
-        android:layout_alignParentEnd="true"
-        android:layout_alignBottom="@id/text_edit_reason"
-        android:background="@drawable/bg_done"
-        android:visibility="visible"
-        style="?android:attr/borderlessButtonStyle" />
+            <LinearLayout
+                android:id="@+id/layouts"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingStart="12dp"
+                android:paddingEnd="8dp"
+                android:layout_toEndOf="@id/button_add"
+                android:layout_toStartOf="@+id/layout_buttons">
+
+                <LinearLayout
+                    android:id="@+id/layout_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="49"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/text_hint"
+                        android:layout_width="match_parent"
+                        android:layout_height="16dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/title_status" />
+
+                    <AutoCompleteTextView
+                        android:id="@+id/text_edit_status"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_placeholder_search"
+                        android:hint="@string/placeholder_billboard_status" />
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:background="#FFF" />
+
+                <LinearLayout
+                    android:id="@+id/layout_reason"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="49"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/text_hint2"
+                        android:layout_width="match_parent"
+                        android:layout_height="16dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/title_reason" />
+
+                    <AutoCompleteTextView
+                        android:id="@+id/text_edit_reason"
+                        android:layout_width="match_parent"
+                        android:layout_height="24dp"
+                        android:background="@drawable/bg_placeholder_search"
+                        android:hint="@string/placeholder_billboard_reason" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_buttons"
+                android:layout_width="90dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="visible"
+                android:paddingTop="1dp"
+                android:paddingBottom="1dp"
+                android:paddingStart="0dp"
+                android:paddingEnd="4dp"
+                android:layout_alignParentEnd="true">
+
+                <Button
+                    android:id="@+id/button_done"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="49"
+                    android:background="@drawable/bg_done"/>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"/>
+
+                <Button
+                    android:id="@+id/button_cancel"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="49"
+                    android:background="@drawable/bg_delete" />
+            </LinearLayout>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
 
     <GridView
         android:id="@+id/grid_view_media"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/text_edit_reason"
+        android:layout_below="@id/cardView"
         android:listSelector="@android:color/transparent"
         android:numColumns="2"
         android:scrollbars="none"

@@ -1,6 +1,7 @@
 package com.moshkou.md.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,9 +12,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridView;
 
+import com.google.gson.Gson;
+import com.moshkou.md.App;
 import com.moshkou.md.R;
+import com.moshkou.md.activities.MainActivity;
+import com.moshkou.md.activities.MediaActivity;
 import com.moshkou.md.adapters.GalleryAdapter;
 import com.moshkou.md.adapters.MediaAdapter;
+import com.moshkou.md.configs.Flags;
+import com.moshkou.md.configs.Keys;
 import com.moshkou.md.interfaces.OnFragmentInteractionListener;
 import com.moshkou.md.models.BillboardModel;
 
@@ -31,7 +38,7 @@ public class MediaFragment extends Fragment {
     private Button buttonAdd;
 
     private BillboardModel selectedBillboard;
-    private boolean isEdit = false;
+    private boolean isInitialized = false;
 
 
 
@@ -76,21 +83,30 @@ public class MediaFragment extends Fragment {
 
     public void setSelectedBillboard(BillboardModel selectedBillboard) {
         this.selectedBillboard = selectedBillboard;
+
+        populate();
     }
 
     private void init() {
-        adapter = new MediaAdapter(getActivity(), selectedBillboard);
-        gridViewMedia.setAdapter(adapter);
+        isInitialized = true;
 
         buttonAdd.setOnClickListener(v -> {
-            // TODO: open add media activity
-
+            Intent i = new Intent(App.getContext(), MediaActivity.class);
+            i.putExtra(Keys.DATA, new Gson().toJson(selectedBillboard, BillboardModel.class));
+            startActivity(i);
         });
     }
 
     private void populate() {
-        if (selectedBillboard != null && selectedBillboard.medias != null) {
-            // TODO: populate gridViewMedia
+        if (isInitialized) {
+            if (selectedBillboard == null) {
+                if (adapter != null)
+                    adapter.clearItems();
+
+            } else if (selectedBillboard.medias != null) {
+                adapter = new MediaAdapter(getActivity(), selectedBillboard);
+                gridViewMedia.setAdapter(adapter);
+            }
         }
     }
 }

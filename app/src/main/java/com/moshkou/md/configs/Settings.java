@@ -14,7 +14,7 @@ public class Settings {
     public static double DEVICE_HEIGHT                      = 0;
     public static double DEVICE_DENSITY                     = 0;
 
-    public static BillboardModel FILTER_ITEMS               = new BillboardModel();
+    public static BillboardModel FILTER_BILLBOARD           = new BillboardModel();
 
     public static Enumerates.LayoutStatus LAYOUT_STATUS     = Enumerates.LayoutStatus.NULL;
 }

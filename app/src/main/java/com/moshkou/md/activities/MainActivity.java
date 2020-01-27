@@ -146,7 +146,7 @@ public class MainActivity extends FragmentActivity implements
     private List<Fragment> infoPages = new ArrayList<>();
 
     private List<BillboardModel> allBillboards = new ArrayList<>();
-    private BillboardModel selectedBillboard = new BillboardModel();
+    private BillboardModel selectedBillboard;
 
 
 
@@ -495,30 +495,30 @@ public class MainActivity extends FragmentActivity implements
     private void filter() {
         Log.i(TAG, "filter");
 
-        if (Settings.FILTER_ITEMS.is_updated) {
-            if (Settings.FILTER_ITEMS.location.state.isEmpty() &&
-                    Settings.FILTER_ITEMS.location.city.isEmpty() &&
-                    Settings.FILTER_ITEMS.media_owner.isEmpty() &&
-                    Settings.FILTER_ITEMS.format.isEmpty() &&
-                    Settings.FILTER_ITEMS.advertiser.isEmpty())
+        if (Settings.FILTER_BILLBOARD.is_updated) {
+            if (Settings.FILTER_BILLBOARD.location.state.isEmpty() &&
+                    Settings.FILTER_BILLBOARD.location.city.isEmpty() &&
+                    Settings.FILTER_BILLBOARD.media_owner.isEmpty() &&
+                    Settings.FILTER_BILLBOARD.format.isEmpty() &&
+                    Settings.FILTER_BILLBOARD.advertiser.isEmpty())
                 buttonFilterClear.setVisibility(View.GONE);
             else
                 buttonFilterClear.setVisibility(View.VISIBLE);
 
-            // TODO: do filter -> FILTER_ITEMS
+            // TODO: do filter -> FILTER_BILLBOARD
 
         }
     }
 
     private void clearFilter() {
-        Settings.FILTER_ITEMS = new BillboardModel();
+        Settings.FILTER_BILLBOARD = new BillboardModel();
         filterAdapter.setItems();
         if (buttonFilterClear.getVisibility() != View.GONE)
             buttonFilterClear.setVisibility(View.GONE);
     }
 
     private void clearSelected() {
-        selectedBillboard = new BillboardModel();
+        selectedBillboard = null;
     }
 
     private void addMarker(Marker marker, LatLng latLng, String title, String id) {
@@ -540,7 +540,7 @@ public class MainActivity extends FragmentActivity implements
                     return true;
                 }
             }
-        selectedBillboard = new BillboardModel();
+        selectedBillboard = null;
         return false;
     }
 
@@ -550,6 +550,11 @@ public class MainActivity extends FragmentActivity implements
 
         if (buttonSearchClear.getVisibility() != visibility)
             buttonSearchClear.setVisibility(visibility);
+    }
+
+    private void toggleFilter(int visibility) {
+        if (gridViewFilter.getVisibility() != visibility)
+            gridViewFilter.setVisibility(visibility);
     }
 
     private boolean hasSearchText() {
@@ -614,6 +619,8 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void showLayoutList() {
+        toggleFilter(View.VISIBLE);
+
         Settings.LAYOUT_STATUS = Enumerates.LayoutStatus.NULL;
 
         if (layoutInfoContent.getVisibility() != View.GONE)
@@ -674,6 +681,8 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void showSearchList() {
+        toggleFilter(View.GONE);
+
         Settings.LAYOUT_STATUS = Enumerates.LayoutStatus.SEARCH;
 
         if (layoutBottomSheetDetails.getVisibility() != View.GONE)
@@ -710,7 +719,6 @@ public class MainActivity extends FragmentActivity implements
      */
 
     private void populateInfo() {
-
         textInfoBillboardName.setText(selectedBillboard.product);
         textInfoLastUpdate.setText(Utils.humanizerDateTime(selectedBillboard.updated_at) + " was last update.");
 

@@ -22,11 +22,11 @@ public class FilterActivity extends AppCompatActivity {
 
     private final Context context = this;
 
-    private AutoCompleteTextView auto_complete_state;
-    private AutoCompleteTextView auto_complete_city;
-    private AutoCompleteTextView auto_complete_media_owner;
-    private AutoCompleteTextView auto_complete_format;
-    private AutoCompleteTextView auto_complete_advertiser;
+    private AutoCompleteTextView autoCompleteState;
+    private AutoCompleteTextView autoCompleteCity;
+    private AutoCompleteTextView autoCompleteMediaOwner;
+    private AutoCompleteTextView autoCompleteFormat;
+    private AutoCompleteTextView autoCompleteAdvertiser;
 
 
     @Override
@@ -34,11 +34,11 @@ public class FilterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter);
 
-        auto_complete_state = findViewById(R.id.auto_complete_state);
-        auto_complete_city = findViewById(R.id.auto_complete_city);
-        auto_complete_media_owner = findViewById(R.id.auto_complete_media_owner);
-        auto_complete_format = findViewById(R.id.auto_complete_format);
-        auto_complete_advertiser = findViewById(R.id.auto_complete_advertiser);
+        autoCompleteState = findViewById(R.id.auto_complete_state);
+        autoCompleteCity = findViewById(R.id.auto_complete_city);
+        autoCompleteMediaOwner = findViewById(R.id.auto_complete_media_owner);
+        autoCompleteFormat = findViewById(R.id.auto_complete_format);
+        autoCompleteAdvertiser = findViewById(R.id.auto_complete_advertiser);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.title_activity_filter);
@@ -80,29 +80,31 @@ public class FilterActivity extends AppCompatActivity {
     }
 
     private void init() {
-        auto_complete_state.setText(Settings.FILTER_ITEMS.location.state);
-        auto_complete_city.setText(Settings.FILTER_ITEMS.location.city);
-        auto_complete_media_owner.setText(Settings.FILTER_ITEMS.media_owner);
-        auto_complete_format.setText(Settings.FILTER_ITEMS.format);
-        auto_complete_advertiser.setText(Settings.FILTER_ITEMS.advertiser);
+        autoCompleteState.setText(Settings.FILTER_BILLBOARD.location.state);
+        autoCompleteCity.setText(Settings.FILTER_BILLBOARD.location.city);
+        autoCompleteMediaOwner.setText(Settings.FILTER_BILLBOARD.media_owner);
+        autoCompleteFormat.setText(Settings.FILTER_BILLBOARD.format);
+        autoCompleteAdvertiser.setText(Settings.FILTER_BILLBOARD.advertiser);
     }
 
     private void clear() {
-        auto_complete_state.setText("");
-        auto_complete_city.setText("");
-        auto_complete_media_owner.setText("");
-        auto_complete_format.setText("");
-        auto_complete_advertiser.setText("");
+        autoCompleteState.setText("");
+        autoCompleteCity.setText("");
+        autoCompleteMediaOwner.setText("");
+        autoCompleteFormat.setText("");
+        autoCompleteAdvertiser.setText("");
 
-        Settings.FILTER_ITEMS = new BillboardModel();
+        Settings.FILTER_BILLBOARD = new BillboardModel();
+
+        backPressed();
     }
 
     private void done() {
-        Settings.FILTER_ITEMS.location.state = auto_complete_state.getText().toString().trim();
-        Settings.FILTER_ITEMS.location.city = auto_complete_city.getText().toString().trim();
-        Settings.FILTER_ITEMS.media_owner = auto_complete_media_owner.getText().toString().trim();
-        Settings.FILTER_ITEMS.format = auto_complete_format.getText().toString().trim();
-        Settings.FILTER_ITEMS.advertiser = auto_complete_advertiser.getText().toString().trim();
+        Settings.FILTER_BILLBOARD.location.state = autoCompleteState.getText().toString().trim();
+        Settings.FILTER_BILLBOARD.location.city = autoCompleteCity.getText().toString().trim();
+        Settings.FILTER_BILLBOARD.media_owner = autoCompleteMediaOwner.getText().toString().trim();
+        Settings.FILTER_BILLBOARD.format = autoCompleteFormat.getText().toString().trim();
+        Settings.FILTER_BILLBOARD.advertiser = autoCompleteAdvertiser.getText().toString().trim();
 
         backPressed();
     }

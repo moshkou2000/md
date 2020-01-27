@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><!DOCTYPE resources [<!ENTITY appname "md">]>
+<?xml version="1.0" encoding="utf-8"?><!DOCTYPE resources [<!ENTITY appname "ADEX">]>
 
 <resources>
     <string name="app_name">&appname;</string>
@@ -7,6 +7,9 @@
 
     <!--Page Title-->
     <string name="title_status">Status</string>
+    <string name="title_upload">Upload</string>
+    <string name="title_brand">Brand</string>
+    <string name="title_product">Product</string>
     <string name="title_reason">Reason</string>
     <string name="title_register">Register</string>
     <string name="title_activity_login">Sign in</string>
@@ -15,6 +18,7 @@
     <string name="title_activity_login_attempt">Suspicious Login Attempt</string>
     <string name="title_activity_alert">Oops</string>
     <string name="title_activity_filter">Filter</string>
+    <string name="title_activity_media">Media</string>
     <string name="title_activity_main">@string/app_name</string>
     <string name="title_activity_preview">Preview</string>
     <string name="title_activity_carousel">Carousel</string>
@@ -105,13 +109,20 @@
     <string name="placeholder_media">MEDIA</string>
     <string name="placeholder_status">STATUS</string>
     <string name="placeholder_state">Write State</string>
+    <string name="placeholder_brand">Write Brand</string>
+    <string name="placeholder_product">Write Produce</string>
     <string name="placeholder_city">Write City</string>
     <string name="placeholder_address">Write the address</string>
     <string name="placeholder_postcode">Write Postcode</string>
     <string name="placeholder_environment">Write Environment</string>
     <string name="placeholder_billboard_details">Put the billboard details</string>
+    <string name="placeholder_billboard_status">Write the status</string>
+    <string name="placeholder_billboard_reason">Describe it</string>
     <string name="placeholder_digital_screen">It has digital screen</string>
     <string name="placeholder_lighting">It has lighting</string>
+    <string name="placeholder_interesting">It is interesting</string>
+    <string name="placeholder_camera">Take picture / video</string>
+    <string name="placeholder_gallery">Choose from gallery</string>
 
 
     <!--Actions-->
@@ -170,11 +181,11 @@
     <string name="no_of_panels_4">4</string>
     <string name="no_of_panels_5">5</string>
 
-    <string name="speed_limits_1">&lt; 30</string>
-    <string name="speed_limits_2">30 - 59</string>
-    <string name="speed_limits_3">60 - 79</string>
-    <string name="speed_limits_4">80 - 99</string>
-    <string name="speed_limits_5">> 100</string>
+    <string name="speed_limits_1">&lt;30</string>
+    <string name="speed_limits_2">30-59</string>
+    <string name="speed_limits_3">60-79</string>
+    <string name="speed_limits_4">80-99</string>
+    <string name="speed_limits_5">>100</string>
 
     <string-array name="alphabets">
         <item>+</item>

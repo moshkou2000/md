@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +15,14 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.moshkou.md.App;
 import com.moshkou.md.R;
 import com.moshkou.md.configs.Config;
+import com.moshkou.md.configs.Enumerates;
 import com.moshkou.md.helpers.Utils;
 import com.moshkou.md.interfaces.OnFragmentInteractionListener;
 import com.moshkou.md.models.BillboardModel;
@@ -28,7 +31,7 @@ import com.moshkou.md.models.BillboardModel;
 public class BillboardFragment extends Fragment {
 
 
-    private static String TAG = "LOCATION_FRG";
+    private static String TAG = "BILLBOARD_FRG";
 
     private OnFragmentInteractionListener mListener;
 
@@ -58,7 +61,7 @@ public class BillboardFragment extends Fragment {
     private Button buttonSave;
 
     private BillboardModel selectedBillboard;
-    private boolean isEdit = false;
+    private boolean isInitialized = false;
 
 
 
@@ -100,8 +103,10 @@ public class BillboardFragment extends Fragment {
         buttonCancel = view.findViewById(R.id.button_cancel);
         buttonSave = view.findViewById(R.id.button_save);
 
+        Log.i(TAG, "init");
+
         init();
-        populate();
+//        populate();
 
         return view;
     }
@@ -125,15 +130,20 @@ public class BillboardFragment extends Fragment {
 
     public void setSelectedBillboard(BillboardModel selectedBillboard) {
         this.selectedBillboard = selectedBillboard;
+
+        Log.i(TAG, "select");
+        populate();
     }
 
     private void init() {
-        buttonEdit.setOnClickListener(v -> toggleView());
-        buttonCancel.setOnClickListener(v -> toggleView());
+        isInitialized = true;
+
+        buttonEdit.setOnClickListener(v -> toggleView(true));
+        buttonCancel.setOnClickListener(v -> toggleView(false));
         buttonSave.setOnClickListener(v -> {
             // TODO: api call
 
-            toggleView();
+            toggleView(false);
         });
 
 
@@ -170,40 +180,66 @@ public class BillboardFragment extends Fragment {
         textEditEnvironment.setOnItemClickListener((parent, v, position, id) -> { });
     }
 
-    private void toggleView() {
+    private void populate() {
+        if (isInitialized) {
+            if (selectedBillboard == null) {
+                toggleView(true);
+
+                textMediaOwner.setText("");
+                textFormat.setText("");
+                textSize.setText("");
+                textEnvironment.setText("");
+                textLighting.setText("No");
+                textNoOfPanels.setText("1");
+                textSpeedLimit.setText("<30");
+
+                textEditMediaOwner.setText("");
+                textEditFormat.setText("");
+                textEditSize.setText("");
+                textEditEnvironment.setText("");
+                checkboxDigitalScreen.setChecked(false);
+                checkboxLighting.setChecked(false);
+                ((RadioButton) radioGroupNoPanels.getChildAt(0))
+                        .setChecked(true);
+                ((RadioButton) radioGroupSpeedLimit.getChildAt(0))
+                        .setChecked(true);
+            } else {
+                toggleView(false);
+
+                textMediaOwner.setText(selectedBillboard.media_owner);
+                textFormat.setText(selectedBillboard.format);
+                textSize.setText(selectedBillboard.size);
+                textEnvironment.setText(selectedBillboard.environment);
+                textLighting.setText(selectedBillboard.lighting ? "Yes" : "No");
+                textNoOfPanels.setText(String.valueOf(selectedBillboard.no_panels));
+                textSpeedLimit.setText(selectedBillboard.speed_limit);
+
+                textEditMediaOwner.setText(selectedBillboard.media_owner);
+                textEditFormat.setText(selectedBillboard.format);
+                textEditSize.setText(selectedBillboard.size);
+                textEditEnvironment.setText(selectedBillboard.environment);
+                checkboxDigitalScreen.setChecked(selectedBillboard.type.equals("digital"));
+                checkboxLighting.setChecked(selectedBillboard.lighting);
+                ((RadioButton) radioGroupNoPanels.getChildAt(selectedBillboard.getNoPanelsIndex()))
+                        .setChecked(true);
+                ((RadioButton) radioGroupSpeedLimit.getChildAt(selectedBillboard.getSpeedLimitIndex()))
+                        .setChecked(true);
+            }
+        }
+    }
+
+    private void toggleView(boolean isEdit) {
         if (isEdit) {
-            layoutEdit.setVisibility(View.GONE);
-            layoutView.setVisibility(View.VISIBLE);
-            buttonEdit.setVisibility(View.VISIBLE);
-            layoutSave.setVisibility(View.GONE);
-        } else {
             layoutEdit.setVisibility(View.VISIBLE);
             layoutView.setVisibility(View.GONE);
             buttonEdit.setVisibility(View.GONE);
             layoutSave.setVisibility(View.VISIBLE);
-        }
 
-        isEdit = !isEdit;
-    }
-
-    private void populate() {
-        if (selectedBillboard != null && selectedBillboard.location != null) {
-            textMediaOwner.setText(selectedBillboard.location.name);
-            textFormat.setText(selectedBillboard.format);
-            textSize.setText(selectedBillboard.location.address);
-            textEnvironment.setText(selectedBillboard.location.city);
-            textLighting.setText(selectedBillboard.location.state);
-            textNoOfPanels.setText(String.valueOf(selectedBillboard.location.postcode));
-            textSpeedLimit.setText(selectedBillboard.location.country);
-
-            textEditMediaOwner.setText(selectedBillboard.media_owner);
-            textEditFormat.setText(selectedBillboard.format);
-            textEditSize.setText(selectedBillboard.size);
-            textEditEnvironment.setText(selectedBillboard.environment);
-//            checkboxDigitalScreen.setText(selectedBillboard.type);
-//            checkboxLighting.setText(selectedBillboard.lighting);
-//            radioGroupNoPanels.setText(selectedBillboard.no_panels);
-//            radioGroupSpeedLimit.setText(selectedBillboard.speed_limit);
+        } else if (selectedBillboard != null) {
+            layoutEdit.setVisibility(View.GONE);
+            layoutView.setVisibility(View.VISIBLE);
+            buttonEdit.setVisibility(View.VISIBLE);
+            layoutSave.setVisibility(View.GONE);
         }
     }
 }

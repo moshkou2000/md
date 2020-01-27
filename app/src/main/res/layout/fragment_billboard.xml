@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="12dp"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <TextView
                     style="@style/titleText"
@@ -117,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="12dp"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <TextView
                     style="@style/titleText"
@@ -199,7 +199,7 @@
                     android:layout_marginBottom="12dp"
                     android:background="@drawable/selector_checkbox"
                     android:button="@null"
-                    android:checked="true"
+                    android:checked="false"
                     android:paddingStart="41dp"
                     android:paddingEnd="16dp"
                     android:text="@string/placeholder_digital_screen"
@@ -306,7 +306,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
                     android:layout_marginBottom="6dp"
-                    android:text="@string/title_no_panels" />
+                    android:text="@string/title_speed_limit" />
 
                 <RadioGroup
                     android:id="@+id/radio_group_speed_limit"

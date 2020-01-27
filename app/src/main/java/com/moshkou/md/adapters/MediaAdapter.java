@@ -3,16 +3,20 @@ package com.moshkou.md.adapters;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.moshkou.md.App;
 import com.moshkou.md.R;
+import com.moshkou.md.helpers.Utils;
 import com.moshkou.md.models.BaseDataModel;
 import com.moshkou.md.models.BillboardMediaModel;
 import com.moshkou.md.models.BillboardModel;
@@ -24,26 +28,35 @@ import java.util.List;
 
 public class MediaAdapter extends BaseAdapter {
 
+    private static String TAG = "MEDIA_ADT";
+
 
     private Context context;
     private LayoutInflater inflater;
-    private BillboardModel selectedBillboard;
+    private BillboardModel billboard;
 
-    private int numColumns = 2;
+    private static int NO_COLUMNS = 2;
+    private static int PADDING = 2;
+    private static int HALF_PADDING = PADDING / NO_COLUMNS;
 
 
-    public MediaAdapter(Context context, BillboardModel selectedBillboard) {
-        this.selectedBillboard = selectedBillboard;
-        this.inflater = LayoutInflater.from(context);//.inflate(R.layout.item_gallery, null);
+    public MediaAdapter(Context context, BillboardModel billboard) {
+        this.billboard = billboard;
+        this.inflater = LayoutInflater.from(context);
     }
 
     @Override
     public int getCount() {
-        return selectedBillboard.medias.size();
+        return billboard.medias.size();
     }
 
     public BillboardMediaModel getItem(int position) {
-        return selectedBillboard.medias.get(position);
+        return billboard.medias.get(position);
+    }
+
+    public void clearItems() {
+        billboard = new BillboardModel();
+        notifyDataSetChanged();
     }
 
     @Override
@@ -65,32 +78,29 @@ public class MediaAdapter extends BaseAdapter {
             viewHolder = (ViewHolder)convertView.getTag();
         }
 
-        // padding: 20
-        // half padding: 10
-        //
-        int bottom = position + 1 == getCount() ? 20 : 0;
+        int bottom = position + 1 == getCount() ? PADDING : 0;
 
         // 1..2 < more columns
         //
-        int padding = ((numColumns - 2) * 2 + 2) * 10;
-        int middlePadding = 10;
+        int padding = ((NO_COLUMNS - 2) * 2 + 2) * HALF_PADDING;
+        int middlePadding = HALF_PADDING;
 
         if (padding == 0) {
-            padding = 20;
-        } else if (padding == 20) {
-            padding = 10;
+            padding = PADDING;
+        } else if (padding == PADDING) {
+            padding = HALF_PADDING;
         } else {
-            middlePadding = padding / numColumns;
-            padding = middlePadding - 10;
+            middlePadding = padding / NO_COLUMNS;
+            padding = middlePadding - HALF_PADDING;
         }
 
-        int p = (position + 1) % numColumns;
+        int p = (position + 1) % NO_COLUMNS;
         if (p == 1)
-            viewHolder.root.setPadding(20, 20, padding, bottom);     // first column
+            viewHolder.root.setPadding(PADDING, PADDING, padding, bottom);     // first column
         else if (p == 0)
-            viewHolder.root.setPadding(padding, 20, 20, bottom);     // last column
+            viewHolder.root.setPadding(padding, PADDING, PADDING, bottom);     // last column
         else
-            viewHolder.root.setPadding(middlePadding, 20, middlePadding, bottom);     // middle
+            viewHolder.root.setPadding(middlePadding, PADDING, middlePadding, bottom);     // middle
 
         viewHolder.title.setText(item.tags.get(0).key);
         viewHolder.description.setText(item.tags.get(0).value.toString());
@@ -103,11 +113,15 @@ public class MediaAdapter extends BaseAdapter {
                 .error(R.drawable.bg_placeholder_image)
                 .into(viewHolder.image);
 
+        viewHolder.image.setOnClickListener(view ->
+                Utils.activityPreview(App.getContext(), item.media, billboard.name, false));
         viewHolder.buttonInteresting.setOnClickListener(view -> {
             // TODO: item click ************************
+            Log.i(TAG, "interesting click");
         });
         viewHolder.option.setOnClickListener(view -> {
             // TODO: item click ************************
+            Log.i(TAG, "option click");
         });
 
         return convertView;
@@ -115,7 +129,7 @@ public class MediaAdapter extends BaseAdapter {
 
     public class ViewHolder {
 
-        protected RelativeLayout root;
+        protected FrameLayout root;
         protected TextView title;
         protected TextView description;
         protected ImageView image;
@@ -124,12 +138,12 @@ public class MediaAdapter extends BaseAdapter {
 
         public ViewHolder(View view) {
 
-            root = (RelativeLayout) view;
+            root = (FrameLayout) view;
             title = view.findViewById(R.id.title);
             description = view.findViewById(R.id.description);
             image = view.findViewById(R.id.image);
             buttonInteresting = view.findViewById(R.id.button_interesting);
-            option = view.findViewById(R.id.button);
+            option = view.findViewById(R.id.option);
         }
     }
 

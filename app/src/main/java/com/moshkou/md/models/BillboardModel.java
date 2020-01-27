@@ -1,5 +1,8 @@
 package com.moshkou.md.models;
 
+import com.moshkou.md.App;
+import com.moshkou.md.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,8 +18,8 @@ public class BillboardModel {
     public String environment = "";
     public boolean lighting = false;
     public Integer no_panels = 1;
-    public String speed_limit = "";
-    public String type = "";
+    public String speed_limit = "<30";
+    public String type = "static";
     public String created_at = "";
     public String updated_at = "";
 
@@ -32,5 +35,24 @@ public class BillboardModel {
             data.add(m.media);
         }
         return data;
+    }
+
+    public int getNoPanelsIndex() {
+        return no_panels - 1;
+    }
+
+    public int getSpeedLimitIndex() {
+        if (speed_limit.equals(App.getContext().getResources().getString(R.string.speed_limits_1)))
+            return 0;
+        else if (speed_limit.equals(App.getContext().getResources().getString(R.string.speed_limits_2)))
+            return 1;
+        else if (speed_limit.equals(App.getContext().getResources().getString(R.string.speed_limits_3)))
+            return 2;
+        else if (speed_limit.equals(App.getContext().getResources().getString(R.string.speed_limits_4)))
+            return 3;
+        else if (speed_limit.equals(App.getContext().getResources().getString(R.string.speed_limits_5)))
+            return 4;
+
+        return 0;
     }
 }

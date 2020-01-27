@@ -281,6 +281,9 @@ public class Config {
                             "Paka"))
                     ));
 
-    public final static int MIN_YEAR                    = 1900;
+    public final static int MIN_YEAR                        = 1900;
+
+    public static final int MEDIA_REQUEST_CODE_KITKAT       = 102;
+
 
 }

@@ -5,154 +5,169 @@
     android:layout_height="match_parent"
     tools:context=".fragments.LocationFragment">
 
-    <LinearLayout
-        android:id="@+id/layout_view"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="visible"
-        android:padding="12dp">
-
-        <TextView
-            style="@style/titleText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/title_address" />
-
-        <TextView
-            android:id="@+id/text_name"
-            style="@style/contextText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/text_address"
-            style="@style/contextText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/text_city"
-            style="@style/contextText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/text_state"
-            style="@style/contextText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/text_postcode"
-            style="@style/contextText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/text_country"
-            style="@style/contextText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/layout_edit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone"
-        android:padding="12dp">
-
-        <TextView
-            style="@style/titleText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
-            android:layout_marginBottom="12dp"
-            android:text="@string/placeholder_address" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/title_address"/>
-
-        <EditText
-            android:id="@+id/text_edit_address"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/bg_placeholder_search"
-            android:gravity="top|start"
-            android:hint="@string/placeholder_address"
-            android:singleLine="false"
-            android:inputType="textCapSentences|textMultiLine"
-            android:maxLength ="254"
-            android:isScrollContainer="true"
-            android:maxLines="4" />
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:paddingTop="0dp"
+            android:paddingBottom="66dp">
 
-            <TextView
-                android:layout_width="0dp"
+            <LinearLayout
+                android:id="@+id/layout_view"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:text="@string/title_state"/>
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:visibility="visible">
 
-            <TextView
-                android:layout_width="0dp"
+                <TextView
+                    style="@style/titleText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_address" />
+
+                <TextView
+                    android:id="@+id/text_name"
+                    style="@style/contextText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/text_address"
+                    style="@style/contextText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/text_city"
+                    style="@style/contextText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/text_state"
+                    style="@style/contextText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/text_postcode"
+                    style="@style/contextText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/text_country"
+                    style="@style/contextText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_edit"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:text="@string/title_city"/>
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/titleText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginBottom="12dp"
+                    android:text="@string/placeholder_address" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_address" />
+
+                <EditText
+                    android:id="@+id/text_edit_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/bg_placeholder_search"
+                    android:gravity="top|start"
+                    android:hint="@string/placeholder_address"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:isScrollContainer="true"
+                    android:maxLength="254"
+                    android:maxLines="4"
+                    android:singleLine="false" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="@string/title_state" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="@string/title_city" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginBottom="12dp"
+                    android:orientation="horizontal">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/text_edit_state"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:background="@drawable/bg_placeholder_search"
+                        android:hint="@string/placeholder_state"
+                        android:lines="1"
+                        android:singleLine="true" />
+
+                    <AutoCompleteTextView
+                        android:id="@+id/text_edit_city"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:background="@drawable/bg_placeholder_search"
+                        android:hint="@string/placeholder_city"
+                        android:lines="1"
+                        android:singleLine="true" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_postcode" />
+
+                <EditText
+                    android:id="@+id/text_edit_postcode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_placeholder_search"
+                    android:hint="@string/placeholder_postcode"
+                    android:inputType="number"
+                    android:lines="1"
+                    android:singleLine="true" />
+            </LinearLayout>
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
-            android:layout_marginBottom="12dp"
-            android:orientation="horizontal">
-
-            <AutoCompleteTextView
-                android:id="@+id/text_edit_state"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:background="@drawable/bg_placeholder_search"
-                android:lines="1"
-                android:singleLine="true"
-                android:hint="@string/placeholder_state" />
-
-            <AutoCompleteTextView
-                android:id="@+id/text_edit_city"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:background="@drawable/bg_placeholder_search"
-                android:lines="1"
-                android:singleLine="true"
-                android:hint="@string/placeholder_city" />
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/title_postcode"/>
-
-        <EditText
-            android:id="@+id/text_edit_postcode"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_placeholder_search"
-            android:hint="@string/placeholder_postcode"
-            android:inputType="number"
-            android:lines="1"
-            android:singleLine="true" />
-    </LinearLayout>
+    </ScrollView>
 
     <Button
         android:id="@+id/button_edit"
@@ -171,11 +186,11 @@
         android:id="@+id/layout_save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:visibility="gone"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <Button
             android:id="@+id/button_cancel"
@@ -192,8 +207,8 @@
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
             android:layout_marginStart="1dp"
+            android:layout_weight="2"
             android:background="@color/info"
             android:text="@string/action_save"
             android:textColor="#FFFFFF" />

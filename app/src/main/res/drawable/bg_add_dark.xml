@@ -9,6 +9,6 @@
         </shape>
     </item>
     <item android:gravity="bottom">
-        <inset android:drawable="@drawable/ic_add" />
+        <inset android:drawable="@drawable/ic_add_dark" />
     </item>
 </layer-list>

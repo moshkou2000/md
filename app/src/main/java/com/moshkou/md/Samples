@@ -250,3 +250,15 @@ private double percentage(RecyclerView recyclerView) {
 
     return percentage;
 }
+
+
+
+// ************************************
+// get all Extra from activity
+// ************************************
+Bundle bundle = i.getExtras();
+if (bundle != null) {
+    for (String key : bundle.keySet()) {
+        Log.e(TAG, "++++++++ " + key + " : " + (bundle.get(key) != null ? bundle.get(key) : "NULL"));
+    }
+}
