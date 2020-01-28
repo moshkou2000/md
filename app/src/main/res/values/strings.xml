@@ -55,6 +55,8 @@
     <string name="title_lighting">Lighting</string>
     <string name="title_no_panels">No. of panels</string>
     <string name="title_speed_limit">Speed Limit</string>
+    <string name="title_location_access">Location Service</string>
+    <string name="title_location_permission">Location Permission</string>
 
     <!--Header-->
     <string name="header_alert">Oops!!!</string>
@@ -78,11 +80,14 @@
     <string name="hint_permission_contacts">&appname; syncs only phone numbers from your address book to connect to other &appname;
         users.</string>
     <string name="hint_permission_camera">Set your profile picture and make a circle gallery.</string>
+    <string name="hint_add_location">Move map then click the location button at center screen.</string>
 
     <!--Messages-->
     <string name="message_login_verification">Thanks for helping us to secure account from unauthorized access!</string>
     <string name="message_token_expired">Your credentials did not work, the credentials that were used to access to the user data and app services.\n\nFor security reasons you need to Login.</string>
     <string name="message_error_required_fields">Please fill up the required fields.</string>
+    <string name="message_error_required_location_access">Turn on Location Services.\nYour current location will be displayed on the map.</string>
+    <string name="message_error_required_location_permission">&appname; needs permission to access Location Service.\nYour location is used to show on map.</string>
     <string name="message_error_required_verification_code">Please enter your verification code.</string>
     <string name="message_error_valid_phone_email">Please enter valid phone number or email.</string>
     <string name="message_error_valid_email">Valid email is required.</string>

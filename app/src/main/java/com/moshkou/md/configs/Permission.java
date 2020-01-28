@@ -2,9 +2,17 @@ package com.moshkou.md.configs;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
+import android.net.Uri;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import com.moshkou.md.App;
+
+import static android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS;
 
 public class Permission {
 
@@ -55,6 +63,12 @@ public class Permission {
             } else {
                 Permission.ACCESS_FINE_LOCATION = true;
             }
+        }
+
+        public static boolean LOCATION_STATUS(Activity activity) {
+            final LocationManager manager =
+                    (LocationManager) activity.getSystemService(App.getContext().LOCATION_SERVICE);
+            return manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         }
 
         public static void READ_CONTACTS(Activity activity) {

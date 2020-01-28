@@ -18,7 +18,8 @@ public class Enumerates {
         NULL,
         INFO,
         DETAILS,
-        SEARCH
+        SEARCH,
+        ADD
     }
 
     public enum ConfirmationState {

@@ -31,12 +31,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -95,7 +98,7 @@ public class MainActivity extends FragmentActivity implements
 
     private View mapView;
 
-    private LinearLayout layoutDetailsGap;
+    private LinearLayout layoutInfoGap;
     private LinearLayout layoutInfoContent;
     private LinearLayout layoutBottomSheetDetails;
     private LinearLayout layoutBottomSheetBillboards;
@@ -118,10 +121,12 @@ public class MainActivity extends FragmentActivity implements
     private Button buttonInfoEdit;
     private Button actionButtonAdd;
     private Button actionButtonMyLocation;
+    private Button actionButtonAddLocation;
     private RecyclerView recyclerViewBillboards;
     private HorizontalGridView gridViewFilter;
     private ViewPager viewPagerInfo;
 
+    private TextView textMap;
     private TextView textInfoBillboardName;
     private TextView textInfoLastUpdate;
     private TextView textSearchNothing;
@@ -142,7 +147,7 @@ public class MainActivity extends FragmentActivity implements
     private Marker myMarker;
     private static final int[] TAB_TITLES = new int[] { R.string.placeholder_location, R.string.placeholder_billboards, R.string.placeholder_media, R.string.placeholder_status };
 
-
+    private Animation animationAdd;
     private List<Fragment> infoPages = new ArrayList<>();
 
     private List<BillboardModel> allBillboards = new ArrayList<>();
@@ -168,8 +173,8 @@ public class MainActivity extends FragmentActivity implements
 
         mapView = findViewById(R.id.map);
 
+        layoutInfoGap = findViewById(R.id.layout_info_gap);
         layoutInfoContent = findViewById(R.id.layout_info_content);
-        layoutDetailsGap = findViewById(R.id.layout_details_gap);
         layoutBottomSheetDetails = findViewById(R.id.bottom_sheet_details);
         layoutBottomSheetBillboards = findViewById(R.id.bottom_sheet_billboards);
         layoutDetails = BottomSheetBehavior.from(layoutBottomSheetDetails);
@@ -182,6 +187,7 @@ public class MainActivity extends FragmentActivity implements
         listSearch = findViewById(R.id.list_search);
         layoutSearch = findViewById(R.id.layout_search);
 
+        textMap = findViewById(R.id.text_map);
         textInfoBillboardName = findViewById(R.id.text_view_info_billboard_name);
         textInfoLastUpdate = findViewById(R.id.text_view_info_last_update);
         textSearchNothing = findViewById(R.id.text_search_nothing);
@@ -193,6 +199,7 @@ public class MainActivity extends FragmentActivity implements
         buttonSearchClear = findViewById(R.id.button_search_clear);
         actionButtonAdd = findViewById(R.id.action_button_add);
         actionButtonMyLocation = findViewById(R.id.action_button_my_location);
+        actionButtonAddLocation = findViewById(R.id.action_button_add_location);
         recyclerViewBillboards = findViewById(R.id.recycler_view_billboards);
         gridViewFilter = findViewById(R.id.grid_view_filter);
         viewPagerInfo = findViewById(R.id.view_pager_info);
@@ -239,10 +246,32 @@ public class MainActivity extends FragmentActivity implements
 
         switch (requestCode) {
             case RequestCode.ACCESS_NETWORK_STATE:
-                if (permissions.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                 } else if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_NETWORK_STATE)) {
                     // TODO: display "Permission was denied. Display an error message."
+                }
+                break;
+            case RequestCode.ACCESS_FINE_LOCATION:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                    showDialogLocationPermission();
+//                    String permission = permissions[0];
+//                    boolean showRationale = shouldShowRequestPermissionRationale(permission);
+//                    if (! showRationale) {
+//                        // user also CHECKED "never ask again"
+//                        // you can either enable some fall back,
+//                        // disable features of your app
+//                        // or open another dialog explaining
+//                        // again the permission and directing to
+//                        // the app setting
+//
+//                    } else if (Manifest.permission.ACCESS_FINE_LOCATION.equals(permission)) {
+//                        // user did NOT check "never ask again"
+//                        // this is a good place to explain the user
+//                        // why you need the permission and ask if he wants
+//                        // to accept it (the rationale)
+//                    } else if ( /* possibly check more permissions...*/ ) {
+//                    }
                 }
                 break;
         }
@@ -254,24 +283,51 @@ public class MainActivity extends FragmentActivity implements
         map.setOnMarkerClickListener(this);
         map.getUiSettings().setMapToolbarEnabled(false);
         map.getUiSettings().setZoomControlsEnabled(false);
+        map.getUiSettings().setCompassEnabled(true);
 
         if (Permission.ACCESS_FINE_LOCATION)
             map.setMyLocationEnabled(true);
 
+        final View mapViewParent = ((View) mapView.findViewById(Integer.parseInt("1")).getParent());
+
         // MyLocation button
-        View locationButton = ((View) mapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
-        if (locationButton.getVisibility() != View.GONE)
-            locationButton.setVisibility(View.GONE);
-        actionButtonMyLocation.setOnClickListener(view -> {
-            Permission.Check.LOCATION(this);
-            if (Permission.ACCESS_FINE_LOCATION)
-                locationButton.callOnClick();
-        });
+        View locationButton = mapViewParent.findViewById(Integer.parseInt("2"));
+        if (locationButton != null) {
+            if (locationButton.getVisibility() != View.GONE)
+                locationButton.setVisibility(View.GONE);
+
+            actionButtonMyLocation.setOnClickListener(view -> {
+                if (!Permission.ACCESS_FINE_LOCATION)
+                    Permission.Check.LOCATION(this);
+                else {
+                    if (Permission.Check.LOCATION_STATUS(this))
+                        locationButton.callOnClick();
+                    else
+                        showDialogLocationAccess();
+                }
+            });
+        }
+
+        // Compass position
+        View locationCompass = mapViewParent.findViewById(Integer.parseInt("5"));
+        if (locationCompass != null) {
+            RelativeLayout.LayoutParams params =
+                    (RelativeLayout.LayoutParams) locationCompass.getLayoutParams();
+            params.removeRule(RelativeLayout.ALIGN_PARENT_TOP);
+            params.removeRule(RelativeLayout.ALIGN_PARENT_START);
+            params.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
+            params.addRule(RelativeLayout.ALIGN_PARENT_END, RelativeLayout.TRUE);
+            params.setMargins(0, 0, 0, 373);
+            params.width = (int) (68 * Settings.DEVICE_DENSITY);
+            params.height = (int) (68 * Settings.DEVICE_DENSITY);
+            locationCompass.setVisibility(View.VISIBLE);
+        }
 
         // get time now
         SimpleDateFormat sdf = new SimpleDateFormat("HHmm", Locale.getDefault());
         Integer currentTime = Integer.valueOf(sdf.format(new Date()));
 
+        // TODO: just for testing
         // 1915: sunset time in KL
         mapStyle = currentTime < 1915 ? null : MapStyleOptions.loadRawResourceStyle(context, R.raw.mapstyle_night);
 
@@ -312,6 +368,7 @@ public class MainActivity extends FragmentActivity implements
         initFilter();
         initMore();
         initInfo();
+        initAdd();
 
         CoordinatorLayout.LayoutParams paramsBillboards = (CoordinatorLayout.LayoutParams) layoutBottomSheetBillboards.getLayoutParams();
         paramsBillboards.height = (int) (Settings.DEVICE_HEIGHT * 0.64); // set the height to 64%
@@ -336,12 +393,6 @@ public class MainActivity extends FragmentActivity implements
 
             @Override
             public void onSlide(@NonNull View view, float v) { }
-        });
-
-        actionButtonAdd.setOnClickListener(view -> {
-            clearSelected();
-            showLayoutDetails();
-            tabs.getTabAt(0).select();
         });
         buttonBack.setOnClickListener(view -> {
             clearSearchFocus();
@@ -470,7 +521,8 @@ public class MainActivity extends FragmentActivity implements
         viewPagerInfo.setAdapter(infoPagerAdapter);
 
         buttonInfoEdit.setOnClickListener(view -> {
-            showLayoutDetails();
+            toggleAdd(true);
+            // TODO: move to the coordinate
             tabs.getTabAt(2).select();
         });
 
@@ -478,6 +530,15 @@ public class MainActivity extends FragmentActivity implements
             showLayoutList();
         });
 
+    }
+
+    private void initAdd() {
+        actionButtonAdd.setOnClickListener(view -> toggleAdd(true));
+        actionButtonAddLocation.setOnClickListener(view -> {
+            clearSelected();
+            toggleAdd(false);
+            tabs.getTabAt(0).select();
+        });
     }
 
 
@@ -557,6 +618,49 @@ public class MainActivity extends FragmentActivity implements
             gridViewFilter.setVisibility(visibility);
     }
 
+    private void toggleAdd(boolean doIt) {
+        final Handler handler = new Handler();
+
+        if (doIt) {
+            showAdd();
+
+            double parentCenterX = actionButtonAdd.getX() / 2 * -1 + 30;
+            double parentCenterY = actionButtonAdd.getY() / 2 * -1 + 60;
+            animationAdd = new TranslateAnimation(0, (int)parentCenterX, 0, (int)parentCenterY);
+            animationAdd.setDuration(400);
+            animationAdd.setFillAfter(true);
+            animationAdd.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) { }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    actionButtonAdd.clearAnimation();
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) { }
+            });
+            actionButtonAdd.startAnimation(animationAdd);
+            actionButtonAdd.setBackgroundResource(R.drawable.ic_location);
+            handler.postDelayed(() -> {
+                actionButtonAdd.setVisibility(View.INVISIBLE);
+                actionButtonAddLocation.setVisibility(View.VISIBLE);
+            }, 300);
+
+        } else {
+            showLayoutDetails();
+
+            if (animationAdd != null) {
+                animationAdd.setRepeatCount(1);
+                animationAdd.setRepeatMode(Animation.REVERSE);
+                actionButtonAdd.setVisibility(View.VISIBLE);
+                actionButtonAdd.setBackgroundResource(R.drawable.bg_add);
+                actionButtonAddLocation.setVisibility(View.GONE);
+            }
+        }
+    }
+
     private boolean hasSearchText() {
         return textSearch.getText().length() > 0;
     }
@@ -596,6 +700,7 @@ public class MainActivity extends FragmentActivity implements
      * showLayoutList
      * showLayoutDetails
      * showSearchList
+     * showAdd
      */
 
     private void showLayoutInfo() {
@@ -620,6 +725,7 @@ public class MainActivity extends FragmentActivity implements
 
     private void showLayoutList() {
         toggleFilter(View.VISIBLE);
+        toggleAdd(false);
 
         Settings.LAYOUT_STATUS = Enumerates.LayoutStatus.NULL;
 
@@ -634,6 +740,9 @@ public class MainActivity extends FragmentActivity implements
 
         if (layoutSearch.getVisibility() != View.GONE)
             layoutSearch.setVisibility(View.GONE);
+
+        if (textMap.getVisibility() != View.GONE)
+            textMap.setVisibility(View.GONE);
 
 
         if (buttonBack.getVisibility() != View.GONE)
@@ -701,13 +810,37 @@ public class MainActivity extends FragmentActivity implements
         if (spinnerMore.getVisibility() != View.GONE)
             spinnerMore.setVisibility(View.GONE);
 
-        if (spinnerMore.getVisibility() != View.GONE)
-            spinnerMore.setVisibility(View.GONE);
-
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) buttonSearchClear.getLayoutParams();
         params.removeRule(RelativeLayout.ALIGN_PARENT_START);
         params.addRule(RelativeLayout.ALIGN_PARENT_END, RelativeLayout.TRUE);
         buttonSearchClear.setLayoutParams(params);
+    }
+
+    private void showAdd() {
+
+        Settings.LAYOUT_STATUS = Enumerates.LayoutStatus.ADD;
+
+        if (layoutInfoContent.getVisibility() != View.GONE)
+            layoutInfoContent.setVisibility(View.GONE);
+
+        if (layoutBottomSheetBillboards.getVisibility() != View.GONE)
+            layoutBottomSheetBillboards.setVisibility(View.GONE);
+
+        if (layoutBottomSheetDetails.getVisibility() != View.GONE)
+            layoutBottomSheetDetails.setVisibility(View.GONE);
+
+        if (textMap.getVisibility() != View.VISIBLE)
+            textMap.setVisibility(View.VISIBLE);
+
+
+        if (buttonBack.getVisibility() != View.VISIBLE)
+            buttonBack.setVisibility(View.VISIBLE);
+
+        if (buttonFilter.getVisibility() != View.GONE)
+            buttonFilter.setVisibility(View.GONE);
+
+        if (spinnerMore.getVisibility() != View.GONE)
+            spinnerMore.setVisibility(View.GONE);
     }
 
 
@@ -867,7 +1000,7 @@ public class MainActivity extends FragmentActivity implements
      * Alert ->
      * showToast
      * showSnackBar
-     * showDialog
+     * showDialogLocationAccess
      */
 
     private void showToast(String message) {
@@ -882,7 +1015,7 @@ public class MainActivity extends FragmentActivity implements
         snackbar.show();
     }
 
-    private void showDialog() {
+    private void showDialogLocationAccess() {
         final Dialog dialog = new Dialog(context);
 
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
@@ -896,14 +1029,37 @@ public class MainActivity extends FragmentActivity implements
         Button cancel = dialog.findViewById(R.id.btn_cancel);
         Button ok = dialog.findViewById(R.id.btn_ok);
 
-        header_text.setText("This is sample header");
-        text_body.setText("This is sample body text.");
-
+        header_text.setText(getString(R.string.title_location_access));
+        text_body.setText(getString(R.string.message_error_required_location_access));
 
         ok.setOnClickListener((view) -> {
+            startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
             dialog.dismiss();
         });
-        cancel.setOnClickListener((view) -> {
+        cancel.setOnClickListener((view) -> dialog.dismiss());
+
+        dialog.show();
+    }
+
+    private void showDialogLocationPermission() {
+        final Dialog dialog = new Dialog(context);
+
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.dialog);
+
+        TextView header_text = dialog.findViewById(R.id.header_text);
+        TextView text_body = dialog.findViewById(R.id.text_body);
+        Button cancel = dialog.findViewById(R.id.btn_cancel);
+        cancel.setVisibility(View.GONE);
+        Button ok = dialog.findViewById(R.id.btn_ok);
+
+        header_text.setText(getString(R.string.title_location_permission));
+        text_body.setText(getString(R.string.message_error_required_location_permission));
+
+        ok.setOnClickListener((view) -> {
             dialog.dismiss();
         });
 
