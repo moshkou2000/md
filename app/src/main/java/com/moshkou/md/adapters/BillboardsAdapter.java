@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -57,7 +58,9 @@ public class BillboardsAdapter extends RecyclerView.Adapter<BillboardsAdapter.It
     @NonNull
     @Override
     public ItemRowHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_billboard, null);
+        View v = LayoutInflater
+                .from(viewGroup.getContext())
+                .inflate(R.layout.item_billboard, null);
         return new ItemRowHolder(v);
     }
 
@@ -84,14 +87,21 @@ public class BillboardsAdapter extends RecyclerView.Adapter<BillboardsAdapter.It
                 Utils.activityPreview(App.getContext(), url, item.name, false));
         itemRowHolder.imageFlag.setOnClickListener(view ->
                 billboardListener.onBillboardInteraction(item));
+
+        BillboardItemAdapter adapter = new BillboardItemAdapter(item.getKeyValues());
+        itemRowHolder.recyclerViewAdvertisers.setAdapter(adapter);
+
         itemRowHolder.buttonMore.setOnClickListener(view -> {
+            LinearLayout.LayoutParams params =
+                    (LinearLayout.LayoutParams) itemRowHolder.recyclerViewAdvertisers.getLayoutParams();
             if (itemRowHolder.recyclerViewAdvertisers.getVisibility() == View.GONE) {
                 itemRowHolder.buttonMore.setText(R.string.action_less);
-                // TODO:  height -> max
+                params.height = LinearLayout.LayoutParams.WRAP_CONTENT;
             } else {
                 itemRowHolder.buttonMore.setText(R.string.action_more);
-                // TODO:  height -> 44dp
+                params.height = itemRowHolder.recyclerViewAdvertisers.getMinimumHeight();
             }
+            itemRowHolder.recyclerViewAdvertisers.setLayoutParams(params);
         });
     }
 

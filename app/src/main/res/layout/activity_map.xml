@@ -72,7 +72,7 @@
             <TextView
                 android:id="@+id/text_map"
                 android:layout_width="match_parent"
-                android:layout_height="44dp"
+                android:layout_height="40dp"
                 android:background="#FFF"
                 android:gravity="center"
                 android:visibility="gone"
@@ -184,10 +184,10 @@
     </RelativeLayout>
 
     <!--details layout-->
-    <include layout="@layout/fragment_bottom_sheet_details" android:visibility="gone" />
+    <include layout="@layout/fragment_bottom_sheet_details" android:visibility="visible" />
 
     <!--list of billboards layout-->
-    <include layout="@layout/fragment_bottom_sheet_billboards" android:visibility="gone" />
+    <include layout="@layout/fragment_bottom_sheet_billboards" android:visibility="visible" />
 
     <!--search layout-->
     <RelativeLayout

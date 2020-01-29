@@ -1,20 +1,21 @@
 package com.moshkou.md.fragments;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.moshkou.md.App;
@@ -43,8 +44,8 @@ public class LocationFragment extends Fragment {
     private TextView textPostcode;
     private TextView textCountry;
 
-    private AutoCompleteTextView textEditCity;
-    private AutoCompleteTextView textEditState;
+    private Spinner spinnerState;
+    private Spinner spinnerCity;
     private EditText textEditAddress;
     private EditText textEditPostcode;
 
@@ -55,11 +56,16 @@ public class LocationFragment extends Fragment {
     private BillboardModel selectedBillboard;
     private boolean isInitialized = false;
 
-
-
     public LocationFragment() {
         // Required empty public constructor
     }
+
+
+    /**
+     * Override functions ->
+     * onCreate
+     * onBackPressed
+     **/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,13 +82,13 @@ public class LocationFragment extends Fragment {
 
         textName = view.findViewById(R.id.text_name);
         textAddress = view.findViewById(R.id.text_address);
-        textCity = view.findViewById(R.id.text_city);
         textState = view.findViewById(R.id.text_state);
+        textCity = view.findViewById(R.id.text_city);
         textPostcode = view.findViewById(R.id.text_postcode);
         textCountry = view.findViewById(R.id.text_country);
 
-        textEditCity = view.findViewById(R.id.text_edit_city);
-        textEditState = view.findViewById(R.id.text_edit_state);
+        spinnerCity = view.findViewById(R.id.text_edit_city);
+        spinnerState = view.findViewById(R.id.text_edit_state);
         textEditAddress = view.findViewById(R.id.text_edit_address);
         textEditPostcode = view.findViewById(R.id.text_edit_postcode);
         buttonEdit = view.findViewById(R.id.button_edit);
@@ -112,11 +118,11 @@ public class LocationFragment extends Fragment {
         mListener = null;
     }
 
-    public void setSelectedBillboard(BillboardModel selectedBillboard) {
-        this.selectedBillboard = selectedBillboard;
 
-        populate();
-    }
+    /**
+     * Init functions ->
+     * init
+     */
 
     private void init() {
         isInitialized = true;
@@ -129,21 +135,84 @@ public class LocationFragment extends Fragment {
             toggleView(false);
         });
 
-        ArrayAdapter<String> adapterState = new ArrayAdapter<>(
+        ArrayAdapter<String> adapterState = new ArrayAdapter<String>(
                 App.getContext(),
                 android.R.layout.select_dialog_item,
-                Config.STATES);
-        textEditState.setThreshold(1);//will start working from first character
-        textEditState.setAdapter(adapterState);
-        textEditState.setOnItemClickListener((parent, v, position, id) -> {
-                ArrayAdapter<String> adapterCity = new ArrayAdapter<>(
+                Config.STATES) {
+
+            @Override
+            public boolean isEnabled(int position) {
+                return position != 0;
+            }
+
+            @Override
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView tv = (TextView) view;
+                tv.setTextColor(position == 0 ? Color.GRAY: Color.BLACK);
+                tv.setTextSize(18);
+                return view;
+            }
+        };
+        spinnerState.setAdapter(adapterState);
+        spinnerState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ArrayAdapter<String> adapterCity = new ArrayAdapter<String>(
                         App.getContext(),
                         android.R.layout.select_dialog_item,
-                        Utils.getCities(adapterState.getItem(position)));
-                textEditCity.setThreshold(1);//will start working from first character
-                textEditCity.setAdapter(adapterCity);
+                        Utils.getCities(adapterState.getItem(position))) {
+
+                    @Override
+                    public boolean isEnabled(int position) {
+                        return position != 0;
+                    }
+
+                    @Override
+                    public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                        View view = super.getDropDownView(position, convertView, parent);
+                        TextView tv = (TextView) view;
+                        tv.setTextColor(position == 0 ? Color.GRAY: Color.BLACK);
+                        tv.setTextSize(18);
+                        return view;
+                    }
+                };
+                spinnerCity.setAdapter(adapterCity);
+
+                View v = spinnerState.getSelectedView();
+                TextView tv = ((TextView)v);
+                tv.setTextSize(18);
+                tv.setTypeface(tv.getTypeface(), Typeface.NORMAL);
+                tv.setTextColor(Color.GRAY);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { }
+        });
+        spinnerState.setSelection(0, false);
+
+        spinnerCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                View v = spinnerCity.getSelectedView();
+                TextView tv = ((TextView)v);
+                tv.setTextSize(18);
+                tv.setTypeface(tv.getTypeface(), Typeface.NORMAL);
+                tv.setTextColor(Color.GRAY);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { }
         });
     }
+
+
+    /**
+     * Helper functions ->
+     * populate
+     * setSelectedBillboard
+     * toggleView
+     */
 
     private void populate() {
         if (isInitialized) {
@@ -157,8 +226,8 @@ public class LocationFragment extends Fragment {
                 textPostcode.setText("");
                 textCountry.setText("");
 
-                textEditCity.setText("");
-                textEditState.setText("");
+                spinnerState.setSelection(0);
+                spinnerCity.setSelection(0);
                 textEditAddress.setText("");
                 textEditPostcode.setText("");
 
@@ -172,12 +241,20 @@ public class LocationFragment extends Fragment {
                 textPostcode.setText(String.valueOf(selectedBillboard.location.postcode));
                 textCountry.setText(selectedBillboard.location.country);
 
-                textEditCity.setText(selectedBillboard.location.city);
-                textEditState.setText(selectedBillboard.location.state);
+                spinnerState.setSelection(Utils.getStateIndex(selectedBillboard.location.state));
+                spinnerCity.setSelection(Utils.getCityIndex(
+                        selectedBillboard.location.state,
+                        selectedBillboard.location.city));
                 textEditAddress.setText(selectedBillboard.location.address);
                 textEditPostcode.setText(String.valueOf(selectedBillboard.location.postcode));
             }
         }
+    }
+
+    public void setSelectedBillboard(BillboardModel selectedBillboard) {
+        this.selectedBillboard = selectedBillboard;
+
+        populate();
     }
 
     private void toggleView(boolean isEdit) {

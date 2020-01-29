@@ -1,6 +1,8 @@
 package com.moshkou.md.fragments;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,21 +11,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.moshkou.md.App;
 import com.moshkou.md.R;
 import com.moshkou.md.configs.Config;
-import com.moshkou.md.configs.Enumerates;
-import com.moshkou.md.helpers.Utils;
 import com.moshkou.md.interfaces.OnFragmentInteractionListener;
 import com.moshkou.md.models.BillboardModel;
 
@@ -41,16 +41,14 @@ public class BillboardFragment extends Fragment {
 
     private TextView textMediaOwner;
     private TextView textFormat;
-    private TextView textSize;
     private TextView textEnvironment;
     private TextView textLighting;
     private TextView textNoOfPanels;
     private TextView textSpeedLimit;
 
-    private AutoCompleteTextView textEditMediaOwner;
-    private AutoCompleteTextView textEditFormat;
-    private AutoCompleteTextView textEditSize;
-    private AutoCompleteTextView textEditEnvironment;
+    private Spinner spinnerMediaOwner;
+    private Spinner spinnerFormat;
+    private Spinner spinnerEnvironment;
     private CheckBox checkboxDigitalScreen;
     private CheckBox checkboxLighting;
     private RadioGroup radioGroupNoPanels;
@@ -84,16 +82,14 @@ public class BillboardFragment extends Fragment {
 
         textMediaOwner = view.findViewById(R.id.text_media_owner);
         textFormat = view.findViewById(R.id.text_format);
-        textSize = view.findViewById(R.id.text_size);
         textEnvironment = view.findViewById(R.id.text_environment);
         textLighting = view.findViewById(R.id.text_lighting);
         textNoOfPanels = view.findViewById(R.id.text_no_of_panels);
         textSpeedLimit = view.findViewById(R.id.text_speed_limit);
 
-        textEditMediaOwner = view.findViewById(R.id.text_edit_media_owner);
-        textEditFormat = view.findViewById(R.id.text_edit_format);
-        textEditSize = view.findViewById(R.id.text_edit_size);
-        textEditEnvironment = view.findViewById(R.id.text_edit_environment);
+        spinnerMediaOwner = view.findViewById(R.id.text_edit_media_owner);
+        spinnerFormat = view.findViewById(R.id.text_edit_format);
+        spinnerEnvironment = view.findViewById(R.id.text_edit_environment);
         checkboxDigitalScreen = view.findViewById(R.id.checkbox_digital_screen);
         checkboxLighting = view.findViewById(R.id.checkbox_lighting);
         radioGroupNoPanels = view.findViewById(R.id.radio_group_no_panels);
@@ -106,7 +102,7 @@ public class BillboardFragment extends Fragment {
         Log.i(TAG, "init");
 
         init();
-//        populate();
+        populate();
 
         return view;
     }
@@ -147,37 +143,110 @@ public class BillboardFragment extends Fragment {
         });
 
 
-        ArrayAdapter<String> adapterMediaOwner = new ArrayAdapter<>(
+        ArrayAdapter<String> adapterMediaOwner = new ArrayAdapter<String>(
                 App.getContext(),
                 android.R.layout.select_dialog_item,
-                Config.STATES);
-        textEditMediaOwner.setThreshold(1);//will start working from first character
-        textEditMediaOwner.setAdapter(adapterMediaOwner);
-        textEditMediaOwner.setOnItemClickListener((parent, v, position, id) -> { });
+                Config.MEDIA_OWNER) {
 
-        ArrayAdapter<String> adapterFormat = new ArrayAdapter<>(
-                App.getContext(),
-                android.R.layout.select_dialog_item,
-                Config.STATES);
-        textEditFormat.setThreshold(1);//will start working from first character
-        textEditFormat.setAdapter(adapterFormat);
-        textEditFormat.setOnItemClickListener((parent, v, position, id) -> { });
+            @Override
+            public boolean isEnabled(int position) {
+                return position != 0;
+            }
 
-        ArrayAdapter<String> adapterSize = new ArrayAdapter<>(
-                App.getContext(),
-                android.R.layout.select_dialog_item,
-                Config.STATES);
-        textEditSize.setThreshold(1);//will start working from first character
-        textEditSize.setAdapter(adapterSize);
-        textEditSize.setOnItemClickListener((parent, v, position, id) -> { });
+            @Override
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView tv = (TextView) view;
+                tv.setTextColor(position == 0 ? Color.GRAY: Color.BLACK);
+                tv.setTextSize(18);
+                return view;
+            }
+        };
+        spinnerMediaOwner.setAdapter(adapterMediaOwner);
+        spinnerMediaOwner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                View v = spinnerMediaOwner.getSelectedView();
+                TextView tv = ((TextView)v);
+                tv.setTextSize(18);
+                tv.setTypeface(tv.getTypeface(), Typeface.NORMAL);
+                tv.setTextColor(Color.GRAY);
+            }
 
-        ArrayAdapter<String> adapterEnvironment = new ArrayAdapter<>(
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { }
+        });
+        spinnerMediaOwner.setSelection(0, false);
+
+        ArrayAdapter<String> adapterFormat = new ArrayAdapter<String>(
                 App.getContext(),
                 android.R.layout.select_dialog_item,
-                Config.STATES);
-        textEditEnvironment.setThreshold(1);//will start working from first character
-        textEditEnvironment.setAdapter(adapterEnvironment);
-        textEditEnvironment.setOnItemClickListener((parent, v, position, id) -> { });
+                Config.FORMAT) {
+
+            @Override
+            public boolean isEnabled(int position) {
+                return position != 0;
+            }
+
+            @Override
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView tv = (TextView) view;
+                tv.setTextColor(position == 0 ? Color.GRAY: Color.BLACK);
+                tv.setTextSize(18);
+                return view;
+            }
+        };
+        spinnerFormat.setAdapter(adapterFormat);
+        spinnerFormat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                View v = spinnerFormat.getSelectedView();
+                TextView tv = ((TextView)v);
+                tv.setTextSize(18);
+                tv.setTypeface(tv.getTypeface(), Typeface.NORMAL);
+                tv.setTextColor(Color.GRAY);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { }
+        });
+        spinnerFormat.setSelection(0, false);
+
+        ArrayAdapter<String> adapterEnvironment = new ArrayAdapter<String>(
+                App.getContext(),
+                android.R.layout.select_dialog_item,
+                Config.ENVIRONMENT) {
+
+            @Override
+            public boolean isEnabled(int position) {
+                return position != 0;
+            }
+
+            @Override
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView tv = (TextView) view;
+                tv.setTextColor(position == 0 ? Color.GRAY: Color.BLACK);
+                tv.setTextSize(18);
+                return view;
+            }
+        };
+        spinnerEnvironment.setAdapter(adapterEnvironment);
+        spinnerEnvironment.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                View v = spinnerEnvironment.getSelectedView();
+                TextView tv = ((TextView)v);
+                tv.setTextSize(18);
+                tv.setTypeface(tv.getTypeface(), Typeface.NORMAL);
+                tv.setTextColor(Color.GRAY);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { }
+        });
+        spinnerEnvironment.setSelection(0, false);
     }
 
     private void populate() {
@@ -187,16 +256,14 @@ public class BillboardFragment extends Fragment {
 
                 textMediaOwner.setText("");
                 textFormat.setText("");
-                textSize.setText("");
                 textEnvironment.setText("");
                 textLighting.setText("No");
                 textNoOfPanels.setText("1");
                 textSpeedLimit.setText("<30");
 
-                textEditMediaOwner.setText("");
-                textEditFormat.setText("");
-                textEditSize.setText("");
-                textEditEnvironment.setText("");
+                spinnerMediaOwner.setSelection(0);
+                spinnerFormat.setSelection(0);
+                spinnerEnvironment.setSelection(0);
                 checkboxDigitalScreen.setChecked(false);
                 checkboxLighting.setChecked(false);
                 ((RadioButton) radioGroupNoPanels.getChildAt(0))
@@ -208,16 +275,14 @@ public class BillboardFragment extends Fragment {
 
                 textMediaOwner.setText(selectedBillboard.media_owner);
                 textFormat.setText(selectedBillboard.format);
-                textSize.setText(selectedBillboard.size);
                 textEnvironment.setText(selectedBillboard.environment);
                 textLighting.setText(selectedBillboard.lighting ? "Yes" : "No");
                 textNoOfPanels.setText(String.valueOf(selectedBillboard.no_panels));
                 textSpeedLimit.setText(selectedBillboard.speed_limit);
 
-                textEditMediaOwner.setText(selectedBillboard.media_owner);
-                textEditFormat.setText(selectedBillboard.format);
-                textEditSize.setText(selectedBillboard.size);
-                textEditEnvironment.setText(selectedBillboard.environment);
+                spinnerMediaOwner.setSelection(Config.MEDIA_OWNER.indexOf(selectedBillboard.media_owner));
+                spinnerFormat.setSelection(Config.FORMAT.indexOf(selectedBillboard.format));
+                spinnerEnvironment.setSelection(Config.ENVIRONMENT.indexOf(selectedBillboard.environment));
                 checkboxDigitalScreen.setChecked(selectedBillboard.type.equals("digital"));
                 checkboxLighting.setChecked(selectedBillboard.lighting);
                 ((RadioButton) radioGroupNoPanels.getChildAt(selectedBillboard.getNoPanelsIndex()))

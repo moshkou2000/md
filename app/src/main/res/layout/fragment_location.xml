@@ -96,6 +96,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
                     android:layout_marginBottom="12dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
                     android:background="@drawable/bg_placeholder_search"
                     android:gravity="top|start"
                     android:hint="@string/placeholder_address"
@@ -105,51 +107,25 @@
                     android:maxLines="4"
                     android:singleLine="false" />
 
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:text="@string/title_state" />
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:text="@string/title_state" />
+                <Spinner
+                    android:id="@+id/text_edit_state"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:text="@string/title_city" />
-                </LinearLayout>
-
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginBottom="12dp"
-                    android:orientation="horizontal">
+                    android:text="@string/title_city" />
 
-                    <AutoCompleteTextView
-                        android:id="@+id/text_edit_state"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:background="@drawable/bg_placeholder_search"
-                        android:hint="@string/placeholder_state"
-                        android:lines="1"
-                        android:singleLine="true" />
-
-                    <AutoCompleteTextView
-                        android:id="@+id/text_edit_city"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:background="@drawable/bg_placeholder_search"
-                        android:hint="@string/placeholder_city"
-                        android:lines="1"
-                        android:singleLine="true" />
-                </LinearLayout>
+                <Spinner
+                    android:id="@+id/text_edit_city"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -160,6 +136,8 @@
                     android:id="@+id/text_edit_postcode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
                     android:background="@drawable/bg_placeholder_search"
                     android:hint="@string/placeholder_postcode"
                     android:inputType="number"
@@ -190,6 +168,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
+        android:background="#FFF"
         android:visibility="gone">
 
         <Button

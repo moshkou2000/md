@@ -4,12 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.moshkou.md.App;
 import com.moshkou.md.R;
+import com.moshkou.md.configs.Config;
 import com.moshkou.md.configs.Keys;
 import com.moshkou.md.configs.Settings;
 import com.moshkou.md.helpers.Utils;
@@ -22,29 +25,31 @@ public class FilterActivity extends AppCompatActivity {
 
     private final Context context = this;
 
-    private AutoCompleteTextView autoCompleteState;
-    private AutoCompleteTextView autoCompleteCity;
-    private AutoCompleteTextView autoCompleteMediaOwner;
-    private AutoCompleteTextView autoCompleteFormat;
-    private AutoCompleteTextView autoCompleteAdvertiser;
+    private AutoCompleteTextView textEditState;
+    private AutoCompleteTextView textEditCity;
+    private AutoCompleteTextView textEditMediaOwner;
+    private AutoCompleteTextView textEditFormat;
+    private AutoCompleteTextView textEditAdvertiser;
 
+
+
+
+    /**
+     * Override functions ->
+     * onCreate
+     * onBackPressed
+     **/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter);
 
-        autoCompleteState = findViewById(R.id.auto_complete_state);
-        autoCompleteCity = findViewById(R.id.auto_complete_city);
-        autoCompleteMediaOwner = findViewById(R.id.auto_complete_media_owner);
-        autoCompleteFormat = findViewById(R.id.auto_complete_format);
-        autoCompleteAdvertiser = findViewById(R.id.auto_complete_advertiser);
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.title_activity_filter);
-        toolbar.inflateMenu(R.menu.filter);
-        toolbar.setNavigationOnClickListener(view -> backPressed());
-        toolbar.setOnMenuItemClickListener(menuItem -> setSelectedStyle(menuItem.getItemId()));
+        textEditState = findViewById(R.id.auto_complete_state);
+        textEditCity = findViewById(R.id.auto_complete_city);
+        textEditMediaOwner = findViewById(R.id.auto_complete_media_owner);
+        textEditFormat = findViewById(R.id.auto_complete_format);
+        textEditAdvertiser = findViewById(R.id.auto_complete_advertiser);
 
         init();
     }
@@ -54,14 +59,79 @@ public class FilterActivity extends AppCompatActivity {
         backPressed();
     }
 
-    private void backPressed() {
-        Utils.hideKeyboard(this);
-        new Handler().postDelayed(() -> {
-            Intent i = new Intent(context, MainActivity.class);
-            i.putExtra(Keys.TYPE, Keys.FILTER);
-            startActivity(i);
-            finish();
-            }, 200);
+
+
+
+    /**
+     * Init functions ->
+     * init
+     * initToolbar
+     */
+
+    private void init() {
+        textEditState.setText(Settings.FILTER_BILLBOARD.location.state);
+        textEditCity.setText(Settings.FILTER_BILLBOARD.location.city);
+        textEditMediaOwner.setText(Settings.FILTER_BILLBOARD.media_owner);
+        textEditFormat.setText(Settings.FILTER_BILLBOARD.format);
+        textEditAdvertiser.setText(Settings.FILTER_BILLBOARD.advertiser);
+
+        ArrayAdapter<String> adapterState = new ArrayAdapter<>(
+                App.getContext(),
+                android.R.layout.select_dialog_item,
+                Config.STATES);
+        textEditState.setThreshold(1);//will start working from first character
+        textEditState.setAdapter(adapterState);
+        textEditState.setOnItemClickListener((parent, v, position, id) -> {
+            ArrayAdapter<String> adapterCity = new ArrayAdapter<>(
+                    App.getContext(),
+                    android.R.layout.select_dialog_item,
+                    Utils.getCities(adapterState.getItem(position)));
+            textEditCity.setThreshold(1);//will start working from first character
+            textEditCity.setAdapter(adapterCity);
+        });
+
+        initToolbar();
+    }
+
+    private void initToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.title_activity_filter);
+        toolbar.inflateMenu(R.menu.filter);
+        toolbar.setNavigationOnClickListener(view -> backPressed());
+        toolbar.setOnMenuItemClickListener(menuItem -> setSelectedStyle(menuItem.getItemId()));
+    }
+
+
+
+
+    /**
+     * Helper functions ->
+     * clear
+     * done
+     * setSelectedStyle
+     * backPressed
+     */
+
+    private void clear() {
+        textEditState.setText("");
+        textEditCity.setText("");
+        textEditMediaOwner.setText("");
+        textEditFormat.setText("");
+        textEditAdvertiser.setText("");
+
+        Settings.FILTER_BILLBOARD = new BillboardModel();
+
+        backPressed();
+    }
+
+    private void done() {
+        Settings.FILTER_BILLBOARD.location.state = textEditState.getText().toString().trim();
+        Settings.FILTER_BILLBOARD.location.city = textEditCity.getText().toString().trim();
+        Settings.FILTER_BILLBOARD.media_owner = textEditMediaOwner.getText().toString().trim();
+        Settings.FILTER_BILLBOARD.format = textEditFormat.getText().toString().trim();
+        Settings.FILTER_BILLBOARD.advertiser = textEditAdvertiser.getText().toString().trim();
+
+        backPressed();
     }
 
     private boolean setSelectedStyle(int selectedStyleId) {
@@ -79,35 +149,13 @@ public class FilterActivity extends AppCompatActivity {
         return true;
     }
 
-    private void init() {
-        autoCompleteState.setText(Settings.FILTER_BILLBOARD.location.state);
-        autoCompleteCity.setText(Settings.FILTER_BILLBOARD.location.city);
-        autoCompleteMediaOwner.setText(Settings.FILTER_BILLBOARD.media_owner);
-        autoCompleteFormat.setText(Settings.FILTER_BILLBOARD.format);
-        autoCompleteAdvertiser.setText(Settings.FILTER_BILLBOARD.advertiser);
+    private void backPressed() {
+        Utils.hideKeyboard(this);
+        new Handler().postDelayed(() -> {
+            Intent i = new Intent(context, MainActivity.class);
+            i.putExtra(Keys.TYPE, Keys.FILTER);
+            startActivity(i);
+            finish();
+        }, 200);
     }
-
-    private void clear() {
-        autoCompleteState.setText("");
-        autoCompleteCity.setText("");
-        autoCompleteMediaOwner.setText("");
-        autoCompleteFormat.setText("");
-        autoCompleteAdvertiser.setText("");
-
-        Settings.FILTER_BILLBOARD = new BillboardModel();
-
-        backPressed();
-    }
-
-    private void done() {
-        Settings.FILTER_BILLBOARD.location.state = autoCompleteState.getText().toString().trim();
-        Settings.FILTER_BILLBOARD.location.city = autoCompleteCity.getText().toString().trim();
-        Settings.FILTER_BILLBOARD.media_owner = autoCompleteMediaOwner.getText().toString().trim();
-        Settings.FILTER_BILLBOARD.format = autoCompleteFormat.getText().toString().trim();
-        Settings.FILTER_BILLBOARD.advertiser = autoCompleteAdvertiser.getText().toString().trim();
-
-        backPressed();
-    }
-
-
 }

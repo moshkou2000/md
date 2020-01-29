@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="12dp"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <TextView
                     style="@style/titleText"
@@ -46,18 +46,6 @@
 
                 <TextView
                     android:id="@+id/text_format"
-                    style="@style/contextText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    style="@style/titleText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/title_size" />
-
-                <TextView
-                    android:id="@+id/text_size"
                     style="@style/contextText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
@@ -117,7 +105,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="12dp"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <TextView
                     style="@style/titleText"
@@ -132,64 +120,30 @@
                     android:layout_height="wrap_content"
                     android:text="@string/title_media_owner" />
 
-                <AutoCompleteTextView
+                <Spinner
                     android:id="@+id/text_edit_media_owner"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginBottom="12dp"
-                    android:background="@drawable/bg_placeholder_search"
-                    android:hint="@string/placeholder_media_owner"
-                    android:lines="1"
-                    android:singleLine="true" />
+                    android:layout_height="wrap_content"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/title_format" />
 
-                <AutoCompleteTextView
+                <Spinner
                     android:id="@+id/text_edit_format"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginBottom="12dp"
-                    android:background="@drawable/bg_placeholder_search"
-                    android:hint="@string/placeholder_format"
-                    android:lines="1"
-                    android:singleLine="true" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/title_size" />
-
-                <AutoCompleteTextView
-                    android:id="@+id/text_edit_size"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginBottom="12dp"
-                    android:background="@drawable/bg_placeholder_search"
-                    android:hint="@string/placeholder_size"
-                    android:lines="1"
-                    android:singleLine="true" />
+                    android:layout_height="wrap_content"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/title_environment" />
 
-                <AutoCompleteTextView
+                <Spinner
                     android:id="@+id/text_edit_environment"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginBottom="12dp"
-                    android:background="@drawable/bg_placeholder_search"
-                    android:hint="@string/placeholder_environment"
-                    android:lines="1"
-                    android:singleLine="true" />
+                    android:layout_height="wrap_content"/>
 
                 <CheckBox
                     android:id="@+id/checkbox_digital_screen"
@@ -407,6 +361,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
+        android:background="#FFF"
         android:visibility="gone">
 
         <Button

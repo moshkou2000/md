@@ -213,6 +213,7 @@ public class Utils {
 
     public static void activityPreview(Context context, String url, String title, boolean isVideo){
         Intent i = new Intent(context, PreviewActivity.class);
+        i.addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK);
         i.putExtra(Keys.URL, url);
         i.putExtra(Keys.NAME, title);
         i.putExtra(Keys.VIDEO, isVideo);
@@ -246,6 +247,14 @@ public class Utils {
             }
         }
         return new ArrayList<>();
+    }
+
+    public static int getStateIndex(String state) {
+        return Config.STATES.indexOf(state);
+    }
+
+    public static int getCityIndex(String state, String city) {
+        return getCities(state).indexOf(city);
     }
 
 }

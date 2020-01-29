@@ -18,6 +18,7 @@
     <string name="title_activity_login_attempt">Suspicious Login Attempt</string>
     <string name="title_activity_alert">Oops</string>
     <string name="title_activity_filter">Filter</string>
+    <string name="title_activity_billboard">Billboard</string>
     <string name="title_activity_media">Media</string>
     <string name="title_activity_main">@string/app_name</string>
     <string name="title_activity_preview">Preview</string>
@@ -116,6 +117,7 @@
     <string name="placeholder_state">Write State</string>
     <string name="placeholder_brand">Write Brand</string>
     <string name="placeholder_product">Write Produce</string>
+    <string name="placeholder_last_update">%1$s was last update.</string>
     <string name="placeholder_city">Write City</string>
     <string name="placeholder_address">Write the address</string>
     <string name="placeholder_postcode">Write Postcode</string>

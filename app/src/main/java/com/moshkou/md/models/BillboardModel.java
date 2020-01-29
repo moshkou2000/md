@@ -55,4 +55,14 @@ public class BillboardModel {
 
         return 0;
     }
+
+    public List<KeyValue> getKeyValues() {
+        List<KeyValue> data = new ArrayList<>();
+        for (BillboardMediaModel m: medias) {
+            for (KeyValue t: m.tags) {
+                data.add(t);
+            }
+        }
+        return data;
+    }
 }

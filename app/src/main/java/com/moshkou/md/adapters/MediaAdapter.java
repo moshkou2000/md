@@ -55,7 +55,7 @@ public class MediaAdapter extends BaseAdapter {
     }
 
     public void clearItems() {
-        billboard = new BillboardModel();
+        billboard = null;
         notifyDataSetChanged();
     }
 

@@ -344,12 +344,7 @@ public class CameraActivity extends Activity {
      * @param text The message to show
      */
     private void showToast(final String text) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
-            }
-        });
+        runOnUiThread(() -> Toast.makeText(activity, text, Toast.LENGTH_SHORT).show());
     }
 
     /**
@@ -414,33 +409,6 @@ public class CameraActivity extends Activity {
         mTextureView = findViewById(R.id.texture);
 
         findViewById(R.id.capture).setOnClickListener(view -> takePicture());
-        findViewById(R.id.info).setOnClickListener(view -> {
-            final Dialog dialog = new Dialog(activity);
-            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setCancelable(false);
-            dialog.setContentView(R.layout.dialog);
-
-            TextView header_text = dialog.findViewById(R.id.header_text);
-            TextView text_body = dialog.findViewById(R.id.text_body);
-            Button cancel = dialog.findViewById(R.id.btn_cancel);
-            Button ok = dialog.findViewById(R.id.btn_ok);
-
-            header_text.setText("This is sample header");
-            text_body.setText("This is sample body text.");
-            cancel.setVisibility(View.GONE);
-
-
-            ok.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                }
-            });
-
-            dialog.show();
-        });
     }
 
     @Override
@@ -534,12 +502,7 @@ public class CameraActivity extends Activity {
                 text_body.setText(R.string.hint_permission_camera);
                 cancel.setTextColor(getResources().getColor(R.color.error));
 
-                ok.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
+                ok.setOnClickListener(v -> dialog.dismiss());
 
                 dialog.show();
             }
@@ -667,11 +630,8 @@ public class CameraActivity extends Activity {
             ok.setTextColor(getResources().getColor(R.color.error));
 
 
-            ok.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //dialog.dismiss();
-                }
+            ok.setOnClickListener(v -> {
+                //dialog.dismiss();
             });
 
             dialog.show();

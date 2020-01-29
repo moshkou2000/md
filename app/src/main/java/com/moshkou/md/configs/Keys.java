@@ -8,6 +8,8 @@ public class Keys {
     public final static String TOKEN        = "TOKEN";
     public final static String URL          = "URL";
     public final static String URI          = "URI";
+    public final static String BRAND        = "BRAND";
+    public final static String PRODUCT      = "PRODUCT";
     public final static String VIDEO        = "VIDEO";
     public final static String NAME         = "NAME";
     public final static String ID           = "ID";
@@ -17,6 +19,7 @@ public class Keys {
     public final static String STYLE        = "LEVELS";
     public final static String FILTER       = "FILTER";
     public final static String TYPE         = "TYPE";
+    public final static String MEDIA        = "MEDIA";
     public final static String DATA         = "DATA";
 
     public final static String STATE       = "state";

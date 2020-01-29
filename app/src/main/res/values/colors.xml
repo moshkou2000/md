@@ -29,7 +29,7 @@
     <color name="buttonDialog">#d2d2d2</color>
     <color name="SelectedDialog">#6bffffff</color>
 
-    <color name="bgNavigationBar">@color/bgWindow</color>
+    <color name="bgNavigationBar">@color/shadow</color>
     <color name="bgNavigationBarAuth">@color/bgWindow</color>
 
     <color name="headerText">#000000</color>

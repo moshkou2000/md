@@ -1,16 +1,12 @@
 package com.moshkou.md.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -21,16 +17,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.moshkou.md.App;
 import com.moshkou.md.R;
-import com.moshkou.md.configs.Config;
+import com.moshkou.md.configs.Flags;
 import com.moshkou.md.configs.Keys;
-import com.moshkou.md.configs.Settings;
-import com.moshkou.md.controls.FileControl;
 import com.moshkou.md.helpers.Utils;
+import com.moshkou.md.models.BillboardMediaModel;
 import com.moshkou.md.models.BillboardModel;
+import com.moshkou.md.models.KeyValue;
 
 import java.io.InputStream;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 
 public class MediaActivity extends AppCompatActivity {
@@ -46,8 +45,18 @@ public class MediaActivity extends AppCompatActivity {
     private Button buttonCamera;
     private Button buttonGallery;
 
-    private BillboardModel selectedBillboard;
+    private BillboardMediaModel selectedMedia = new BillboardMediaModel();
 
+
+
+
+    /**
+     * Override functions ->
+     * onCreate
+     * onDestroy
+     * onNewIntent
+     * onBackPressed
+     **/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,11 +110,67 @@ public class MediaActivity extends AppCompatActivity {
         backPressed();
     }
 
+
+
+
+    /**
+     * Init functions ->
+     * init
+     * getExtra
+     */
+
+    private void init() {
+        buttonCamera.setOnClickListener(v -> startActivity(new Intent(App.getContext(), CameraActivity.class)));
+        buttonGallery.setOnClickListener(v -> Utils.openDefaultGalleryApp(this));
+    }
+
+
+
+
+    /**
+     * Helper functions ->
+     * getExtra
+     * backPressed
+     * setSelectedStyle
+     * clear
+     * done
+     * toggleButtons
+     */
+
+    private void getExtra() {
+        Intent i = getIntent();
+
+//        if (i.hasExtra(Keys.DATA)) {
+//            selectedBillboard = new Gson().fromJson(i.getStringExtra(Keys.DATA), BillboardModel.class);
+//        } else
+        if (i.hasExtra(Keys.URI)) {
+            try {
+                Log.i(TAG, "+++++++++++++++++++++++++++1111: " + i.getStringExtra(Keys.URI));
+                selectedMedia.media = i.getStringExtra(Keys.URI);
+
+                InputStream input = App.getContext()
+                        .getContentResolver()
+                        .openInputStream(i.getParcelableExtra(Keys.URI));
+                Bitmap bitmap = BitmapFactory.decodeStream(input);
+                image.setImageBitmap(bitmap);
+                toggleButtons();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private void backPressed() {
         Utils.hideKeyboard(this);
         new Handler().postDelayed(() -> {
-            Intent i = new Intent(App.getContext(), MainActivity.class);
-            i.putExtra(Keys.TYPE, Keys.FILTER);
+            Intent i = new Intent(App.getContext(), BillboardActivity.class);
+            i.putExtra(Keys.TYPE, Flags.MEDIA);
+            selectedMedia.is_interesting = checkboxInteresting.isChecked();
+            selectedMedia.tags.add(
+                    new KeyValue(autoCompleteProduct.getText().toString(),
+                            autoCompleteProduct.getText().toString()));
+            Type type = new TypeToken<BillboardMediaModel>(){}.getType();
+            i.putExtra(Keys.DATA, new Gson().toJson(selectedMedia, type));
             startActivity(i);
             finish();
         }, 200);
@@ -134,31 +199,6 @@ public class MediaActivity extends AppCompatActivity {
         // TODO: add new media
 
         backPressed();
-    }
-
-    private void init() {
-        buttonCamera.setOnClickListener(v -> startActivity(new Intent(App.getContext(), CameraActivity.class)));
-        buttonGallery.setOnClickListener(v -> Utils.openDefaultGalleryApp(this));
-    }
-
-    private void getExtra() {
-        Intent i = getIntent();
-
-        if (i.hasExtra(Keys.DATA)) {
-            selectedBillboard = new Gson().fromJson(i.getStringExtra(Keys.DATA), BillboardModel.class);
-        } else if (i.hasExtra(Keys.URI)) {
-            try {
-                Log.i(TAG, "+++++++++++++++++++++++++++1111: " + i.getStringExtra(Keys.URI));
-                InputStream input = App.getContext()
-                        .getContentResolver()
-                        .openInputStream(i.getParcelableExtra(Keys.URI));
-                Bitmap bitmap = BitmapFactory.decodeStream(input);
-                image.setImageBitmap(bitmap);
-                toggleButtons();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     private void toggleButtons() {
