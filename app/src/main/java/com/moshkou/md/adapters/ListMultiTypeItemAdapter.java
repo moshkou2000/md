@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.moshkou.md.helpers.Utils;
 import com.moshkou.md.models.BaseDataModel;
 import com.moshkou.md.R;
 import com.squareup.picasso.Picasso;
@@ -74,11 +75,8 @@ public class ListMultiTypeItemAdapter extends RecyclerView.Adapter<ListMultiType
             itemRowHolder.description1.setText(item.getDescription());
             itemRowHolder.time1.setText("44:44");
 
-            Picasso.get()
-                    .load(Uri.parse(item.getImage()))
-                    .placeholder(R.drawable.bg_placeholder_image)
-                    .error(R.drawable.bg_placeholder_image)
-                    .into(itemRowHolder.image1);
+            Utils.setPicasso(item.getImage(), itemRowHolder.image1);
+
 
             itemRowHolder.extra1.bringToFront();
             itemRowHolder.extra1.setOnClickListener(view -> {
@@ -95,11 +93,8 @@ public class ListMultiTypeItemAdapter extends RecyclerView.Adapter<ListMultiType
             itemRowHolder.title2.setText(item.getTitle());
             itemRowHolder.description2.setText(item.getDescription());
 
-            Picasso.get()
-                    .load(Uri.parse(item.getImage()))
-                    .placeholder(R.drawable.bg_placeholder_image)
-                    .error(R.drawable.bg_placeholder_image)
-                    .into(itemRowHolder.image2);
+            Utils.setPicasso(item.getImage(), itemRowHolder.image2);
+
 
             itemRowHolder.button2.setOnClickListener(view -> {
                 // TODO: item click ************************

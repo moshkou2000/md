@@ -95,11 +95,7 @@ public class StatusAdapter extends BaseAdapter {
         else
             viewHolder.root.setPadding(middlePadding, PADDING, middlePadding, bottom);     // middle
 
-        Picasso.get()
-                .load(Uri.parse(item.media))
-                .placeholder(R.drawable.bg_placeholder_image)
-                .error(R.drawable.bg_placeholder_image)
-                .into(viewHolder.image);
+        Utils.setPicasso(item.media, viewHolder.image);
 
         viewHolder.image.setOnClickListener(view ->
                 Utils.activityPreview(App.getContext(), item.media, billboard.name, false));

@@ -47,6 +47,7 @@ import com.moshkou.md.R;
 import com.moshkou.md.configs.Keys;
 import com.moshkou.md.configs.Settings;
 import com.moshkou.md.controls.AutoFitTextureViewControl;
+import com.moshkou.md.helpers.Utils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -921,9 +922,7 @@ public class CameraActivity extends Activity {
         @SuppressLint("SimpleDateFormat")
         ImageSaver(Image image) {
             mImage = image;
-            String now = new SimpleDateFormat("yyyyMMdd_hhmmssSSS")
-                    .format(new java.util.Date());
-            mFile = new File(Settings.APP_PICTURE_DIRECTORY, "ADEX_" + now + ".png");
+            mFile = new File(Settings.APP_PICTURE_DIRECTORY, Utils.makeFileName(".png"));
         }
 
         @Override

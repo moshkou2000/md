@@ -1,11 +1,13 @@
 package com.moshkou.md.activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -14,6 +16,7 @@ import android.widget.VideoView;
 
 import com.moshkou.md.configs.Keys;
 import com.moshkou.md.R;
+import com.moshkou.md.helpers.Utils;
 import com.squareup.picasso.Picasso;
 
 public class PreviewActivity extends AppCompatActivity {
@@ -50,11 +53,9 @@ public class PreviewActivity extends AppCompatActivity {
             });
             if (image.getVisibility() != View.VISIBLE)
                 image.setVisibility(View.VISIBLE);
-            Picasso.get()
-                    .load(url)
-                    .placeholder(R.drawable.ic_image)
-                    .error(R.drawable.ic_image)
-                    .into(image);
+
+            Utils.setPicasso(url, image);
+
         } else {
             VideoView video = findViewById(R.id.video);
             video.setOnClickListener(view -> {
@@ -107,5 +108,4 @@ public class PreviewActivity extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
     }
-
 }

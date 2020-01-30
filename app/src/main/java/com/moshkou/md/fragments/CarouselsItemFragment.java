@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.moshkou.md.R;
+import com.moshkou.md.helpers.Utils;
 import com.moshkou.md.models.BaseDataModel;
 import com.squareup.picasso.Picasso;
 
@@ -51,11 +52,8 @@ public class CarouselsItemFragment extends Fragment {
         title.setText(data.getTitle());
         description.setText(data.getDescription());
 
-        Picasso.get()
-                .load(Uri.parse(data.getImage()))
-                .placeholder(R.drawable.bg_placeholder_image)
-                .error(R.drawable.bg_placeholder_image)
-                .into(image);
+        Utils.setPicasso(data.getImage(), image);
+
 
         if (!button.hasOnClickListeners())
             button.setOnClickListener(new View.OnClickListener() {

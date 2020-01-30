@@ -90,6 +90,9 @@ public class BillboardActivity extends AppCompatActivity implements
         billboardFragment = null;
         mediaFragment = null;
         statusFragment = null;
+        medias.clear();
+        medias = null;
+        selectedBillboard = null;
         Runtime.getRuntime().gc();
     }
 
@@ -161,13 +164,16 @@ public class BillboardActivity extends AppCompatActivity implements
                 Type t = new TypeToken<BillboardModel>(){}.getType();
                 selectedBillboard = new Gson().fromJson(data, t);
 
-                Log.i(TAG, "selectedBillboard.name: " + selectedBillboard.name);
-
             } else if (type.equals(Flags.MEDIA)) {
                 String data = intent.getStringExtra(Keys.DATA);
                 Type t = new TypeToken<BillboardMediaModel>(){}.getType();
                 medias.add(new Gson().fromJson(data, t));
-                mediaFragment.setSelectedBillboard(selectedBillboard);
+
+                if (selectedBillboard != null) {
+                    selectedBillboard.medias.addAll(medias);
+                    mediaFragment.setSelectedBillboard(selectedBillboard.medias);
+                } else
+                    mediaFragment.setSelectedBillboard(medias);
             }
         }
     }
@@ -195,7 +201,7 @@ public class BillboardActivity extends AppCompatActivity implements
     private void populate() {
         locationFragment.setSelectedBillboard(selectedBillboard);
         billboardFragment.setSelectedBillboard(selectedBillboard);
-        mediaFragment.setSelectedBillboard(selectedBillboard);
+        mediaFragment.setSelectedBillboard(selectedBillboard != null ? selectedBillboard.medias : null);
         statusFragment.setSelectedBillboard(selectedBillboard);
     }
 

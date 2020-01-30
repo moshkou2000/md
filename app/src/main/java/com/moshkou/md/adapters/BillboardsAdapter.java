@@ -69,11 +69,8 @@ public class BillboardsAdapter extends RecyclerView.Adapter<BillboardsAdapter.It
         final BillboardModel item = getItem(i);
 
         String url = item.getMedias().get(0);
-        Picasso.get()
-                .load(Uri.parse(url))
-                .placeholder(R.drawable.bg_placeholder_image)
-                .error(R.drawable.bg_placeholder_image)
-                .into(itemRowHolder.image);
+
+        Utils.setPicasso(url, itemRowHolder.image);
 
         itemRowHolder.imageFlag.setImageResource(
                 item.type.equals(Flags.STATIC) ?

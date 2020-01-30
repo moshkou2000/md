@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.moshkou.md.helpers.Utils;
 import com.moshkou.md.models.BaseDataModel;
 import com.moshkou.md.R;
 import com.squareup.picasso.Picasso;
@@ -105,11 +106,7 @@ public class GalleryAdapter extends BaseAdapter {
         if (numColumns == 1)
             viewHolder.location.setText(item.getLocation());
 
-        Picasso.get()
-                .load(Uri.parse(item.getImage()))
-                .placeholder(R.drawable.bg_placeholder_image)
-                .error(R.drawable.bg_placeholder_image)
-                .into(viewHolder.image);
+        Utils.setPicasso(item.getImage(), viewHolder.image);
 
         viewHolder.button.setOnClickListener(view -> {
             // TODO: item click ************************

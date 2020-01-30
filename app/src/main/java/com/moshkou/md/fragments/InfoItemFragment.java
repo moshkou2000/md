@@ -48,11 +48,7 @@ public class InfoItemFragment extends Fragment {
         brand.setText("brand");
         product.setText("product");
 
-        Picasso.get()
-                .load(Uri.parse(data.media))
-                .placeholder(R.drawable.bg_placeholder_image)
-                .error(R.drawable.bg_placeholder_image)
-                .into(image);
+        Utils.setPicasso(data.media, image);
 
         button.setOnClickListener(v -> Utils.activityPreview(App.getContext(), data.media, "", false));
 

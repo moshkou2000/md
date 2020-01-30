@@ -48,7 +48,8 @@
                     android:paddingStart="8dp"
                     android:paddingTop="0dp"
                     android:paddingEnd="0dp"
-                    android:paddingBottom="6dp">
+                    android:paddingBottom="6dp"
+                    android:background="@color/shadow">
 
                     <TextView
                         android:id="@+id/title"

@@ -4,6 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Environment;
 import android.text.format.DateUtils;
 import android.util.DisplayMetrics;
@@ -13,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,13 +30,19 @@ import com.moshkou.md.configs.Keys;
 import com.moshkou.md.configs.Enumerates;
 import com.moshkou.md.R;
 import com.moshkou.md.models.KeyValue;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.nio.channels.FileChannel;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -76,7 +86,14 @@ public class Utils {
         return String.format("%2d:%02d", m, s);
     }
 
-    public static boolean isExternalStorageWritable() {
+
+
+
+    public static void getAppPictureDirectory() {
+        makePrivateExternalStoragePictureDirectory();
+    }
+
+    private static boolean isExternalStorageWritable() {
         String state = Environment.getExternalStorageState();
         if (Environment.MEDIA_MOUNTED.equals(state)) {
             return true;
@@ -84,12 +101,12 @@ public class Utils {
         return false;
     }
 
-    public static Boolean makePrivateInternalStoragePictureDirectory() {
+    private static Boolean makePrivateExternalStoragePictureDirectory() {
         if (isExternalStorageWritable()) {
             // Get the directory for the app's private pictures directory.
-            File file = new File(App.getContext().getFilesDir(), Environment.DIRECTORY_PICTURES);
+            File file = new File(App.getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), App.getContext().getString(R.string.app_name));
             if (!file.mkdirs()) {
-                Log.i("UTILSss", "Private Directory not created");
+                Log.i("UTILS", "Private Directory not created");
             }
             Settings.APP_PICTURE_DIRECTORY = file.getPath();
             return file.mkdirs();
@@ -98,12 +115,12 @@ public class Utils {
         return false;
     }
 
-    public static Boolean makePrivateExternalStoragePictureDirectory() {
+    private static Boolean makePrivateInternalStoragePictureDirectory() {
         if (isExternalStorageWritable()) {
             // Get the directory for the app's private pictures directory.
-            File file = new File(App.getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), App.getContext().getString(R.string.app_name));
+            File file = new File(App.getContext().getFilesDir(), Environment.DIRECTORY_PICTURES);
             if (!file.mkdirs()) {
-                Log.i("UTILS", "Private Directory not created");
+                Log.i("UTILSss", "Private Directory not created");
             }
             Settings.APP_PICTURE_DIRECTORY = file.getPath();
             return file.mkdirs();
@@ -126,29 +143,89 @@ public class Utils {
         return false;
     }
 
-    public static void getAppPictureDirectory() {
-        makePrivateExternalStoragePictureDirectory();
-    }
+    public static void setPicasso(String uri, ImageView image) {
+        if (Utils.isLocalUri(uri)) {
+            Picasso.get()
+                    .load("file:///" + uri)
+                    .resize(1024, 768)
+                    .onlyScaleDown()
+                    .centerInside()
+                    .placeholder(R.drawable.bg_placeholder_image)
+                    .error(R.drawable.bg_placeholder_image)
+                    .into(image);
 
-    public static void getDeviceSize(Context context) {
-        try {
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-            Settings.DEVICE_WIDTH     = (double) displayMetrics.widthPixels;
-            Settings.DEVICE_HEIGHT    = (double) displayMetrics.heightPixels;
-            Settings.DEVICE_DENSITY   = displayMetrics.density;
-        } catch (Exception ex) {
-            Log.d("ERROR", "Unable to get device metrics");
+        } else {
+            Picasso.get()
+                    .load(Uri.parse(uri))
+                    .resize(1024, 768)
+                    .onlyScaleDown()
+                    .centerInside()
+                    .placeholder(R.drawable.bg_placeholder_image)
+                    .error(R.drawable.bg_placeholder_image)
+                    .into(image);
         }
     }
 
-    public static void openDefaultGalleryApp(Activity activity) {
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("image/*");
-        intent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"image/*", "video/*"});
-        activity.startActivityForResult(intent, Config.MEDIA_REQUEST_CODE_KITKAT);
+
+
+
+
+    public static Bitmap getBitmap(Uri uri) {
+        Bitmap bitmap = null;
+        try {
+            InputStream input = App.getContext()
+                    .getContentResolver()
+                    .openInputStream(uri);
+            bitmap = BitmapFactory.decodeStream(input);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bitmap;
     }
+
+    public static boolean isLocalUri(String uri) {
+        return !uri.contains("http");
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    public static String makeFileName(String extension) {
+        return App.getContext().getString(R.string.app_name) +
+                "_" +
+                new SimpleDateFormat("yyyyMMdd_hhmmssSSS").format(new java.util.Date()) +
+                extension;
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    public static String copyTo(Uri src, File dst) throws IOException {
+        File mFile = new File(Settings.APP_PICTURE_DIRECTORY, Utils.makeFileName(".png"));
+        InputStream input = null;
+        FileOutputStream output = null;
+
+        try {
+            input = App.getContext().getContentResolver().openInputStream(src);
+            output = new FileOutputStream(mFile);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = input.read(buffer)) != -1) {
+                output.write(buffer, 0, bytesRead);
+            }
+        } finally {
+            if (input != null)
+                input.close();
+            if (output != null)
+                output.close();
+        }
+
+        return mFile.getPath();
+    }
+
+
+
 
     // slide the view from below itself to the current position
     public void slideUp(View view) {
@@ -177,16 +254,8 @@ public class Utils {
         view.startAnimation(animate);
     }
 
-    public static void hideKeyboard(Activity activity) {
-        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        //Find the currently focused view, so we can grab the correct window token from it.
-        View view = activity.getCurrentFocus();
-        //If no view currently has focus, create a new one, just so we can grab a window token from it
-        if (view == null) {
-            view = new View(activity);
-        }
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
+
+
 
     public static void toast(Context context, Enumerates.Message messageState, String message, int duration) {
         try {
@@ -219,6 +288,43 @@ public class Utils {
         i.putExtra(Keys.VIDEO, isVideo);
         context.startActivity(i);
     }
+
+
+
+
+    public static void getDeviceSize(Context context) {
+        try {
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            Settings.DEVICE_WIDTH     = (double) displayMetrics.widthPixels;
+            Settings.DEVICE_HEIGHT    = (double) displayMetrics.heightPixels;
+            Settings.DEVICE_DENSITY   = displayMetrics.density;
+        } catch (Exception ex) {
+            Log.d("ERROR", "Unable to get device metrics");
+        }
+    }
+
+    public static void openDefaultGalleryApp(Activity activity) {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("image/*");
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"image/*", "video/*"});
+        activity.startActivityForResult(intent, Config.MEDIA_REQUEST_CODE_KITKAT);
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+
+
 
     public static ArrayList<LatLng> getMapData(Activity activity, int resource) {
         ArrayList<LatLng> list = new ArrayList<>();

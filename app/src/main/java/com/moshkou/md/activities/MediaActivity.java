@@ -2,10 +2,9 @@ package com.moshkou.md.activities;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -22,14 +21,14 @@ import com.moshkou.md.App;
 import com.moshkou.md.R;
 import com.moshkou.md.configs.Flags;
 import com.moshkou.md.configs.Keys;
+import com.moshkou.md.configs.Settings;
 import com.moshkou.md.helpers.Utils;
 import com.moshkou.md.models.BillboardMediaModel;
-import com.moshkou.md.models.BillboardModel;
 import com.moshkou.md.models.KeyValue;
 
-import java.io.InputStream;
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 
 
 public class MediaActivity extends AppCompatActivity {
@@ -55,6 +54,7 @@ public class MediaActivity extends AppCompatActivity {
      * onCreate
      * onDestroy
      * onNewIntent
+     * onActivityResult: get media uri which is selected from gallery
      * onBackPressed
      **/
 
@@ -93,15 +93,13 @@ public class MediaActivity extends AppCompatActivity {
 
         if (data != null) {
             try {
-                InputStream input = getApplicationContext()
-                        .getContentResolver()
-                        .openInputStream(data.getData());
-                Bitmap bitmap = BitmapFactory.decodeStream(input);
-                image.setImageBitmap(bitmap);
-                toggleButtons();
-            } catch (Exception e) {
+                File dst = new File(Settings.APP_PICTURE_DIRECTORY, Utils.makeFileName(".png"));
+                selectedMedia.media = Utils.copyTo(data.getData(), dst);
+                displayImage(data.getData());
+            } catch (IOException e) {
                 e.printStackTrace();
             }
+
         }
     }
 
@@ -129,7 +127,7 @@ public class MediaActivity extends AppCompatActivity {
 
     /**
      * Helper functions ->
-     * getExtra
+     * getExtra: get media uri which is captured by camera
      * backPressed
      * setSelectedStyle
      * clear
@@ -139,24 +137,10 @@ public class MediaActivity extends AppCompatActivity {
 
     private void getExtra() {
         Intent i = getIntent();
-
-//        if (i.hasExtra(Keys.DATA)) {
-//            selectedBillboard = new Gson().fromJson(i.getStringExtra(Keys.DATA), BillboardModel.class);
-//        } else
         if (i.hasExtra(Keys.URI)) {
-            try {
-                Log.i(TAG, "+++++++++++++++++++++++++++1111: " + i.getStringExtra(Keys.URI));
-                selectedMedia.media = i.getStringExtra(Keys.URI);
-
-                InputStream input = App.getContext()
-                        .getContentResolver()
-                        .openInputStream(i.getParcelableExtra(Keys.URI));
-                Bitmap bitmap = BitmapFactory.decodeStream(input);
-                image.setImageBitmap(bitmap);
-                toggleButtons();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            Uri uri = i.getParcelableExtra(Keys.URI);
+            selectedMedia.media = uri.getPath();
+            displayImage(i.getParcelableExtra(Keys.URI));
         }
     }
 
@@ -167,10 +151,11 @@ public class MediaActivity extends AppCompatActivity {
             i.putExtra(Keys.TYPE, Flags.MEDIA);
             selectedMedia.is_interesting = checkboxInteresting.isChecked();
             selectedMedia.tags.add(
-                    new KeyValue(autoCompleteProduct.getText().toString(),
+                    new KeyValue(autoCompleteBrand.getText().toString(),
                             autoCompleteProduct.getText().toString()));
             Type type = new TypeToken<BillboardMediaModel>(){}.getType();
-            i.putExtra(Keys.DATA, new Gson().toJson(selectedMedia, type));
+            String str = new Gson().toJson(selectedMedia, type);
+            i.putExtra(Keys.DATA, str);
             startActivity(i);
             finish();
         }, 200);
@@ -189,6 +174,14 @@ public class MediaActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+
+    private void displayImage(Uri uri) {
+        Bitmap b = Utils.getBitmap(uri);
+        if (b != null) {
+            image.setImageBitmap(b);
+            toggleButtons();
+        }
     }
 
     private void clear() {

@@ -1069,7 +1069,7 @@ public class MainActivity extends FragmentActivity implements
             b.location.by = "h3j4h53hbh3r3hh3434hj34brrhbj34";
 
 
-            for (int j = 0; j < 3; j++) {
+            for (int j = 0; j < 11; j++) {
                 BillboardMediaModel m = new BillboardMediaModel();
                 m._id = "status_id_" + i;
                 m.media = "https://media.gettyimages.com/photos/powder-explosion-picture-id642320289?s=2048x2048";

@@ -69,11 +69,7 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.ItemRowHolder>
         itemRowHolder.brand.setText("brand");
         itemRowHolder.product.setText("product");
 
-        Picasso.get()
-                .load(Uri.parse(item.media))
-                .placeholder(R.drawable.bg_placeholder_image)
-                .error(R.drawable.bg_placeholder_image)
-                .into(itemRowHolder.image);
+        Utils.setPicasso(item.media, itemRowHolder.image);
 
         itemRowHolder.button.setOnClickListener(view ->
                 Utils.activityPreview(App.getContext(), item.media, billboard.name, false));

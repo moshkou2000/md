@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.moshkou.md.R;
+import com.moshkou.md.helpers.Utils;
 import com.moshkou.md.models.ContactModel;
 import com.squareup.picasso.Picasso;
 
@@ -68,11 +69,7 @@ public class GroupItemAdapter extends RecyclerView.Adapter<GroupItemAdapter.Item
         itemRowHolder.title.setText(item.name);
         itemRowHolder.description.setText(item.phone);
 
-        Picasso.get()
-                .load(Uri.parse(item.image))
-                .placeholder(R.drawable.bg_placeholder_image)
-                .error(R.drawable.bg_placeholder_image)
-                .into(itemRowHolder.image);
+        Utils.setPicasso(item.image, itemRowHolder.image);
 
         itemRowHolder.button.setOnClickListener(view -> {
             // TODO: item click ************************

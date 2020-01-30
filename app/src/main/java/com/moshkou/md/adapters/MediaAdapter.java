@@ -2,6 +2,7 @@ package com.moshkou.md.adapters;
 
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import com.moshkou.md.models.BillboardMediaModel;
 import com.moshkou.md.models.BillboardModel;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,29 +35,34 @@ public class MediaAdapter extends BaseAdapter {
 
     private Context context;
     private LayoutInflater inflater;
-    private BillboardModel billboard;
+    private List<BillboardMediaModel> medias;
 
     private static int NO_COLUMNS = 2;
     private static int PADDING = 2;
     private static int HALF_PADDING = PADDING / NO_COLUMNS;
 
 
-    public MediaAdapter(Context context, BillboardModel billboard) {
-        this.billboard = billboard;
+    public MediaAdapter(Context context, List<BillboardMediaModel> medias) {
+        this.medias = medias;
         this.inflater = LayoutInflater.from(context);
     }
 
     @Override
     public int getCount() {
-        return billboard.medias.size();
+        return medias.size();
+    }
+
+    public void setItem(List<BillboardMediaModel> medias) {
+        this.medias = medias;
+        notifyDataSetChanged();
     }
 
     public BillboardMediaModel getItem(int position) {
-        return billboard.medias.get(position);
+        return medias.get(position);
     }
 
     public void clearItems() {
-        billboard = null;
+        medias = null;
         notifyDataSetChanged();
     }
 
@@ -107,14 +114,10 @@ public class MediaAdapter extends BaseAdapter {
         viewHolder.buttonInteresting.setBackgroundResource(
                 item.is_interesting ? R.drawable.ic_star : R.drawable.ic_star_border);
 
-        Picasso.get()
-                .load(Uri.parse(item.media))
-                .placeholder(R.drawable.bg_placeholder_image)
-                .error(R.drawable.bg_placeholder_image)
-                .into(viewHolder.image);
+        Utils.setPicasso(item.media, viewHolder.image);
 
         viewHolder.image.setOnClickListener(view ->
-                Utils.activityPreview(App.getContext(), item.media, billboard.name, false));
+                Utils.activityPreview(App.getContext(), item.media, "", false));
         viewHolder.buttonInteresting.setOnClickListener(view -> {
             // TODO: item click ************************
             Log.i(TAG, "interesting click");

@@ -25,7 +25,7 @@
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
-        <item name="android:navigationBarColor">@color/shadow</item>
+        <item name="colorPrimary">@android:color/transparent</item>
     </style>
 
     <style name="AppBottomNavigation" parent="AppTheme">

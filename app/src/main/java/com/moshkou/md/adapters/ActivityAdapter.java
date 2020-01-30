@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.moshkou.md.R;
+import com.moshkou.md.helpers.Utils;
 import com.moshkou.md.models.BaseDataModel;
 import com.squareup.picasso.Picasso;
 
@@ -69,19 +70,13 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ItemRo
             itemRowHolder.title.setText(item.getTitle());
             itemRowHolder.description.setText(item.getDescription());
 
-            Picasso.get()
-                    .load(Uri.parse(item.getImage()))
-                    .placeholder(R.drawable.bg_placeholder_image)
-                    .error(R.drawable.bg_placeholder_image)
-                    .into(itemRowHolder.image);
+            Utils.setPicasso(item.getImage(), itemRowHolder.image);
+
 
             if (!itemRowHolder.button.hasOnClickListeners())
-                itemRowHolder.button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // TODO: item click ************************
-                        Log.i("XXXXX", "card clicked!!!");
-                    }
+                itemRowHolder.button.setOnClickListener(v -> {
+                    // TODO: item click ************************
+                    Log.i("XXXXX", "card clicked!!!");
                 });
         }
 

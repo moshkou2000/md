@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.moshkou.md.helpers.Utils;
 import com.moshkou.md.models.BaseDataModel;
 import com.moshkou.md.R;
 import com.squareup.picasso.Picasso;
@@ -69,11 +70,7 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ItemRowHolde
 
         itemRowHolder.title.setText(item.getTitle());
 
-        Picasso.get()
-                .load(Uri.parse(item.getImage()))
-                .placeholder(R.drawable.bg_placeholder_image)
-                .error(R.drawable.bg_placeholder_image)
-                .into(itemRowHolder.image);
+        Utils.setPicasso(item.getImage(), itemRowHolder.image);
 
         if (!itemRowHolder.button.hasOnClickListeners())
             itemRowHolder.button.setOnClickListener(new View.OnClickListener() {
