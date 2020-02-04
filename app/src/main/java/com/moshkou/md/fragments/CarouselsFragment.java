@@ -222,9 +222,9 @@ public class CarouselsFragment extends Fragment {
 
     @Override
     public void onDetach() {
-        super.onDetach();
-        mListener = null;
         Log.i("QQQQQ", "onDetach");
+        mListener = null;
+        super.onDetach();
     }
 
     public interface OnFragmentInteractionListener {

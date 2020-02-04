@@ -33,7 +33,7 @@
             android:layout_marginStart="88dp"
             android:gravity="center_vertical"
             android:padding="8dp"
-            android:text="Please make sure the billboard and the advertisement is clear and not dark/blurry."
+            android:text="@string/hint_fragment_media"
             android:textSize="16sp" />
     </androidx.cardview.widget.CardView>
 
@@ -46,5 +46,6 @@
         android:numColumns="2"
         android:scrollbars="none"
         android:stretchMode="columnWidth"
-        android:verticalSpacing="0dp" />
+        android:horizontalSpacing="2dp"
+        android:verticalSpacing="2dp" />
 </RelativeLayout>

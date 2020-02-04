@@ -48,7 +48,7 @@ public class Config {
 
     public final static List<String> STATES             = new ArrayList<>(
             Arrays.asList(
-                    "Select State",
+//                    "Select State",
                     "Johor",
                     "Kedah",
                     "Kelantan",
@@ -69,7 +69,7 @@ public class Config {
     public final static List<KeyValue> CITIES             = new ArrayList<>(
             Arrays.asList(
                     new KeyValue("Johor", Arrays.asList(
-                            "Select City",
+//                            "Select City",
                             "Ayer Baloi",
                             "Ayer Hitam", 
                             "Ayer Tawar 2", 
@@ -124,7 +124,7 @@ public class Config {
                             "Ulu Tiram", 
                             "Yong Peng")),
                     new KeyValue("Kedah", Arrays.asList(
-                            "Select City",
+//                            "Select City",
                             "Alor Setar",
                             "Bedong", 
                             "Gurun", 
@@ -135,7 +135,7 @@ public class Config {
                             "Pokok Sena", 
                             "Sungai Petani")),
                     new KeyValue("Kelantan", Arrays.asList(
-                            "Select City",
+//                            "Select City",
                             "Gua Musang",
                             "Kampong Kadok", 
                             "Kampong Pangkal Kalong", 
@@ -148,14 +148,16 @@ public class Config {
                             "Tanah Merah", 
                             "Tumpat")),
                     new KeyValue("Kuala Lumpur", Arrays.asList(
-                            "Select City",
+//                            "Select City",
                             "Ampang",
                             "Cheras", 
                             "Kuala Lumpur", 
                             "Sentul")),
-                    new KeyValue("Labuan", Arrays.asList("Select City", "Victoria")),
+                    new KeyValue("Labuan", Arrays.asList(
+//                            "Select City",
+                            "Victoria")),
                     new KeyValue("Melaka", Arrays.asList(
-                            "Select City",
+//                            "Select City",
                             "Alor Gajah",
                             "Ayer Keroh", 
                             "Ayer Molek", 
@@ -171,7 +173,7 @@ public class Config {
                             "Pulau Sebang", 
                             "Sungai Udang")),
                     new KeyValue("Negeri Sembilan", Arrays.asList(
-                            "Select City",
+//                            "Select City",
                             "Bahau",
                             "Kuala Klawang", 
                             "Kuala Pilah", 
@@ -180,7 +182,7 @@ public class Config {
                             "Seremban", 
                             "Tampin")),
                     new KeyValue("Pahang", Arrays.asList(
-                            "Select City",
+//                            "Select City",
                             "Bentong Town",
                             "Bukit Tinggi", 
                             "Jerantut", 
@@ -192,7 +194,7 @@ public class Config {
                             "Tanah Rata", 
                             "Temerluh")),
                     new KeyValue("Perak", Arrays.asList(
-                            "Select City",
+//                            "Select City",
                             "Bagan Serai",
                             "Batu Gajah", 
                             "Bidor", 
@@ -208,12 +210,12 @@ public class Config {
                             "Tapah Road", 
                             "Teluk Intan")),
                     new KeyValue("Perlis", Arrays.asList(
-                            "Select City",
+//                            "Select City",
                             "Arau",
                             "Kangar", 
                             "Kuala Perlis")),
                     new KeyValue("Pulau Pinang", Arrays.asList(
-                            "Select City",
+//                            "Select City",
                             "Bayan Lepas", 
                             "Bukit Mertajam", 
                             "Butterworth", 
@@ -226,9 +228,11 @@ public class Config {
                             "Sungai Ara", 
                             "Tanjung Tokong", 
                             "Tasek Glugor")),
-                    new KeyValue("Putrajaya", Arrays.asList("Select City", "Putrajaya")),
+                    new KeyValue("Putrajaya", Arrays.asList(
+//                            "Select City",
+                            "Putrajaya")),
                     new KeyValue("Sabah", Arrays.asList(
-                            "Select City",
+//                            "Select City",
                             "Bandar Labuan",
                             "Beaufort", 
                             "Donggongon", 
@@ -245,7 +249,7 @@ public class Config {
                             "Semporna", 
                             "Tawau")),
                     new KeyValue("Sarawak", Arrays.asList(
-                            "Select City",
+//                            "Select City",
                             "Bintulu",
                             "Kapit", 
                             "Kuching", 
@@ -256,7 +260,7 @@ public class Config {
                             "Simanggang", 
                             "Sri Aman")),
                     new KeyValue("Selangor", Arrays.asList(
-                            "Select City",
+//                            "Select City",
                             "Balakong",
                             "Bangi", 
                             "Banting", 
@@ -286,7 +290,7 @@ public class Config {
                             "Tanjung Karang", 
                             "Tanjung Sepat")),
                     new KeyValue("Terengganu", Arrays.asList(
-                            "Select City",
+//                            "Select City",
                             "Cukai",
                             "Jertih", 
                             "Kertih", 
@@ -297,10 +301,13 @@ public class Config {
                     ));
 
     public final static List<String> MEDIA_OWNER            = new ArrayList<>(Arrays.asList(
-            "Select Media Owner"
+//            "Select Media Owner"
+    ));
+    public final static List<String> ADVERTISER          = new ArrayList<>(Arrays.asList(
+//            "Select Advertiser"
     ));
     public final static List<String> FORMAT                 = new ArrayList<>(Arrays.asList(
-            "Select Format",
+//            "Select Format",
             "Citylight",
             "Spectacular",
             "96 Sheets",
@@ -308,7 +315,7 @@ public class Config {
             "Digital Screen",
             "Unipole" ));
     public final static List<String> ENVIRONMENT            = new ArrayList<>(Arrays.asList(
-            "Select Environment",
+//            "Select Environment",
             "Roadside"
     ));
 

@@ -1,15 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.BillboardFragment">
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="88dp"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="4dp">
+
+        <TextView
+            android:id="@+id/text_hint"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="4dp"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:text="@string/hint_fragment_billboard"
+            android:textSize="16sp" />
+    </androidx.cardview.widget.CardView>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:scrollbars="vertical">
+        android:scrollbars="vertical"
+        android:layout_below="@id/cardView">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="12dp"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <TextView
                     style="@style/titleText"
@@ -105,45 +125,55 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="12dp"
-                android:visibility="gone">
-
-                <TextView
-                    style="@style/titleText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginBottom="12dp"
-                    android:text="@string/placeholder_billboard_details" />
+                android:visibility="visible">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/title_media_owner" />
 
-                <Spinner
+                <com.moshkou.md.controls.AutoCompleteTextViewControl
                     android:id="@+id/text_edit_media_owner"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/bg_placeholder_search"
+                    android:hint="@string/placeholder_media_owner"
+                    android:lines="1"
+                    android:singleLine="true" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/title_format" />
 
-                <Spinner
+                <com.moshkou.md.controls.AutoCompleteTextViewControl
                     android:id="@+id/text_edit_format"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/bg_placeholder_search"
+                    android:hint="@string/placeholder_format"
+                    android:lines="1"
+                    android:singleLine="true" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/title_environment" />
 
-                <Spinner
+                <com.moshkou.md.controls.AutoCompleteTextViewControl
                     android:id="@+id/text_edit_environment"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/bg_placeholder_search"
+                    android:hint="@string/placeholder_environment"
+                    android:lines="1"
+                    android:singleLine="true" />
 
                 <CheckBox
                     android:id="@+id/checkbox_digital_screen"

@@ -1,30 +1,24 @@
 package com.moshkou.md.adapters;
 
-
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.moshkou.md.App;
 import com.moshkou.md.R;
 import com.moshkou.md.helpers.Utils;
-import com.moshkou.md.models.BaseDataModel;
+import com.moshkou.md.interfaces.OnAdapterListener;
 import com.moshkou.md.models.BillboardMediaModel;
-import com.moshkou.md.models.BillboardModel;
-import com.squareup.picasso.Picasso;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -33,19 +27,21 @@ public class MediaAdapter extends BaseAdapter {
     private static String TAG = "MEDIA_ADT";
 
 
-    private Context context;
     private LayoutInflater inflater;
     private List<BillboardMediaModel> medias;
+    private BillboardMediaModel selectedItem;
+    private int selectedPosition;
 
-    private static int NO_COLUMNS = 2;
-    private static int PADDING = 2;
-    private static int HALF_PADDING = PADDING / NO_COLUMNS;
+    private OnAdapterListener onAlertListener;
 
 
-    public MediaAdapter(Context context, List<BillboardMediaModel> medias) {
+    public MediaAdapter(OnAdapterListener onAlertListener, List<BillboardMediaModel> medias) {
         this.medias = medias;
-        this.inflater = LayoutInflater.from(context);
+        this.onAlertListener = onAlertListener;
+        this.inflater = LayoutInflater.from(App.getContext());
     }
+
+
 
     @Override
     public int getCount() {
@@ -62,14 +58,50 @@ public class MediaAdapter extends BaseAdapter {
     }
 
     public void clearItems() {
+        medias.clear();
         medias = null;
         notifyDataSetChanged();
+    }
+
+    public void removeItem(int index) {
+        this.selectedPosition = index;
+        this.selectedItem = getItem(index);
+        this.medias.remove(index);
+        notifyDataSetChanged();
+    }
+
+    public void restoreItem() {
+        this.medias.add(selectedPosition, selectedItem);
+        selectedPosition = -1;
+        selectedItem = null;
+        notifyDataSetChanged();
+    }
+
+    public void toggleItem(int index, View view) {
+        Animation animation = new AlphaAnimation(0, 1);
+        animation.setInterpolator(new DecelerateInterpolator());
+        animation.setDuration(2000);
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) { }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                removeItem(index);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) { }
+        });
+        view.startAnimation(animation);
     }
 
     @Override
     public long getItemId(int position) {
         return 0;
     }
+
+
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -85,46 +117,19 @@ public class MediaAdapter extends BaseAdapter {
             viewHolder = (ViewHolder)convertView.getTag();
         }
 
-        int bottom = position + 1 == getCount() ? PADDING : 0;
-
-        // 1..2 < more columns
-        //
-        int padding = ((NO_COLUMNS - 2) * 2 + 2) * HALF_PADDING;
-        int middlePadding = HALF_PADDING;
-
-        if (padding == 0) {
-            padding = PADDING;
-        } else if (padding == PADDING) {
-            padding = HALF_PADDING;
-        } else {
-            middlePadding = padding / NO_COLUMNS;
-            padding = middlePadding - HALF_PADDING;
-        }
-
-        int p = (position + 1) % NO_COLUMNS;
-        if (p == 1)
-            viewHolder.root.setPadding(PADDING, PADDING, padding, bottom);     // first column
-        else if (p == 0)
-            viewHolder.root.setPadding(padding, PADDING, PADDING, bottom);     // last column
-        else
-            viewHolder.root.setPadding(middlePadding, PADDING, middlePadding, bottom);     // middle
-
         viewHolder.title.setText(item.tags.get(0).key);
         viewHolder.description.setText(item.tags.get(0).value.toString());
-        viewHolder.buttonInteresting.setBackgroundResource(
+        viewHolder.checkboxInteresting.setBackgroundResource(
                 item.is_interesting ? R.drawable.ic_star : R.drawable.ic_star_border);
 
         Utils.setPicasso(item.media, viewHolder.image);
 
-        viewHolder.image.setOnClickListener(view ->
-                Utils.activityPreview(App.getContext(), item.media, "", false));
-        viewHolder.buttonInteresting.setOnClickListener(view -> {
-            // TODO: item click ************************
-            Log.i(TAG, "interesting click");
-        });
-        viewHolder.option.setOnClickListener(view -> {
-            // TODO: item click ************************
-            Log.i(TAG, "option click");
+        viewHolder.image.setOnClickListener(view -> onAlertListener.onUpdate(position));
+        viewHolder.checkboxInteresting.setOnClickListener(view ->
+                onAlertListener.onInteresting(position, viewHolder.checkboxInteresting.isChecked()));
+        viewHolder.button.setOnClickListener(view -> {
+            toggleItem(position, viewHolder.root);
+            onAlertListener.onDeleteMedia(position);
         });
 
         return convertView;
@@ -136,8 +141,8 @@ public class MediaAdapter extends BaseAdapter {
         protected TextView title;
         protected TextView description;
         protected ImageView image;
-        protected Button buttonInteresting;
-        protected Button option;
+        protected CheckBox checkboxInteresting;
+        protected Button button;
 
         public ViewHolder(View view) {
 
@@ -145,8 +150,8 @@ public class MediaAdapter extends BaseAdapter {
             title = view.findViewById(R.id.title);
             description = view.findViewById(R.id.description);
             image = view.findViewById(R.id.image);
-            buttonInteresting = view.findViewById(R.id.button_interesting);
-            option = view.findViewById(R.id.option);
+            checkboxInteresting = view.findViewById(R.id.checkbox_interesting);
+            button = view.findViewById(R.id.button_delete);
         }
     }
 

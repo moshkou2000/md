@@ -28,6 +28,12 @@ public class Enumerates {
         CANCEL
     }
 
+    public enum MediaPicker {
+        NULL,
+        MEDIA_ACTIVITY,
+        STATUS_FRAGMENT
+    }
+
     public enum Message {
         NULL,
         INFO,

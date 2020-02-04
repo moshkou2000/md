@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +20,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.moshkou.md.App;
 import com.moshkou.md.R;
+import com.moshkou.md.configs.Enumerates;
 import com.moshkou.md.configs.Flags;
 import com.moshkou.md.configs.Keys;
 import com.moshkou.md.configs.Settings;
@@ -29,6 +31,7 @@ import com.moshkou.md.models.KeyValue;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.Objects;
 
 
 public class MediaActivity extends AppCompatActivity {
@@ -37,8 +40,8 @@ public class MediaActivity extends AppCompatActivity {
     private static String TAG = "MEDIA";
 
 
-    private EditText autoCompleteBrand;
-    private EditText autoCompleteProduct;
+    private EditText textEditBrand;
+    private EditText textEditProduct;
     private CheckBox checkboxInteresting;
     private ImageView image;
     private Button buttonCamera;
@@ -64,8 +67,8 @@ public class MediaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_media);
 
         checkboxInteresting = findViewById(R.id.checkbox_interesting);
-        autoCompleteBrand = findViewById(R.id.auto_complete_brand);
-        autoCompleteProduct = findViewById(R.id.auto_complete_product);
+        textEditBrand = findViewById(R.id.auto_complete_brand);
+        textEditProduct = findViewById(R.id.auto_complete_product);
         image = findViewById(R.id.image);
         buttonCamera = findViewById(R.id.button_camera);
         buttonGallery = findViewById(R.id.button_gallery);
@@ -105,6 +108,7 @@ public class MediaActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        selectedMedia = null;
         backPressed();
     }
 
@@ -118,8 +122,15 @@ public class MediaActivity extends AppCompatActivity {
      */
 
     private void init() {
-        buttonCamera.setOnClickListener(v -> startActivity(new Intent(App.getContext(), CameraActivity.class)));
-        buttonGallery.setOnClickListener(v -> Utils.openDefaultGalleryApp(this));
+        buttonCamera.setOnClickListener(v -> {
+            Settings.MEDIA_PICKER = Enumerates.MediaPicker.MEDIA_ACTIVITY;
+            startActivity(new Intent(App.getContext(), CameraActivity.class));
+        });
+        buttonGallery.setOnClickListener(v -> {
+            Settings.MEDIA_PICKER = Enumerates.MediaPicker.MEDIA_ACTIVITY;
+            Utils.openDefaultGalleryApp(Objects.requireNonNull(this));
+        });
+        image.setOnClickListener(v -> Utils.activityPreview(App.getContext(), selectedMedia.media, "", false));
     }
 
 
@@ -127,6 +138,7 @@ public class MediaActivity extends AppCompatActivity {
 
     /**
      * Helper functions ->
+     * populate
      * getExtra: get media uri which is captured by camera
      * backPressed
      * setSelectedStyle
@@ -135,12 +147,27 @@ public class MediaActivity extends AppCompatActivity {
      * toggleButtons
      */
 
+    private void populate() {
+        if (selectedMedia != null) {
+            textEditBrand.setText(selectedMedia.tags.get(0).key);
+            textEditProduct.setText(selectedMedia.tags.get(0).value.toString());
+            checkboxInteresting.setChecked(selectedMedia.is_interesting);
+            toggleButtons();
+            Utils.setPicasso(selectedMedia.media, image);
+        }
+    }
+
     private void getExtra() {
         Intent i = getIntent();
         if (i.hasExtra(Keys.URI)) {
             Uri uri = i.getParcelableExtra(Keys.URI);
             selectedMedia.media = uri.getPath();
             displayImage(i.getParcelableExtra(Keys.URI));
+
+        } else if (i.hasExtra(Keys.DATA)) {
+            String data = i.getStringExtra(Keys.DATA);
+            selectedMedia = new Gson().fromJson(data, BillboardMediaModel.class);
+            populate();
         }
     }
 
@@ -149,10 +176,6 @@ public class MediaActivity extends AppCompatActivity {
         new Handler().postDelayed(() -> {
             Intent i = new Intent(App.getContext(), BillboardActivity.class);
             i.putExtra(Keys.TYPE, Flags.MEDIA);
-            selectedMedia.is_interesting = checkboxInteresting.isChecked();
-            selectedMedia.tags.add(
-                    new KeyValue(autoCompleteBrand.getText().toString(),
-                            autoCompleteProduct.getText().toString()));
             Type type = new TypeToken<BillboardMediaModel>(){}.getType();
             String str = new Gson().toJson(selectedMedia, type);
             i.putExtra(Keys.DATA, str);
@@ -185,13 +208,24 @@ public class MediaActivity extends AppCompatActivity {
     }
 
     private void clear() {
+        selectedMedia = null;
         backPressed();
     }
 
     private void done() {
-        // TODO: add new media
+        String brand = textEditBrand.getText().toString();
+        String product = textEditProduct.getText().toString();
 
-        backPressed();
+        if (selectedMedia.media.isEmpty()) {
+            showToast(getString(R.string.message_error_required_media));
+        } else if (brand.isEmpty() || product.isEmpty()) {
+            showToast(getString(R.string.message_error_required_brand_product));
+        } else {
+            selectedMedia.is_interesting = checkboxInteresting.isChecked();
+            selectedMedia.tags.add(new KeyValue(brand, product));
+
+            backPressed();
+        }
     }
 
     private void toggleButtons() {
@@ -200,4 +234,14 @@ public class MediaActivity extends AppCompatActivity {
     }
 
 
+
+
+    /**
+     * Alert ->
+     * showToast
+     */
+
+    private void showToast(String message) {
+        Utils.toast(App.getContext(), Enumerates.Message.ERROR, message, Toast.LENGTH_LONG);
+    }
 }

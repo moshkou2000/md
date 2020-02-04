@@ -1,6 +1,5 @@
 package com.moshkou.md.fragments;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,21 +14,17 @@ import com.moshkou.md.App;
 import com.moshkou.md.R;
 import com.moshkou.md.helpers.Utils;
 import com.moshkou.md.models.BillboardMediaModel;
-import com.squareup.picasso.Picasso;
 
 
 public class InfoItemFragment extends Fragment {
 
 
-    private BillboardMediaModel data;
+    private BillboardMediaModel media;
 
-    public InfoItemFragment() {
-        // Required empty public constructor
-    }
+    public InfoItemFragment() { }
 
-    public void setData(BillboardMediaModel data) {
-        this.data = data;
-    }
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,13 +40,20 @@ public class InfoItemFragment extends Fragment {
         ImageView image = view.findViewById(R.id.image);
         Button button = view.findViewById(R.id.button);
 
-        brand.setText("brand");
-        product.setText("product");
+        brand.setText(media.tags.get(0).key);
+        product.setText(media.tags.get(0).value.toString());
 
-        Utils.setPicasso(data.media, image);
+        Utils.setPicasso(media.media, image);
 
-        button.setOnClickListener(v -> Utils.activityPreview(App.getContext(), data.media, "", false));
+        button.setOnClickListener(v -> Utils.activityPreview(App.getContext(), media.media, "", false));
 
         return view;
+    }
+
+
+
+
+    public void setData(BillboardMediaModel data) {
+        this.media = data;
     }
 }

@@ -27,4 +27,10 @@
         <attr name="metaButtonBarStyle" format="reference" />
         <attr name="metaButtonBarButtonStyle" format="reference" />
     </declare-styleable>
+
+    <declare-styleable name="IconButton">
+        <attr name="drawableTint" format="color"/>
+        <attr name="drawableSize" format="dimension"/>
+        <attr name="android:drawablePadding"/>
+    </declare-styleable>
 </resources>

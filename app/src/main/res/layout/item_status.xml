@@ -35,11 +35,13 @@
                     android:paddingBottom="6dp">
 
                     <Button
-                        android:id="@+id/option"
+                        android:id="@+id/button_delete"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentBottom="true"
+                        android:layout_marginStart="0dp"
+                        android:layout_marginEnd="6dp"
                         android:background="@drawable/ic_delete_white" />
                 </RelativeLayout>
         </FrameLayout>

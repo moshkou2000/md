@@ -1,55 +1,98 @@
 package com.moshkou.md.adapters;
 
-
-import android.content.Context;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.moshkou.md.App;
 import com.moshkou.md.R;
 import com.moshkou.md.helpers.Utils;
-import com.moshkou.md.models.BillboardMediaModel;
-import com.moshkou.md.models.BillboardModel;
-import com.squareup.picasso.Picasso;
+import com.moshkou.md.interfaces.OnAdapterListener;
+
+import java.util.List;
 
 
 public class StatusAdapter extends BaseAdapter {
 
 
-    private Context context;
+    private static String TAG = "STATUS_ADP";
+
+
     private LayoutInflater inflater;
-    private BillboardModel billboard;
+    private List<String> files;
+    private String selectedItem;
+    private int selectedPosition;
 
-    private static int NO_COLUMNS = 2;
-    private static int PADDING = 2;
-    private static int HALF_PADDING = PADDING / NO_COLUMNS;
+    private OnAdapterListener onAlertListener;
 
 
-    public StatusAdapter(Context context, BillboardModel billboard) {
-        this.billboard = billboard;
-        this.inflater = LayoutInflater.from(context);//.inflate(R.layout.item_gallery, null);
+
+    public StatusAdapter(OnAdapterListener onAlertListener, List<String> files) {
+        this.files = files;
+        this.onAlertListener = onAlertListener;
+        this.inflater = LayoutInflater.from(App.getContext());
     }
+
+
 
     @Override
     public int getCount() {
-        return billboard.medias.size();
+        return files.size();
     }
 
-    public BillboardMediaModel getItem(int position) {
-        return billboard.medias.get(position);
+    public void setItem(List<String> files) {
+        this.files = files;
+        notifyDataSetChanged();
+    }
+
+    public String getItem(int position) {
+        return files.get(position);
     }
 
     public void clearItems() {
-        billboard = new BillboardModel();
+        files.clear();
+        files = null;
         notifyDataSetChanged();
+    }
+
+    public void removeItem(int index) {
+        this.selectedPosition = index;
+        this.selectedItem = getItem(index);
+        this.files.remove(index);
+        notifyDataSetChanged();
+    }
+
+    public void restoreItem() {
+        this.files.add(selectedPosition, selectedItem);
+        selectedPosition = -1;
+        selectedItem = null;
+        notifyDataSetChanged();
+    }
+
+    public void toggleItem(int index, View view) {
+        Animation animation = new AlphaAnimation(0, 1);
+        animation.setInterpolator(new DecelerateInterpolator());
+        animation.setDuration(2000);
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) { }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                removeItem(index);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) { }
+        });
+        view.startAnimation(animation);
     }
 
     @Override
@@ -57,9 +100,11 @@ public class StatusAdapter extends BaseAdapter {
         return 0;
     }
 
+
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final BillboardMediaModel item = getItem(position);
+        final String item = getItem(position);
 
         ViewHolder viewHolder;
         if(convertView == null) {
@@ -71,36 +116,13 @@ public class StatusAdapter extends BaseAdapter {
             viewHolder = (ViewHolder)convertView.getTag();
         }
 
-        int bottom = position + 1 == getCount() ? PADDING : 0;
-
-        // 1..2 < more columns
-        //
-        int padding = ((NO_COLUMNS - 2) * 2 + 2) * HALF_PADDING;
-        int middlePadding = HALF_PADDING;
-
-        if (padding == 0) {
-            padding = PADDING;
-        } else if (padding == PADDING) {
-            padding = HALF_PADDING;
-        } else {
-            middlePadding = padding / NO_COLUMNS;
-            padding = middlePadding - HALF_PADDING;
-        }
-
-        int p = (position + 1) % NO_COLUMNS;
-        if (p == 1)
-            viewHolder.root.setPadding(PADDING, PADDING, padding, bottom);     // first column
-        else if (p == 0)
-            viewHolder.root.setPadding(padding, PADDING, PADDING, bottom);     // last column
-        else
-            viewHolder.root.setPadding(middlePadding, PADDING, middlePadding, bottom);     // middle
-
-        Utils.setPicasso(item.media, viewHolder.image);
+        Utils.setPicasso(item, viewHolder.image);
 
         viewHolder.image.setOnClickListener(view ->
-                Utils.activityPreview(App.getContext(), item.media, billboard.name, false));
-        viewHolder.option.setOnClickListener(view -> {
-            // TODO: item click ************************
+                Utils.activityPreview(App.getContext(), item, "", false));
+        viewHolder.button.setOnClickListener(view -> {
+            toggleItem(position, viewHolder.root);
+            onAlertListener.onDeleteMedia(position);
         });
 
         return convertView;
@@ -110,13 +132,13 @@ public class StatusAdapter extends BaseAdapter {
 
         protected FrameLayout root;
         protected ImageView image;
-        protected Button option;
+        protected Button button;
 
         public ViewHolder(View view) {
 
             root = (FrameLayout) view;
             image = view.findViewById(R.id.image);
-            option = view.findViewById(R.id.option);
+            button = view.findViewById(R.id.button_delete);
         }
     }
 

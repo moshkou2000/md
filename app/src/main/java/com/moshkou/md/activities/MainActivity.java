@@ -52,6 +52,7 @@ import android.widget.Toast;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.moshkou.md.App;
 import com.moshkou.md.adapters.BillboardsAdapter;
 import com.moshkou.md.adapters.SearchAdapter;
 import com.moshkou.md.adapters.FilterAdapter;
@@ -96,8 +97,6 @@ public class MainActivity extends FragmentActivity implements
 
 
     private static String TAG = "MAIN";
-
-    private final Context context = this;
 
     private View mapView;
 
@@ -231,7 +230,7 @@ public class MainActivity extends FragmentActivity implements
                 super.onBackPressed();
             } else {
                 allowed = true;
-                Utils.toast(context, Enumerates.Message.INFO, "Click BACK again to exit", Toast.LENGTH_SHORT);
+                Utils.toast(App.getContext(), Enumerates.Message.INFO, "Click BACK again to exit", Toast.LENGTH_SHORT);
                 new Handler().postDelayed(()-> allowed = false, 2000);
             }
         }
@@ -326,7 +325,7 @@ public class MainActivity extends FragmentActivity implements
 
         // TODO: just for testing
         // 1915: sunset time in KL
-        mapStyle = currentTime < 1915 ? null : MapStyleOptions.loadRawResourceStyle(context, R.raw.mapstyle_night);
+        mapStyle = currentTime < 1915 ? null : MapStyleOptions.loadRawResourceStyle(App.getContext(), R.raw.mapstyle_night);
 
         // TODO: just for testing
         addMarker(myMarker, myLocation, ":D", "billboard_id_3");
@@ -438,11 +437,11 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void initFilter() {
-        filterAdapter = new FilterAdapter(context, this);
+        filterAdapter = new FilterAdapter(App.getContext(), this);
         gridViewFilter.setAdapter(filterAdapter);
 
         buttonFilter.setOnClickListener(view -> {
-            Intent i = new Intent(context, FilterActivity.class);
+            Intent i = new Intent(App.getContext(), FilterActivity.class);
             startActivity(i);
         });
 
@@ -452,7 +451,7 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void initMore() {
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context,
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(App.getContext(),
                 R.array.more_menu_items, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerMore.setAdapter(adapter);
@@ -642,7 +641,7 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void gotoBillboardActivity() {
-        Intent i = new Intent(context, BillboardActivity.class);
+        Intent i = new Intent(App.getContext(), BillboardActivity.class);
         if (selectedBillboard == null) {
             i.putExtra(Keys.TYPE, Flags.NEW);
         } else {
@@ -942,19 +941,11 @@ public class MainActivity extends FragmentActivity implements
      */
 
     private void showToast(String message) {
-        Utils.toast(context, Enumerates.Message.ERROR, message, Toast.LENGTH_LONG);
-    }
-
-    private void showSnackBar() {
-        final View coordinatorLayout = findViewById(R.id.coordinatorLayout);
-        Snackbar snackbar = Snackbar
-                .make(coordinatorLayout, "Message is deleted", Snackbar.LENGTH_LONG)
-                .setAction("UNDO", (view1) -> Snackbar.make(coordinatorLayout, "Message is restored!", Snackbar.LENGTH_SHORT).show());
-        snackbar.show();
+        Utils.toast(App.getContext(), Enumerates.Message.ERROR, message, Toast.LENGTH_LONG);
     }
 
     private void showDialogLocationAccess() {
-        final Dialog dialog = new Dialog(context);
+        final Dialog dialog = new Dialog(App.getContext());
 
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
@@ -980,7 +971,7 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void showDialogLocationPermission() {
-        final Dialog dialog = new Dialog(context);
+        final Dialog dialog = new Dialog(App.getContext());
 
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
@@ -1052,7 +1043,7 @@ public class MainActivity extends FragmentActivity implements
             b.lighting = true;
             b.no_panels = 3;
             b.speed_limit = "<30";
-            b.type = "static";
+            b.type = Flags.STATIC;
             b.created_at = "2020-01-11T08:15:39.736Z";
             b.updated_at = "2020-01-14T08:15:39.736Z";
 
@@ -1067,7 +1058,6 @@ public class MainActivity extends FragmentActivity implements
             b.location.latitude = 3.124636;
             b.location.longitude = 101.588264;
             b.location.by = "h3j4h53hbh3r3hh3434hj34brrhbj34";
-
 
             for (int j = 0; j < 11; j++) {
                 BillboardMediaModel m = new BillboardMediaModel();
@@ -1086,6 +1076,10 @@ public class MainActivity extends FragmentActivity implements
             b.status._id = "status_id_" + i;
             b.status.status = "status " + i;
             b.status.comment = "comment " + i;
+
+            for (int j = 0; j < 7; j++) {
+                b.status.files.add("https://media.gettyimages.com/photos/powder-explosion-picture-id642320289?s=2048x2048");
+            }
 
             allBillboards.add(b);
         }

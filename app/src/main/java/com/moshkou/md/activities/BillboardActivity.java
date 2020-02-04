@@ -2,9 +2,12 @@ package com.moshkou.md.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,21 +18,30 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.moshkou.md.App;
 import com.moshkou.md.R;
+import com.moshkou.md.configs.Enumerates;
 import com.moshkou.md.configs.Flags;
 import com.moshkou.md.configs.Keys;
+import com.moshkou.md.configs.Settings;
 import com.moshkou.md.fragments.BillboardFragment;
 import com.moshkou.md.fragments.LocationFragment;
 import com.moshkou.md.fragments.MediaFragment;
 import com.moshkou.md.fragments.StatusFragment;
 import com.moshkou.md.helpers.Utils;
+import com.moshkou.md.interfaces.OnBillboardsListener;
 import com.moshkou.md.interfaces.OnFragmentInteractionListener;
+import com.moshkou.md.models.BillboardLocationModel;
 import com.moshkou.md.models.BillboardMediaModel;
 import com.moshkou.md.models.BillboardModel;
+import com.moshkou.md.models.BillboardStatusModel;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +50,7 @@ import static androidx.fragment.app.FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CU
 
 
 public class BillboardActivity extends AppCompatActivity implements
-        OnFragmentInteractionListener {
+        OnBillboardsListener, OnFragmentInteractionListener {
 
 
     private static String TAG = "BILLBOARD";
@@ -56,6 +68,7 @@ public class BillboardActivity extends AppCompatActivity implements
 
     private static final int[] TAB_TITLES = new int[] { R.string.placeholder_location, R.string.placeholder_billboards, R.string.placeholder_media, R.string.placeholder_status };
 
+    public List<String> files = new ArrayList<>();
     public List<BillboardMediaModel> medias = new ArrayList<>();
     private BillboardModel selectedBillboard;
 
@@ -65,6 +78,7 @@ public class BillboardActivity extends AppCompatActivity implements
     /**
      * Override functions ->
      * onCreate
+     * onActivityResult
      * onDestroy
      * onNewIntent
      * onBackPressed
@@ -81,6 +95,32 @@ public class BillboardActivity extends AppCompatActivity implements
         getExtra();
         init();
         populate();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (data != null) {
+            try {
+                File dst = new File(Settings.APP_PICTURE_DIRECTORY, Utils.makeFileName(".png"));
+                String mediaPath = Utils.copyTo(data.getData(), dst);
+
+
+
+
+                if (selectedBillboard != null) {
+                    selectedBillboard.status.files.add(mediaPath);
+                    statusFragment.setSelectedBillboard(selectedBillboard, null);
+                } else {
+                    files.add(mediaPath);
+                    statusFragment.setSelectedBillboard(null, files);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 
     @Override
@@ -108,6 +148,9 @@ public class BillboardActivity extends AppCompatActivity implements
         backPressed();
     }
 
+
+
+
     /**
      * Init functions ->
      * init
@@ -124,6 +167,7 @@ public class BillboardActivity extends AppCompatActivity implements
                 new BillboardActivity.PagerAdapter(
                         getSupportFragmentManager(), BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         pager.setAdapter(pagerAdapter);
+        pager.setOffscreenPageLimit(4);
         tabs.setupWithViewPager(pager);
 
         if (selectedBillboard == null)
@@ -164,18 +208,35 @@ public class BillboardActivity extends AppCompatActivity implements
                 Type t = new TypeToken<BillboardModel>(){}.getType();
                 selectedBillboard = new Gson().fromJson(data, t);
 
-            } else if (type.equals(Flags.MEDIA)) {
+            } else if (type.equals(Flags.MEDIA)) { // from MediaActivity
                 String data = intent.getStringExtra(Keys.DATA);
                 Type t = new TypeToken<BillboardMediaModel>(){}.getType();
-                medias.add(new Gson().fromJson(data, t));
+                BillboardMediaModel media = new Gson().fromJson(data, t);
 
-                if (selectedBillboard != null) {
-                    selectedBillboard.medias.addAll(medias);
-                    mediaFragment.setSelectedBillboard(selectedBillboard.medias);
-                } else
-                    mediaFragment.setSelectedBillboard(medias);
+                if (media != null) {
+                    if (selectedBillboard != null) {
+                        selectedBillboard.medias.add(media);
+                        mediaFragment.setSelectedBillboard(selectedBillboard.medias);
+                    } else {
+                        medias.add(media);
+                        mediaFragment.setSelectedBillboard(medias);
+                    }
+                }
+
+            } else if (type.equals(Keys.URI)) { // from CameraActivity
+                Uri uri = intent.getParcelableExtra(Keys.URI);
+
+                if (uri != null) {
+                    if (selectedBillboard != null) {
+                        selectedBillboard.status.files.add(uri.getPath());
+                        statusFragment.setSelectedBillboard(selectedBillboard, null);
+                    } else {
+                        files.add(uri.getPath());
+                        statusFragment.setSelectedBillboard(null, files);
+                    }
+                }
             }
-        }
+        } // END_OF_TYPE
     }
 
     private void backPressed() {
@@ -202,7 +263,7 @@ public class BillboardActivity extends AppCompatActivity implements
         locationFragment.setSelectedBillboard(selectedBillboard);
         billboardFragment.setSelectedBillboard(selectedBillboard);
         mediaFragment.setSelectedBillboard(selectedBillboard != null ? selectedBillboard.medias : null);
-        statusFragment.setSelectedBillboard(selectedBillboard);
+        statusFragment.setSelectedBillboard(selectedBillboard, null);
     }
 
 
@@ -216,6 +277,89 @@ public class BillboardActivity extends AppCompatActivity implements
     public void onFragmentInteraction(BillboardModel selectedBillboard) {
 
     }
+
+
+
+
+    /**
+     * API callback ->
+     * onGetBillboards
+     * onCreateBillboardLocation
+     * onUpdateBillboardLocation
+     * onCreateBillboardInfo
+     * onUpdateBillboardInfo
+     * onCreateBillboardMedia
+     * onUpdateBillboardMedia
+     * onCreateBillboardStatus
+     * onUpdateBillboardStatus
+     */
+
+    @Override
+    public void onGetBillboards(List<BillboardModel> billboards) {
+
+    }
+
+    @Override
+    public void onCreateBillboardLocation(BillboardLocationModel location) {
+
+    }
+
+    @Override
+    public void onUpdateBillboardLocation(BillboardLocationModel location) {
+
+    }
+
+    @Override
+    public void onCreateBillboardInfo(BillboardModel billboard) {
+
+    }
+
+    @Override
+    public void onUpdateBillboardInfo(BillboardModel billboard) {
+
+    }
+
+    @Override
+    public void onCreateBillboardMedia(BillboardMediaModel media) {
+
+    }
+
+    @Override
+    public void onUpdateBillboardMedia(BillboardMediaModel media) {
+
+    }
+
+    @Override
+    public void onCreateBillboardStatus(BillboardStatusModel status) {
+
+    }
+
+    @Override
+    public void onUpdateBillboardStatus(BillboardStatusModel status) {
+
+    }
+
+
+
+
+    /**
+     * Alert ->
+     * showToast
+     * showSnackBar
+     */
+
+    private void showToast(String message) {
+        Utils.toast(App.getContext(), Enumerates.Message.ERROR, message, Toast.LENGTH_LONG);
+    }
+
+    public void showSnackBar() {
+        final View coordinatorLayout = findViewById(R.id.coordinatorLayout);
+        Snackbar snackbar = Snackbar
+                .make(coordinatorLayout, "Media is deleted", Snackbar.LENGTH_LONG)
+                .setAction("UNDO", (view1) -> Snackbar.make(coordinatorLayout, "Media is restored!", Snackbar.LENGTH_SHORT).show());
+        snackbar.show();
+    }
+
 
 
 

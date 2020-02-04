@@ -1,15 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.LocationFragment">
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="88dp"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="4dp">
+
+        <TextView
+            android:id="@+id/text_hint"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="4dp"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:text="@string/hint_fragment_billboard"
+            android:textSize="16sp" />
+    </androidx.cardview.widget.CardView>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:scrollbars="vertical">
+        android:scrollbars="vertical"
+        android:layout_below="@id/cardView">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,46 +47,51 @@
                 android:visibility="visible">
 
                 <TextView
-                    style="@style/titleText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/title_address" />
-
-                <TextView
                     android:id="@+id/text_name"
                     style="@style/contextText"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginBottom="4dp" />
 
                 <TextView
                     android:id="@+id/text_address"
                     style="@style/contextText"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginBottom="4dp" />
 
                 <TextView
                     android:id="@+id/text_city"
                     style="@style/contextText"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginBottom="4dp" />
 
                 <TextView
                     android:id="@+id/text_state"
                     style="@style/contextText"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginBottom="4dp"/>
 
                 <TextView
                     android:id="@+id/text_postcode"
                     style="@style/contextText"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginBottom="4dp"/>
 
                 <TextView
                     android:id="@+id/text_country"
                     style="@style/contextText"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"/>
+
             </LinearLayout>
 
             <LinearLayout
@@ -96,7 +121,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
                     android:layout_marginBottom="12dp"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="0dp"
                     android:layout_marginEnd="16dp"
                     android:background="@drawable/bg_placeholder_search"
                     android:gravity="top|start"
@@ -112,20 +137,44 @@
                     android:layout_height="wrap_content"
                     android:text="@string/title_state" />
 
-                <Spinner
-                    android:id="@+id/text_edit_state"
+<!--                <Spinner-->
+<!--                    android:id="@+id/text_edit_state"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"/>-->
+
+                <com.moshkou.md.controls.AutoCompleteTextViewControl
+                    android:id="@+id/auto_complete_state"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/bg_placeholder_search"
+                    android:hint="@string/placeholder_state"
+                    android:lines="1"
+                    android:singleLine="true" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/title_city" />
 
-                <Spinner
-                    android:id="@+id/text_edit_city"
+<!--                <Spinner-->
+<!--                    android:id="@+id/text_edit_city"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"/>-->
+
+
+
+                <com.moshkou.md.controls.AutoCompleteTextViewControl
+                    android:id="@+id/auto_complete_city"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/bg_placeholder_search"
+                    android:hint="@string/placeholder_city"
+                    android:lines="1"
+                    android:singleLine="true" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -136,11 +185,12 @@
                     android:id="@+id/text_edit_postcode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="0dp"
                     android:layout_marginEnd="16dp"
                     android:background="@drawable/bg_placeholder_search"
                     android:hint="@string/placeholder_postcode"
                     android:inputType="number"
+                    android:maxLength="5"
                     android:lines="1"
                     android:singleLine="true" />
             </LinearLayout>

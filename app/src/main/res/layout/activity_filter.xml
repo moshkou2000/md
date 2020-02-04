@@ -30,13 +30,16 @@
                 tools:layout_editor_absoluteX="16dp"
                 tools:layout_editor_absoluteY="16dp" />
 
-            <AutoCompleteTextView
+            <com.moshkou.md.controls.AutoCompleteTextViewControl
                 android:id="@+id/auto_complete_state"
                 android:layout_width="match_parent"
-                android:layout_height="43dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_placeholder_search"
                 android:hint="@string/placeholder_state"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="35dp" />
+                android:lines="1"
+                android:singleLine="true" />
 
             <TextView
                 android:id="@+id/textView38"
@@ -47,30 +50,16 @@
                 tools:layout_editor_absoluteX="16dp"
                 tools:layout_editor_absoluteY="16dp" />
 
-            <AutoCompleteTextView
+            <com.moshkou.md.controls.AutoCompleteTextViewControl
                 android:id="@+id/auto_complete_city"
                 android:layout_width="match_parent"
-                android:layout_height="43dp"
-                android:hint="@string/placeholder_city"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="35dp" />
-
-            <TextView
-                android:id="@+id/textView37"
-                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/title_media_owner"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="16dp" />
-
-            <AutoCompleteTextView
-                android:id="@+id/auto_complete_media_owner"
-                android:layout_width="match_parent"
-                android:layout_height="43dp"
-                android:hint="@string/placeholder_media_owner"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="35dp" />
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_placeholder_search"
+                android:hint="@string/placeholder_city"
+                android:lines="1"
+                android:singleLine="true" />
 
             <TextView
                 android:id="@+id/textView36"
@@ -81,13 +70,36 @@
                 tools:layout_editor_absoluteX="16dp"
                 tools:layout_editor_absoluteY="16dp" />
 
-            <AutoCompleteTextView
+            <com.moshkou.md.controls.AutoCompleteTextViewControl
                 android:id="@+id/auto_complete_format"
                 android:layout_width="match_parent"
-                android:layout_height="43dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_placeholder_search"
                 android:hint="@string/placeholder_format"
+                android:lines="1"
+                android:singleLine="true" />
+
+            <TextView
+                android:id="@+id/textView37"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/title_media_owner"
                 tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="35dp" />
+                tools:layout_editor_absoluteY="16dp" />
+
+            <com.moshkou.md.controls.AutoCompleteTextViewControl
+                android:id="@+id/auto_complete_media_owner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_placeholder_search"
+                android:hint="@string/placeholder_media_owner"
+                android:lines="1"
+                android:singleLine="true" />
 
             <TextView
                 android:id="@+id/textView35"
@@ -98,13 +110,16 @@
                 tools:layout_editor_absoluteX="16dp"
                 tools:layout_editor_absoluteY="16dp" />
 
-            <AutoCompleteTextView
+            <com.moshkou.md.controls.AutoCompleteTextViewControl
                 android:id="@+id/auto_complete_advertiser"
                 android:layout_width="match_parent"
-                android:layout_height="43dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_placeholder_search"
                 android:hint="@string/placeholder_advertiser"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="35dp" />
+                android:lines="1"
+                android:singleLine="true" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

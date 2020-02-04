@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,25 +14,25 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.moshkou.md.App;
 import com.moshkou.md.R;
-import com.moshkou.md.activities.MainActivity;
 import com.moshkou.md.activities.MediaActivity;
-import com.moshkou.md.adapters.GalleryAdapter;
 import com.moshkou.md.adapters.MediaAdapter;
-import com.moshkou.md.configs.Flags;
 import com.moshkou.md.configs.Keys;
+import com.moshkou.md.interfaces.OnAdapterListener;
 import com.moshkou.md.interfaces.OnFragmentInteractionListener;
 import com.moshkou.md.models.BillboardMediaModel;
-import com.moshkou.md.models.BillboardModel;
 
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Objects;
 
 
-public class MediaFragment extends Fragment {
+public class MediaFragment extends Fragment implements
+        OnAdapterListener {
 
 
     private static String TAG = "MEDIA_FRG";
@@ -45,12 +46,20 @@ public class MediaFragment extends Fragment {
 
     private List<BillboardMediaModel> medias;
     private boolean isInitialized = false;
-
-
+    boolean toBeRemoved = true;
 
     public MediaFragment() {
         // Required empty public constructor
     }
+
+
+
+
+    /**
+     * Override functions ->
+     * onCreate
+     * onBackPressed
+     **/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -83,8 +92,55 @@ public class MediaFragment extends Fragment {
 
     @Override
     public void onDetach() {
-        super.onDetach();
         mListener = null;
+        super.onDetach();
+    }
+
+
+
+
+    /**
+     * Init functions ->
+     * init
+     */
+
+    private void init() {
+        isInitialized = true;
+
+        buttonAdd.setOnClickListener(v -> {
+            Intent i = new Intent(App.getContext(), MediaActivity.class);
+            startActivity(i);
+        });
+    }
+
+
+
+
+    /**
+     * Helper functions ->
+     * populate
+     * setSelectedBillboard
+     * toggleView
+     */
+
+    private void populate() {
+        if (isInitialized) {
+            if (medias == null) {
+                Log.i(TAG, "media: null");
+                if (adapter != null)
+                    adapter.clearItems();
+
+            } else {
+                if (adapter == null) {
+                    adapter = new MediaAdapter(this, medias);
+                    gridViewMedia.setAdapter(adapter);
+
+                } else {
+                    Log.i(TAG, "media: " + medias.size());
+                    adapter.setItem(medias);
+                }
+            }
+        }
     }
 
     public void setSelectedBillboard(List<BillboardMediaModel> medias) {
@@ -93,32 +149,53 @@ public class MediaFragment extends Fragment {
         populate();
     }
 
-    private void init() {
-        isInitialized = true;
 
-        buttonAdd.setOnClickListener(v -> {
-            Intent i = new Intent(App.getContext(), MediaActivity.class);
-            Type type = new TypeToken<List<BillboardMediaModel>>(){}.getType();
-            i.putExtra(Keys.DATA, new Gson().toJson(medias, type));
-            startActivity(i);
-        });
+
+
+    /**
+     * Interfaces callback ->
+     * onDeleteMedia
+     * onDelete
+     * onUpdate
+     * onInteresting
+     */
+
+    @Override
+    public void onDeleteMedia(final int index) {
+
+        toBeRemoved = true;
+
+        final View coordinatorLayout = Objects.requireNonNull(getActivity()).findViewById(R.id.coordinatorLayout);
+        Snackbar snackbar = Snackbar
+                .make(coordinatorLayout, "Media is deleted", Snackbar.LENGTH_LONG)
+                .setAction("UNDO", (view1) -> {
+                    toBeRemoved = false;
+                    Snackbar.make(coordinatorLayout, "Media is restored!", Snackbar.LENGTH_SHORT).show();
+                });
+        snackbar.show();
+
+        final Handler handler = new Handler();
+        handler.postDelayed(() -> {
+            if (!toBeRemoved)
+                adapter.restoreItem();
+
+
+            // TODO: ***************************** actual deletion
+            // delete if local OR call api if not
+
+        }, 2000);
     }
 
-    private void populate() {
-        if (isInitialized) {
-            if (medias == null) {
-                if (adapter != null)
-                    adapter.clearItems();
+    @Override
+    public void onDelete(int index) { }
 
-            } else {
-                if (adapter == null) {
-                    adapter = new MediaAdapter(getActivity(), medias);
-                    gridViewMedia.setAdapter(adapter);
-
-                } else {
-                    adapter.setItem(medias);
-                }
-            }
-        }
+    @Override
+    public void onUpdate(int index) {
+        Intent i = new Intent(App.getContext(), MediaActivity.class);
+        i.putExtra(Keys.DATA, new Gson().toJson(medias.get(index), BillboardMediaModel.class));
+        startActivity(i);
     }
+
+    @Override
+    public void onInteresting(int index, boolean isInteresting) { }
 }

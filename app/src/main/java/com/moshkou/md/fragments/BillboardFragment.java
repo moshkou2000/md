@@ -18,14 +18,19 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.moshkou.md.App;
 import com.moshkou.md.R;
+import com.moshkou.md.activities.BillboardActivity;
 import com.moshkou.md.configs.Config;
+import com.moshkou.md.configs.Flags;
+import com.moshkou.md.controls.AutoCompleteTextViewControl;
 import com.moshkou.md.interfaces.OnFragmentInteractionListener;
 import com.moshkou.md.models.BillboardModel;
+import com.moshkou.md.services.Billboards;
+
+import java.util.Objects;
 
 
 public class BillboardFragment extends Fragment {
@@ -46,9 +51,9 @@ public class BillboardFragment extends Fragment {
     private TextView textNoOfPanels;
     private TextView textSpeedLimit;
 
-    private Spinner spinnerMediaOwner;
-    private Spinner spinnerFormat;
-    private Spinner spinnerEnvironment;
+    private AutoCompleteTextViewControl autoCompleteMediaOwner;
+    private AutoCompleteTextViewControl autoCompleteFormat;
+    private AutoCompleteTextViewControl autoCompleteEnvironment;
     private CheckBox checkboxDigitalScreen;
     private CheckBox checkboxLighting;
     private RadioGroup radioGroupNoPanels;
@@ -61,11 +66,20 @@ public class BillboardFragment extends Fragment {
     private BillboardModel selectedBillboard;
     private boolean isInitialized = false;
 
-
-
     public BillboardFragment() {
         // Required empty public constructor
     }
+
+
+
+
+    /**
+     * Override functions ->
+     * onCreate
+     * onCreateView
+     * onAttach
+     * onDetach
+     **/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,9 +101,9 @@ public class BillboardFragment extends Fragment {
         textNoOfPanels = view.findViewById(R.id.text_no_of_panels);
         textSpeedLimit = view.findViewById(R.id.text_speed_limit);
 
-        spinnerMediaOwner = view.findViewById(R.id.text_edit_media_owner);
-        spinnerFormat = view.findViewById(R.id.text_edit_format);
-        spinnerEnvironment = view.findViewById(R.id.text_edit_environment);
+        autoCompleteMediaOwner = view.findViewById(R.id.text_edit_media_owner);
+        autoCompleteFormat = view.findViewById(R.id.text_edit_format);
+        autoCompleteEnvironment = view.findViewById(R.id.text_edit_environment);
         checkboxDigitalScreen = view.findViewById(R.id.checkbox_digital_screen);
         checkboxLighting = view.findViewById(R.id.checkbox_lighting);
         radioGroupNoPanels = view.findViewById(R.id.radio_group_no_panels);
@@ -120,16 +134,17 @@ public class BillboardFragment extends Fragment {
 
     @Override
     public void onDetach() {
-        super.onDetach();
         mListener = null;
+        super.onDetach();
     }
 
-    public void setSelectedBillboard(BillboardModel selectedBillboard) {
-        this.selectedBillboard = selectedBillboard;
 
-        Log.i(TAG, "select");
-        populate();
-    }
+
+
+    /**
+     * Init functions ->
+     * init
+     */
 
     private void init() {
         isInitialized = true;
@@ -137,117 +152,41 @@ public class BillboardFragment extends Fragment {
         buttonEdit.setOnClickListener(v -> toggleView(true));
         buttonCancel.setOnClickListener(v -> toggleView(false));
         buttonSave.setOnClickListener(v -> {
-            // TODO: api call
-
+            save();
             toggleView(false);
         });
 
-
-        ArrayAdapter<String> adapterMediaOwner = new ArrayAdapter<String>(
+        // autoComplete mediaOwner
+        ArrayAdapter<String> adapterMediaOwner = new ArrayAdapter<>(
                 App.getContext(),
                 android.R.layout.select_dialog_item,
-                Config.MEDIA_OWNER) {
+                Config.MEDIA_OWNER);
+        autoCompleteMediaOwner.setAdapter(adapterMediaOwner);
 
-            @Override
-            public boolean isEnabled(int position) {
-                return position != 0;
-            }
-
-            @Override
-            public View getDropDownView(int position, View convertView, ViewGroup parent) {
-                View view = super.getDropDownView(position, convertView, parent);
-                TextView tv = (TextView) view;
-                tv.setTextColor(position == 0 ? Color.GRAY: Color.BLACK);
-                tv.setTextSize(18);
-                return view;
-            }
-        };
-        spinnerMediaOwner.setAdapter(adapterMediaOwner);
-        spinnerMediaOwner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                View v = spinnerMediaOwner.getSelectedView();
-                TextView tv = ((TextView)v);
-                tv.setTextSize(18);
-                tv.setTypeface(tv.getTypeface(), Typeface.NORMAL);
-                tv.setTextColor(Color.GRAY);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) { }
-        });
-        spinnerMediaOwner.setSelection(0, false);
-
+        // autoComplete format
         ArrayAdapter<String> adapterFormat = new ArrayAdapter<String>(
                 App.getContext(),
                 android.R.layout.select_dialog_item,
-                Config.FORMAT) {
+                Config.FORMAT);
+        autoCompleteFormat.setAdapter(adapterFormat);
 
-            @Override
-            public boolean isEnabled(int position) {
-                return position != 0;
-            }
-
-            @Override
-            public View getDropDownView(int position, View convertView, ViewGroup parent) {
-                View view = super.getDropDownView(position, convertView, parent);
-                TextView tv = (TextView) view;
-                tv.setTextColor(position == 0 ? Color.GRAY: Color.BLACK);
-                tv.setTextSize(18);
-                return view;
-            }
-        };
-        spinnerFormat.setAdapter(adapterFormat);
-        spinnerFormat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                View v = spinnerFormat.getSelectedView();
-                TextView tv = ((TextView)v);
-                tv.setTextSize(18);
-                tv.setTypeface(tv.getTypeface(), Typeface.NORMAL);
-                tv.setTextColor(Color.GRAY);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) { }
-        });
-        spinnerFormat.setSelection(0, false);
-
+        // autoComplete environment
         ArrayAdapter<String> adapterEnvironment = new ArrayAdapter<String>(
                 App.getContext(),
                 android.R.layout.select_dialog_item,
-                Config.ENVIRONMENT) {
-
-            @Override
-            public boolean isEnabled(int position) {
-                return position != 0;
-            }
-
-            @Override
-            public View getDropDownView(int position, View convertView, ViewGroup parent) {
-                View view = super.getDropDownView(position, convertView, parent);
-                TextView tv = (TextView) view;
-                tv.setTextColor(position == 0 ? Color.GRAY: Color.BLACK);
-                tv.setTextSize(18);
-                return view;
-            }
-        };
-        spinnerEnvironment.setAdapter(adapterEnvironment);
-        spinnerEnvironment.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                View v = spinnerEnvironment.getSelectedView();
-                TextView tv = ((TextView)v);
-                tv.setTextSize(18);
-                tv.setTypeface(tv.getTypeface(), Typeface.NORMAL);
-                tv.setTextColor(Color.GRAY);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) { }
-        });
-        spinnerEnvironment.setSelection(0, false);
+                Config.ENVIRONMENT);
+        autoCompleteEnvironment.setAdapter(adapterEnvironment);
     }
+
+
+
+
+    /**
+     * Helper functions ->
+     * populate
+     * setSelectedBillboard
+     * toggleView
+     */
 
     private void populate() {
         if (isInitialized) {
@@ -260,10 +199,9 @@ public class BillboardFragment extends Fragment {
                 textLighting.setText("No");
                 textNoOfPanels.setText("1");
                 textSpeedLimit.setText("<30");
-
-                spinnerMediaOwner.setSelection(0);
-                spinnerFormat.setSelection(0);
-                spinnerEnvironment.setSelection(0);
+                autoCompleteMediaOwner.setText("");
+                autoCompleteFormat.setSelection(0);
+                autoCompleteEnvironment.setSelection(0);
                 checkboxDigitalScreen.setChecked(false);
                 checkboxLighting.setChecked(false);
                 ((RadioButton) radioGroupNoPanels.getChildAt(0))
@@ -279,11 +217,10 @@ public class BillboardFragment extends Fragment {
                 textLighting.setText(selectedBillboard.lighting ? "Yes" : "No");
                 textNoOfPanels.setText(String.valueOf(selectedBillboard.no_panels));
                 textSpeedLimit.setText(selectedBillboard.speed_limit);
-
-                spinnerMediaOwner.setSelection(Config.MEDIA_OWNER.indexOf(selectedBillboard.media_owner));
-                spinnerFormat.setSelection(Config.FORMAT.indexOf(selectedBillboard.format));
-                spinnerEnvironment.setSelection(Config.ENVIRONMENT.indexOf(selectedBillboard.environment));
-                checkboxDigitalScreen.setChecked(selectedBillboard.type.equals("digital"));
+                autoCompleteMediaOwner.setText(selectedBillboard.media_owner);
+                autoCompleteFormat.setText(selectedBillboard.format);
+                autoCompleteEnvironment.setText(selectedBillboard.environment);
+                checkboxDigitalScreen.setChecked(selectedBillboard.type.equals(Flags.DIGITAL));
                 checkboxLighting.setChecked(selectedBillboard.lighting);
                 ((RadioButton) radioGroupNoPanels.getChildAt(selectedBillboard.getNoPanelsIndex()))
                         .setChecked(true);
@@ -291,6 +228,13 @@ public class BillboardFragment extends Fragment {
                         .setChecked(true);
             }
         }
+    }
+
+    public void setSelectedBillboard(BillboardModel selectedBillboard) {
+        this.selectedBillboard = selectedBillboard;
+
+        Log.i(TAG, "select");
+        populate();
     }
 
     private void toggleView(boolean isEdit) {
@@ -306,5 +250,26 @@ public class BillboardFragment extends Fragment {
             buttonEdit.setVisibility(View.VISIBLE);
             layoutSave.setVisibility(View.GONE);
         }
+    }
+
+    private void save() {
+        // TODO: api call
+
+        selectedBillboard.media_owner = autoCompleteMediaOwner.getText().toString().trim();
+        selectedBillboard.format = autoCompleteFormat.getText().toString().trim();
+        selectedBillboard.environment = autoCompleteEnvironment.getText().toString().trim();
+
+        selectedBillboard.type = checkboxDigitalScreen.isChecked() ? Flags.DIGITAL : Flags.STATIC;
+        selectedBillboard.lighting = checkboxLighting.isChecked();
+
+        RadioButton radioButtonNoPanels = Objects.requireNonNull(getActivity())
+                .findViewById(radioGroupNoPanels.getCheckedRadioButtonId());
+        selectedBillboard.no_panels = Integer.valueOf(radioButtonNoPanels.getText().toString());
+
+        RadioButton radioButtonSpeedLimit = Objects.requireNonNull(getActivity())
+                .findViewById(radioGroupSpeedLimit.getCheckedRadioButtonId());
+        selectedBillboard.speed_limit = radioButtonSpeedLimit.getText().toString();
+
+        Billboards.createBillboardInfo((BillboardActivity) getActivity(), selectedBillboard);
     }
 }

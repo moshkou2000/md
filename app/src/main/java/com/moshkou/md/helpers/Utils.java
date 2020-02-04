@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.material.snackbar.Snackbar;
 import com.moshkou.md.App;
 import com.moshkou.md.activities.PreviewActivity;
 import com.moshkou.md.configs.Config;
@@ -278,6 +279,14 @@ public class Utils {
             toast.setView(layout);
             toast.show();
         } catch(Exception ex) {}
+    }
+
+    public static void snackBar(View view) {
+        final View coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
+        Snackbar snackbar = Snackbar
+                .make(coordinatorLayout, "Media is deleted", Snackbar.LENGTH_LONG)
+                .setAction("UNDO", (view1) -> Snackbar.make(coordinatorLayout, "Media is restored!", Snackbar.LENGTH_SHORT).show());
+        snackbar.show();
     }
 
     public static void activityPreview(Context context, String url, String title, boolean isVideo){

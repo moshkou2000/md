@@ -146,8 +146,8 @@ public class GalleryFragment extends Fragment {
 
     @Override
     public void onDetach() {
-        super.onDetach();
         mListener = null;
+        super.onDetach();
     }
 
     public interface OnFragmentInteractionListener {

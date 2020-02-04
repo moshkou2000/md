@@ -2,6 +2,7 @@ package com.moshkou.md.models;
 
 import com.moshkou.md.App;
 import com.moshkou.md.R;
+import com.moshkou.md.configs.Flags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ public class BillboardModel {
     public boolean lighting = false;
     public Integer no_panels = 1;
     public String speed_limit = "<30";
-    public String type = "static";
+    public String type = Flags.STATIC;
     public String created_at = "";
     public String updated_at = "";
 

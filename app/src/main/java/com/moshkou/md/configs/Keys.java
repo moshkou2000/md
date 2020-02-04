@@ -22,7 +22,7 @@ public class Keys {
     public final static String MEDIA        = "MEDIA";
     public final static String DATA         = "DATA";
 
-    public final static String STATE       = "state";
+    public final static String STATE        = "state";
     public final static String CITY         = "city";
     public final static String MEDIA_OWNER  = "media_owner";
     public final static String FORMAT       = "format";

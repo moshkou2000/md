@@ -44,6 +44,8 @@ import android.widget.Toast;
 
 import com.moshkou.md.App;
 import com.moshkou.md.R;
+import com.moshkou.md.configs.Enumerates;
+import com.moshkou.md.configs.Flags;
 import com.moshkou.md.configs.Keys;
 import com.moshkou.md.configs.Settings;
 import com.moshkou.md.controls.AutoFitTextureViewControl;
@@ -53,7 +55,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -64,6 +65,8 @@ import java.util.concurrent.TimeUnit;
 
 
 public class CameraActivity extends Activity {
+
+    private static final String TAG = "CAMERA";
 
 
     private static Activity activity;
@@ -80,8 +83,6 @@ public class CameraActivity extends Activity {
         ORIENTATIONS.append(Surface.ROTATION_180, 270);
         ORIENTATIONS.append(Surface.ROTATION_270, 180);
     }
-
-    private static final String TAG = "Camera2BasicFragment";
 
     /**
      * Camera state: Showing camera preview.
@@ -965,8 +966,13 @@ public class CameraActivity extends Activity {
     }
 
     private static void getResult(Uri uri) {
-        Intent i = new Intent(App.getContext(), MediaActivity.class);
+        Intent i = new Intent(App.getContext(),
+                Settings.MEDIA_PICKER == Enumerates.MediaPicker.MEDIA_ACTIVITY ?
+                        MediaActivity.class :
+                        BillboardActivity.class);
+
         Bundle bundle = new Bundle();
+        bundle.putString(Keys.TYPE, Keys.URI);
         bundle.putParcelable(Keys.URI, uri);
         i.putExtras(bundle);
         CameraActivity.activity.startActivity(i);

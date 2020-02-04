@@ -78,10 +78,13 @@
     <string name="hint_login_attempt">Someone attempted to login to your account recently. If it wasn\'t you, tell us so we can verify your account.</string>
     <string name="hint_help">Don\'t bother about asking questions multiple times.</string>
     <string name="hint_help_call">Call and talk to a support agent</string>
-    <string name="hint_permission_contacts">&appname; syncs only phone numbers from your address book to connect to other &appname;
-        users.</string>
+    <string name="hint_permission_contacts">&appname; syncs only phone numbers from your address book to connect to other &appname; users.</string>
     <string name="hint_permission_camera">Set your profile picture and make a circle gallery.</string>
     <string name="hint_add_location">Move map then click the location button at center screen.</string>
+    <string name="hint_fragment_media">Please make sure the billboard and the advertisement is clear and not dark/blurry.</string>
+    <string name="hint_fragment_status">Upload media &amp; explain any suspicious matter and damage.</string>
+    <string name="hint_fragment_location">Upload media &amp; explain any suspicious matter including damage.</string>
+    <string name="hint_fragment_billboard">Upload media &amp; explain any suspicious matter including damage.</string>
 
     <!--Messages-->
     <string name="message_login_verification">Thanks for helping us to secure account from unauthorized access!</string>
@@ -94,6 +97,8 @@
     <string name="message_error_valid_email">Valid email is required.</string>
     <string name="message_error_valid_phone">Valid phone number is required.</string>
     <string name="message_error_camera">&appname; does not support your device camera.</string>
+    <string name="message_error_required_media">Take picture or select from gallery.</string>
+    <string name="message_error_required_brand_product">Brand &amp; Product are required.</string>
 
     <!--Placeholder-->
     <string name="placeholder_login_verification">Account Verification Code</string>
@@ -151,6 +156,7 @@
     <string name="action_exit">Exit</string>
     <string name="action_edit">Edit</string>
     <string name="action_edit_location">Edit Location</string>
+    <string name="action_location">\tGo to the map</string>
     <string name="action_clear">Clear</string>
     <string name="action_login_button_1">Yahoo Mail</string>
     <string name="action_login_button_2">Gmail</string>
