@@ -3,7 +3,6 @@ package com.moshkou.md.fragments;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -16,6 +15,7 @@ import android.view.Window;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.moshkou.md.App;
@@ -27,9 +27,8 @@ import com.moshkou.md.configs.Settings;
 import com.moshkou.md.helpers.Utils;
 import com.moshkou.md.interfaces.OnAdapterListener;
 import com.moshkou.md.interfaces.OnFragmentInteractionListener;
-import com.moshkou.md.models.BillboardModel;
+import com.moshkou.md.models.BillboardStatusModel;
 
-import java.util.List;
 import java.util.Objects;
 
 
@@ -51,8 +50,7 @@ public class StatusFragment extends Fragment implements
     private Button buttonSave;
     private Button buttonAdd;
 
-    private BillboardModel selectedBillboard;
-    private List<String> files;
+    private BillboardStatusModel status;
     private boolean isInitialized = false;
     boolean toBeRemoved = true;
 
@@ -119,13 +117,10 @@ public class StatusFragment extends Fragment implements
     private void init() {
         isInitialized = true;
 
-        buttonSave.setOnClickListener(v -> {
-            // TODO: open add media activity
-        });
+        buttonSave.setOnClickListener(v -> save());
         buttonCancel.setOnClickListener(v -> {
             // TODO: open add media activity
         });
-
         buttonAdd.setOnClickListener(v -> showDialogMediaPicker());
     }
 
@@ -135,31 +130,22 @@ public class StatusFragment extends Fragment implements
     /**
      * Helper functions ->
      * populate
-     * setSelectedBillboard
+     * setLocation
      * toggleView
      */
 
     private void populate() {
         if (isInitialized) {
-            if (selectedBillboard != null) {
-                textEditStatus.setText(selectedBillboard.status.status);
-                textEditReason.setText(selectedBillboard.status.comment);
+            if (status != null) {
+                textEditStatus.setText(status.status);
+                textEditReason.setText(status.reason);
 
                 if (adapter == null) {
-                    adapter = new StatusAdapter(this, selectedBillboard.status.files);
+                    adapter = new StatusAdapter(this, status.files);
                     gridViewMedia.setAdapter(adapter);
 
                 } else {
-                    adapter.setItem(files);
-                }
-
-            } else if (files != null) {
-                if (adapter == null) {
-                    adapter = new StatusAdapter(this, files);
-                    gridViewMedia.setAdapter(adapter);
-
-                } else {
-                    adapter.setItem(files);
+                    adapter.setItem(status.files);
                 }
 
             } else {
@@ -172,11 +158,30 @@ public class StatusFragment extends Fragment implements
         }
     }
 
-    public void setSelectedBillboard(BillboardModel selectedBillboard, List<String> files) {
-        this.selectedBillboard = selectedBillboard;
-        this.files = files;
+    public void setStatus(BillboardStatusModel status) {
+        this.status = status;
 
         populate();
+    }
+
+    private void save() {
+        String status = textEditStatus.getText().toString().trim();
+        String reason = textEditReason.getText().toString().trim();
+
+        if (adapter.getCount() == 0) {
+            showToast(getString(R.string.message_error_required_media));
+
+        } else if (status.isEmpty() || reason.isEmpty()) {
+            showToast(getString(R.string.message_error_required_status_reason));
+
+        } else {
+            if (this.status == null)
+                this.status = new BillboardStatusModel();
+            this.status.status = status;
+            this.status.reason = reason;
+
+            mListener.onStatusFragmentInteraction(this.status);
+        }
     }
 
 
@@ -185,7 +190,7 @@ public class StatusFragment extends Fragment implements
     /**
      * Alert ->
      * showDialogMediaPicker
-     * showSnackBar
+     * showToast
      */
 
     private void showDialogMediaPicker() {
@@ -213,6 +218,10 @@ public class StatusFragment extends Fragment implements
         });
 
         dialog.show();
+    }
+
+    private void showToast(String message) {
+        Utils.toast(App.getContext(), Enumerates.Message.ERROR, message, Toast.LENGTH_LONG);
     }
 
 

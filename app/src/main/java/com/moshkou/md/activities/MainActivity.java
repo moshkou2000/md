@@ -2,7 +2,6 @@ package com.moshkou.md.activities;
 
 import android.Manifest;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 
@@ -18,7 +17,6 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
@@ -49,7 +47,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.moshkou.md.App;
@@ -62,17 +59,12 @@ import com.moshkou.md.configs.Keys;
 import com.moshkou.md.configs.Permission;
 import com.moshkou.md.configs.RequestCode;
 import com.moshkou.md.configs.Settings;
-import com.moshkou.md.fragments.BillboardFragment;
 import com.moshkou.md.fragments.InfoItemFragment;
-import com.moshkou.md.fragments.LocationFragment;
-import com.moshkou.md.fragments.MediaFragment;
-import com.moshkou.md.fragments.StatusFragment;
 import com.moshkou.md.helpers.Utils;
 import com.moshkou.md.R;
 import com.moshkou.md.interfaces.OnBillboardListener;
 import com.moshkou.md.interfaces.OnBillboardsListener;
 import com.moshkou.md.interfaces.OnFilterListener;
-import com.moshkou.md.interfaces.OnFragmentInteractionListener;
 import com.moshkou.md.interfaces.OnSearchListener;
 import com.moshkou.md.models.BillboardMediaModel;
 import com.moshkou.md.models.BillboardModel;
@@ -100,7 +92,6 @@ public class MainActivity extends FragmentActivity implements
 
     private View mapView;
 
-    private LinearLayout layoutInfoGap;
     private LinearLayout layoutInfoContent;
     private LinearLayout layoutBottomSheetBillboards;
     private BottomSheetBehavior layoutList;
@@ -167,7 +158,6 @@ public class MainActivity extends FragmentActivity implements
 
         mapView = findViewById(R.id.map);
 
-        layoutInfoGap = findViewById(R.id.layout_info_gap);
         layoutInfoContent = findViewById(R.id.layout_info_content);
         layoutBottomSheetBillboards = findViewById(R.id.bottom_sheet_billboards);
         layoutList = BottomSheetBehavior.from(layoutBottomSheetBillboards);
@@ -440,14 +430,10 @@ public class MainActivity extends FragmentActivity implements
         filterAdapter = new FilterAdapter(App.getContext(), this);
         gridViewFilter.setAdapter(filterAdapter);
 
-        buttonFilter.setOnClickListener(view -> {
-            Intent i = new Intent(App.getContext(), FilterActivity.class);
-            startActivity(i);
-        });
+        buttonFilter.setOnClickListener(view ->
+                startActivity(new Intent(App.getContext(), FilterActivity.class)));
 
-        buttonFilterClear.setOnClickListener(view -> {
-            clearFilter();
-        });
+        buttonFilterClear.setOnClickListener(view -> clearFilter());
     }
 
     private void initMore() {
@@ -523,14 +509,18 @@ public class MainActivity extends FragmentActivity implements
     private void filter() {
         Log.i(TAG, "filter");
 
-        if (Settings.FILTER_BILLBOARD.is_updated) {
+//        if (Settings.FILTER_BILLBOARD.is_updated)
+        {
             if (Settings.FILTER_BILLBOARD.location.state.isEmpty() &&
                     Settings.FILTER_BILLBOARD.location.city.isEmpty() &&
                     Settings.FILTER_BILLBOARD.media_owner.isEmpty() &&
                     Settings.FILTER_BILLBOARD.format.isEmpty() &&
-                    Settings.FILTER_BILLBOARD.advertiser.isEmpty())
-                buttonFilterClear.setVisibility(View.GONE);
-            else
+                    Settings.FILTER_BILLBOARD.advertiser.isEmpty()) {
+
+                if (buttonFilterClear.getVisibility() != View.GONE)
+                    buttonFilterClear.setVisibility(View.GONE);
+
+            } else if (buttonFilterClear.getVisibility() != View.VISIBLE)
                 buttonFilterClear.setVisibility(View.VISIBLE);
 
             // TODO: do filter -> FILTER_BILLBOARD
@@ -971,7 +961,7 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void showDialogLocationPermission() {
-        final Dialog dialog = new Dialog(App.getContext());
+        final Dialog dialog = new Dialog(this);
 
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
@@ -1036,6 +1026,7 @@ public class MainActivity extends FragmentActivity implements
             b.name = "billboard name " + i;
             b.media_owner = "billboard  media owner" + i;
             b.product = "billboard product " + i;
+            b.brand = "brand " + i;
             b.advertiser = "billboard advertiser " + i;
             b.format = "96 Sheets";
             b.size = "billboard size " + i;
@@ -1075,7 +1066,7 @@ public class MainActivity extends FragmentActivity implements
             b.status = new BillboardStatusModel();
             b.status._id = "status_id_" + i;
             b.status.status = "status " + i;
-            b.status.comment = "comment " + i;
+            b.status.reason = "reason " + i;
 
             for (int j = 0; j < 7; j++) {
                 b.status.files.add("https://media.gettyimages.com/photos/powder-explosion-picture-id642320289?s=2048x2048");

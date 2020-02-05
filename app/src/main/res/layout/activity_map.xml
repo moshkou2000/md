@@ -39,9 +39,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="12dp"
             android:background="@drawable/bg_my_location"
-            android:clickable="true"
-            android:focusable="true"
-            app:borderWidth="2dp"
+            android:translationZ="44dp"
             android:layout_above="@+id/action_button_add"
             android:layout_alignParentEnd="true" />
 
@@ -53,9 +51,6 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="12dp"
             android:background="@drawable/bg_add"
-            android:clickable="true"
-            android:focusable="true"
-            app:borderWidth="0dp"
             android:translationZ="44dp"
             android:layout_above="@+id/layout_info_content_x"
             android:layout_alignParentEnd="true"/>
@@ -247,10 +242,9 @@
     </RelativeLayout>
 
     <!--search bar-->
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
         <!--search bar-->
         <androidx.cardview.widget.CardView
@@ -259,7 +253,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="35dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="0dp"
             android:layout_marginEnd="10dp"
             android:background="@drawable/ic_tag_white"
             android:focusable="true"
@@ -349,23 +343,27 @@
             android:id="@+id/grid_view_filter"
             android:layout_width="wrap_content"
             android:layout_height="46dp"
-            android:paddingTop="4dp"
-            android:layout_marginTop="4dp"
+            android:visibility="visible"
+            android:layout_below="@id/search_box"
+            android:layout_marginTop="8dp"
             android:layout_marginBottom="0dp"
-            android:visibility="visible" />
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"/>
 
         <!--filter clear buttons-->
         <Button
             android:id="@+id/button_filter_clear"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="top|end"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginTop="4dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="12dp"
             android:background="@drawable/bg_clear"
-            android:ellipsize="end"
-            android:lines="1"
-            android:textColor="#FFFFFF"
+            android:translationZ="44dp"
             android:visibility="gone"
-            android:layout_gravity="end"/>
-    </LinearLayout>
+            android:layout_below="@id/search_box"
+            android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

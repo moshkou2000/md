@@ -1,5 +1,7 @@
 package com.moshkou.md.models;
 
+import android.util.Log;
+
 import com.moshkou.md.App;
 import com.moshkou.md.R;
 import com.moshkou.md.configs.Flags;
@@ -13,6 +15,7 @@ public class BillboardModel {
     public String name = "";
     public String media_owner = "";
     public String product = "";
+    public String brand = "";
     public String advertiser = "";
     public String format = "";
     public String size = "";
@@ -61,7 +64,16 @@ public class BillboardModel {
         List<KeyValue> data = new ArrayList<>();
         for (BillboardMediaModel m: medias) {
             for (KeyValue t: m.tags) {
-                data.add(t);
+                boolean has = false;
+                for (KeyValue d: data) {
+                    if (t.key.equals(d.key) && t.value.equals(d.value)) {
+                        has = true;
+                        break;
+                    }
+                }
+                if (!has) {
+                    data.add(t);
+                }
             }
         }
         return data;

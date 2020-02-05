@@ -1,8 +1,6 @@
 package com.moshkou.md.fragments;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -19,13 +16,16 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.moshkou.md.App;
 import com.moshkou.md.R;
 import com.moshkou.md.activities.BillboardActivity;
 import com.moshkou.md.configs.Config;
+import com.moshkou.md.configs.Enumerates;
 import com.moshkou.md.configs.Flags;
 import com.moshkou.md.controls.AutoCompleteTextViewControl;
+import com.moshkou.md.helpers.Utils;
 import com.moshkou.md.interfaces.OnFragmentInteractionListener;
 import com.moshkou.md.models.BillboardModel;
 import com.moshkou.md.services.Billboards;
@@ -63,7 +63,7 @@ public class BillboardFragment extends Fragment {
     private Button buttonCancel;
     private Button buttonSave;
 
-    private BillboardModel selectedBillboard;
+    private BillboardModel billboard;
     private boolean isInitialized = false;
 
     public BillboardFragment() {
@@ -113,8 +113,6 @@ public class BillboardFragment extends Fragment {
         buttonCancel = view.findViewById(R.id.button_cancel);
         buttonSave = view.findViewById(R.id.button_save);
 
-        Log.i(TAG, "init");
-
         init();
         populate();
 
@@ -151,10 +149,7 @@ public class BillboardFragment extends Fragment {
 
         buttonEdit.setOnClickListener(v -> toggleView(true));
         buttonCancel.setOnClickListener(v -> toggleView(false));
-        buttonSave.setOnClickListener(v -> {
-            save();
-            toggleView(false);
-        });
+        buttonSave.setOnClickListener(v -> save());
 
         // autoComplete mediaOwner
         ArrayAdapter<String> adapterMediaOwner = new ArrayAdapter<>(
@@ -184,13 +179,13 @@ public class BillboardFragment extends Fragment {
     /**
      * Helper functions ->
      * populate
-     * setSelectedBillboard
+     * setLocation
      * toggleView
      */
 
     private void populate() {
         if (isInitialized) {
-            if (selectedBillboard == null) {
+            if (billboard == null) {
                 toggleView(true);
 
                 textMediaOwner.setText("");
@@ -211,27 +206,28 @@ public class BillboardFragment extends Fragment {
             } else {
                 toggleView(false);
 
-                textMediaOwner.setText(selectedBillboard.media_owner);
-                textFormat.setText(selectedBillboard.format);
-                textEnvironment.setText(selectedBillboard.environment);
-                textLighting.setText(selectedBillboard.lighting ? "Yes" : "No");
-                textNoOfPanels.setText(String.valueOf(selectedBillboard.no_panels));
-                textSpeedLimit.setText(selectedBillboard.speed_limit);
-                autoCompleteMediaOwner.setText(selectedBillboard.media_owner);
-                autoCompleteFormat.setText(selectedBillboard.format);
-                autoCompleteEnvironment.setText(selectedBillboard.environment);
-                checkboxDigitalScreen.setChecked(selectedBillboard.type.equals(Flags.DIGITAL));
-                checkboxLighting.setChecked(selectedBillboard.lighting);
-                ((RadioButton) radioGroupNoPanels.getChildAt(selectedBillboard.getNoPanelsIndex()))
+                textMediaOwner.setText(billboard.media_owner);
+                textFormat.setText(billboard.format);
+                textEnvironment.setText(billboard.environment);
+                textLighting.setText(billboard.lighting ? "Yes" : "No");
+                textNoOfPanels.setText(String.valueOf(billboard.no_panels));
+                textSpeedLimit.setText(billboard.speed_limit);
+
+                autoCompleteMediaOwner.setText(billboard.media_owner);
+                autoCompleteFormat.setText(billboard.format);
+                autoCompleteEnvironment.setText(billboard.environment);
+                checkboxDigitalScreen.setChecked(billboard.type.equals(Flags.DIGITAL));
+                checkboxLighting.setChecked(billboard.lighting);
+                ((RadioButton) radioGroupNoPanels.getChildAt(billboard.getNoPanelsIndex()))
                         .setChecked(true);
-                ((RadioButton) radioGroupSpeedLimit.getChildAt(selectedBillboard.getSpeedLimitIndex()))
+                ((RadioButton) radioGroupSpeedLimit.getChildAt(billboard.getSpeedLimitIndex()))
                         .setChecked(true);
             }
         }
     }
 
-    public void setSelectedBillboard(BillboardModel selectedBillboard) {
-        this.selectedBillboard = selectedBillboard;
+    public void setBillboard(BillboardModel billboard) {
+        this.billboard = billboard;
 
         Log.i(TAG, "select");
         populate();
@@ -244,7 +240,7 @@ public class BillboardFragment extends Fragment {
             buttonEdit.setVisibility(View.GONE);
             layoutSave.setVisibility(View.VISIBLE);
 
-        } else if (selectedBillboard != null) {
+        } else if (billboard != null) {
             layoutEdit.setVisibility(View.GONE);
             layoutView.setVisibility(View.VISIBLE);
             buttonEdit.setVisibility(View.VISIBLE);
@@ -253,23 +249,55 @@ public class BillboardFragment extends Fragment {
     }
 
     private void save() {
-        // TODO: api call
-
-        selectedBillboard.media_owner = autoCompleteMediaOwner.getText().toString().trim();
-        selectedBillboard.format = autoCompleteFormat.getText().toString().trim();
-        selectedBillboard.environment = autoCompleteEnvironment.getText().toString().trim();
-
-        selectedBillboard.type = checkboxDigitalScreen.isChecked() ? Flags.DIGITAL : Flags.STATIC;
-        selectedBillboard.lighting = checkboxLighting.isChecked();
-
         RadioButton radioButtonNoPanels = Objects.requireNonNull(getActivity())
                 .findViewById(radioGroupNoPanels.getCheckedRadioButtonId());
-        selectedBillboard.no_panels = Integer.valueOf(radioButtonNoPanels.getText().toString());
 
         RadioButton radioButtonSpeedLimit = Objects.requireNonNull(getActivity())
                 .findViewById(radioGroupSpeedLimit.getCheckedRadioButtonId());
-        selectedBillboard.speed_limit = radioButtonSpeedLimit.getText().toString();
 
-        Billboards.createBillboardInfo((BillboardActivity) getActivity(), selectedBillboard);
+        String media_owner = autoCompleteMediaOwner.getText().toString().trim();
+        String format = autoCompleteFormat.getText().toString().trim();
+        String environment = autoCompleteEnvironment.getText().toString().trim();
+        String type = checkboxDigitalScreen.isChecked() ? Flags.DIGITAL : Flags.STATIC;
+        boolean lighting = checkboxLighting.isChecked();
+        Integer no_panels = Integer.valueOf(radioButtonNoPanels.getText().toString());
+        String speed_limit = radioButtonSpeedLimit.getText().toString();
+
+        if (media_owner.isEmpty() || format.isEmpty() || environment.isEmpty()) {
+            showToast(getString(R.string.message_error_required_fields));
+
+        } else {
+            textMediaOwner.setText(media_owner);
+            textFormat.setText(format);
+            textEnvironment.setText(environment);
+            textLighting.setText(billboard.lighting ? "Yes" : "No");
+            textNoOfPanels.setText(String.valueOf(billboard.no_panels));
+            textSpeedLimit.setText(speed_limit);
+
+            if (billboard == null)
+                billboard = new BillboardModel();
+            billboard.media_owner = media_owner;
+            billboard.format = format;
+            billboard.environment = environment;
+            billboard.type = type;
+            billboard.lighting = lighting;
+            billboard.no_panels = no_panels;
+            billboard.speed_limit = speed_limit;
+        }
+
+        mListener.onBillboardFragmentInteraction(billboard);
+        toggleView(false);
+    }
+
+
+
+
+    /**
+     * Alert ->
+     * showToast
+     */
+
+    private void showToast(String message) {
+        Utils.toast(App.getContext(), Enumerates.Message.ERROR, message, Toast.LENGTH_LONG);
     }
 }

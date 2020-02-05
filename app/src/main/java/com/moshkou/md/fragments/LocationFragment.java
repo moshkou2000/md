@@ -13,14 +13,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.moshkou.md.App;
 import com.moshkou.md.R;
 import com.moshkou.md.configs.Config;
+import com.moshkou.md.configs.Enumerates;
 import com.moshkou.md.controls.AutoCompleteTextViewControl;
 import com.moshkou.md.helpers.Utils;
 import com.moshkou.md.interfaces.OnFragmentInteractionListener;
+import com.moshkou.md.models.BillboardLocationModel;
 import com.moshkou.md.models.BillboardModel;
+import com.moshkou.md.models.KeyValue;
 
 
 public class LocationFragment extends Fragment {
@@ -34,7 +38,6 @@ public class LocationFragment extends Fragment {
     private LinearLayout layoutEdit;
     private LinearLayout layoutSave;
 
-    private TextView textName;
     private TextView textAddress;
     private TextView textCity;
     private TextView textState;
@@ -50,7 +53,7 @@ public class LocationFragment extends Fragment {
     private Button buttonCancel;
     private Button buttonSave;
 
-    private BillboardModel selectedBillboard;
+    private BillboardLocationModel location;
     private boolean isInitialized = false;
 
     public LocationFragment() {
@@ -81,7 +84,6 @@ public class LocationFragment extends Fragment {
         layoutEdit = view.findViewById(R.id.layout_edit);
         layoutSave = view.findViewById(R.id.layout_save);
 
-        textName = view.findViewById(R.id.text_name);
         textAddress = view.findViewById(R.id.text_address);
         textState = view.findViewById(R.id.text_state);
         textCity = view.findViewById(R.id.text_city);
@@ -132,11 +134,7 @@ public class LocationFragment extends Fragment {
 
         buttonEdit.setOnClickListener(v -> toggleView(true));
         buttonCancel.setOnClickListener(v -> toggleView(false));
-        buttonSave.setOnClickListener(v -> {
-            // TODO: api call
-
-            toggleView(false);
-        });
+        buttonSave.setOnClickListener(v -> save());
 
 
         // autoComplete state
@@ -163,16 +161,15 @@ public class LocationFragment extends Fragment {
     /**
      * Helper functions ->
      * populate
-     * setSelectedBillboard
+     * setLocation
      * toggleView
      */
 
     private void populate() {
         if (isInitialized) {
-            if (selectedBillboard == null) {
+            if (location == null) {
                 toggleView(true);
 
-                textName.setText("");
                 textAddress.setText("");
                 textCity.setText("");
                 textState.setText("");
@@ -183,25 +180,24 @@ public class LocationFragment extends Fragment {
                 textEditAddress.setText("");
                 textEditPostcode.setText("");
 
-            } else if (selectedBillboard.location != null) {
+            } else if (location != null) {
                 toggleView(false);
 
-                textName.setText(selectedBillboard.location.name);
-                textAddress.setText(selectedBillboard.location.address);
-                textCity.setText(selectedBillboard.location.city);
-                textState.setText(selectedBillboard.location.state);
-                textPostcode.setText(String.valueOf(selectedBillboard.location.postcode));
-                textCountry.setText(selectedBillboard.location.country);
-                autoCompleteState.setText(selectedBillboard.location.state);
-                autoCompleteCity.setText(selectedBillboard.location.city);
-                textEditAddress.setText(selectedBillboard.location.address);
-                textEditPostcode.setText(String.valueOf(selectedBillboard.location.postcode));
+                textAddress.setText(location.address);
+                textCity.setText(location.city);
+                textState.setText(location.state);
+                textPostcode.setText(String.valueOf(location.postcode));
+                textCountry.setText(location.country);
+                autoCompleteState.setText(location.state);
+                autoCompleteCity.setText(location.city);
+                textEditAddress.setText(location.address);
+                textEditPostcode.setText(String.valueOf(location.postcode));
             }
         }
     }
 
-    public void setSelectedBillboard(BillboardModel selectedBillboard) {
-        this.selectedBillboard = selectedBillboard;
+    public void setLocation(BillboardLocationModel location) {
+        this.location = location;
 
         populate();
     }
@@ -213,11 +209,50 @@ public class LocationFragment extends Fragment {
             buttonEdit.setVisibility(View.GONE);
             layoutSave.setVisibility(View.VISIBLE);
 
-        } else if (selectedBillboard != null) {
+        } else if (location != null) {
             layoutEdit.setVisibility(View.GONE);
             layoutView.setVisibility(View.VISIBLE);
             buttonEdit.setVisibility(View.VISIBLE);
             layoutSave.setVisibility(View.GONE);
         }
+    }
+
+    private void save() {
+        String address = textEditAddress.getText().toString().trim();
+        String state = autoCompleteState.getText().toString().trim();
+        String city = autoCompleteCity.getText().toString().trim();
+        String postcode = textEditPostcode.getText().toString().trim();
+
+        if (address.isEmpty() || state.isEmpty() || city.isEmpty() || postcode.isEmpty()) {
+            showToast(getString(R.string.message_error_required_fields));
+
+        } else {
+            textAddress.setText(address);
+            textState.setText(state);
+            textCity.setText(city);
+            textPostcode.setText(postcode);
+
+            if (location == null)
+                location = new BillboardLocationModel();
+            location.address = address;
+            location.state = state;
+            location.city = city;
+            location.postcode = postcode;
+
+            mListener.onLocationFragmentInteraction(location);
+            toggleView(false);
+        }
+    }
+
+
+
+
+    /**
+     * Alert ->
+     * showToast
+     */
+
+    private void showToast(String message) {
+        Utils.toast(App.getContext(), Enumerates.Message.ERROR, message, Toast.LENGTH_LONG);
     }
 }

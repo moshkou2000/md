@@ -2,11 +2,13 @@ package com.moshkou.md.adapters;
 
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -95,6 +97,14 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.ItemRowHol
     public void onBindViewHolder(@NonNull ItemRowHolder itemRowHolder, int i) {
         final KeyValue item = getItem(i);
 
+        if (i == (getItemCount() - 1)) {
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.setMarginEnd(180);
+            itemRowHolder.root.setLayoutParams(params);
+        }
+
         itemRowHolder.filter.setText(item.value.toString());
         itemRowHolder.filter.setOnClickListener(view -> {
             data.remove(item);
@@ -106,11 +116,13 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.ItemRowHol
 
     public class ItemRowHolder extends RecyclerView.ViewHolder {
 
+        protected LinearLayout root;
         protected Button filter;
 
         public ItemRowHolder(View view) {
             super(view);
 
+            root = view.findViewById(R.id.root);
             filter = view.findViewById(R.id.filter);
         }
     }

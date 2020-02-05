@@ -119,7 +119,7 @@ public class MediaFragment extends Fragment implements
     /**
      * Helper functions ->
      * populate
-     * setSelectedBillboard
+     * setLocation
      * toggleView
      */
 
@@ -143,7 +143,7 @@ public class MediaFragment extends Fragment implements
         }
     }
 
-    public void setSelectedBillboard(List<BillboardMediaModel> medias) {
+    public void setMedias(List<BillboardMediaModel> medias) {
         this.medias = medias;
 
         populate();

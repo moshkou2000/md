@@ -85,18 +85,28 @@ public class BillboardsAdapter extends RecyclerView.Adapter<BillboardsAdapter.It
         itemRowHolder.imageFlag.setOnClickListener(view ->
                 billboardListener.onBillboardInteraction(item));
 
+        if (item.getKeyValues().size() > 1 && itemRowHolder.buttonMore.getVisibility() != View.VISIBLE)
+            itemRowHolder.buttonMore.setVisibility(View.VISIBLE);
+        else if (itemRowHolder.buttonMore.getVisibility() != View.GONE)
+            itemRowHolder.buttonMore.setVisibility(View.GONE);
+
         BillboardItemAdapter adapter = new BillboardItemAdapter(item.getKeyValues());
         itemRowHolder.recyclerViewAdvertisers.setAdapter(adapter);
 
         itemRowHolder.buttonMore.setOnClickListener(view -> {
-            LinearLayout.LayoutParams params =
-                    (LinearLayout.LayoutParams) itemRowHolder.recyclerViewAdvertisers.getLayoutParams();
-            if (itemRowHolder.recyclerViewAdvertisers.getVisibility() == View.GONE) {
-                itemRowHolder.buttonMore.setText(R.string.action_less);
-                params.height = LinearLayout.LayoutParams.WRAP_CONTENT;
-            } else {
+            LinearLayout.LayoutParams params;
+
+            if (itemRowHolder.buttonMore.getText().equals(App.getContext().getString(R.string.action_less))) {
                 itemRowHolder.buttonMore.setText(R.string.action_more);
-                params.height = itemRowHolder.recyclerViewAdvertisers.getMinimumHeight();
+                params = new LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        itemRowHolder.recyclerViewAdvertisers.getMinimumHeight());
+
+            } else {
+                itemRowHolder.buttonMore.setText(R.string.action_less);
+                params = new LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT);
             }
             itemRowHolder.recyclerViewAdvertisers.setLayoutParams(params);
         });

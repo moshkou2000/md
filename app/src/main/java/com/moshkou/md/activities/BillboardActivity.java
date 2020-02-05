@@ -68,9 +68,9 @@ public class BillboardActivity extends AppCompatActivity implements
 
     private static final int[] TAB_TITLES = new int[] { R.string.placeholder_location, R.string.placeholder_billboards, R.string.placeholder_media, R.string.placeholder_status };
 
-    public List<String> files = new ArrayList<>();
-    public List<BillboardMediaModel> medias = new ArrayList<>();
     private BillboardModel selectedBillboard;
+    public BillboardStatusModel status = new BillboardStatusModel();
+    public List<BillboardMediaModel> medias = new ArrayList<>();
 
 
 
@@ -110,11 +110,12 @@ public class BillboardActivity extends AppCompatActivity implements
 
 
                 if (selectedBillboard != null) {
+                    status = null;
                     selectedBillboard.status.files.add(mediaPath);
-                    statusFragment.setSelectedBillboard(selectedBillboard, null);
+                    statusFragment.setStatus(selectedBillboard.status);
                 } else {
-                    files.add(mediaPath);
-                    statusFragment.setSelectedBillboard(null, files);
+                    status.files.add(mediaPath);
+                    statusFragment.setStatus(status);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -132,6 +133,7 @@ public class BillboardActivity extends AppCompatActivity implements
         statusFragment = null;
         medias.clear();
         medias = null;
+        status = null;
         selectedBillboard = null;
         Runtime.getRuntime().gc();
     }
@@ -215,11 +217,12 @@ public class BillboardActivity extends AppCompatActivity implements
 
                 if (media != null) {
                     if (selectedBillboard != null) {
+                        medias = null;
                         selectedBillboard.medias.add(media);
-                        mediaFragment.setSelectedBillboard(selectedBillboard.medias);
+                        mediaFragment.setMedias(selectedBillboard.medias);
                     } else {
                         medias.add(media);
-                        mediaFragment.setSelectedBillboard(medias);
+                        mediaFragment.setMedias(medias);
                     }
                 }
 
@@ -228,11 +231,12 @@ public class BillboardActivity extends AppCompatActivity implements
 
                 if (uri != null) {
                     if (selectedBillboard != null) {
+                        status = null;
                         selectedBillboard.status.files.add(uri.getPath());
-                        statusFragment.setSelectedBillboard(selectedBillboard, null);
+                        statusFragment.setStatus(selectedBillboard.status);
                     } else {
-                        files.add(uri.getPath());
-                        statusFragment.setSelectedBillboard(null, files);
+                        status.files.add(uri.getPath());
+                        statusFragment.setStatus(status);
                     }
                 }
             }
@@ -260,10 +264,10 @@ public class BillboardActivity extends AppCompatActivity implements
      */
 
     private void populate() {
-        locationFragment.setSelectedBillboard(selectedBillboard);
-        billboardFragment.setSelectedBillboard(selectedBillboard);
-        mediaFragment.setSelectedBillboard(selectedBillboard != null ? selectedBillboard.medias : null);
-        statusFragment.setSelectedBillboard(selectedBillboard, null);
+        locationFragment.setLocation(selectedBillboard != null ? selectedBillboard.location : null);
+        billboardFragment.setBillboard(selectedBillboard);
+        mediaFragment.setMedias(selectedBillboard != null ? selectedBillboard.medias : null);
+        statusFragment.setStatus(status);
     }
 
 
@@ -272,10 +276,48 @@ public class BillboardActivity extends AppCompatActivity implements
     /**
      * Fragments functions ->
      * onFragmentInteraction
+     * onBillboardFragmentInteraction
+     * onLocationFragmentInteraction
      */
 
-    public void onFragmentInteraction(BillboardModel selectedBillboard) {
+    public void onFragmentInteraction(BillboardModel billboard) {
+        // TODO: set billboard
+        // call api
+//        Billboards.createBillboardInfo(this, billboard);
+        // then update the fragment
+        billboardFragment.setBillboard(billboard);
+    }
 
+    public void onLocationFragmentInteraction(BillboardLocationModel location) {
+        // TODO: set location
+        // call api
+        // then update the fragment
+        locationFragment.setLocation(location);
+    }
+
+    public void onBillboardFragmentInteraction(BillboardModel billboard) {
+        // TODO: set billboard
+        // call api
+//        Billboards.createBillboardInfo(this, billboard);
+        // then update the fragment
+        billboardFragment.setBillboard(billboard);
+    }
+
+    @Override
+    public void onStatusFragmentInteraction(BillboardStatusModel status) {
+        // TODO: set billboard
+        // call api
+//        Billboards.createBillboardInfo(this, billboard);
+        // then update the fragment
+
+        if (selectedBillboard != null) {
+            this.status = null;
+            selectedBillboard.status = status;
+            statusFragment.setStatus(selectedBillboard.status);
+        } else {
+            this.status = status;
+            statusFragment.setStatus(status);
+        }
     }
 
 

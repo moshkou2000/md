@@ -89,7 +89,7 @@
     <!--Messages-->
     <string name="message_login_verification">Thanks for helping us to secure account from unauthorized access!</string>
     <string name="message_token_expired">Your credentials did not work, the credentials that were used to access to the user data and app services.\n\nFor security reasons you need to Login.</string>
-    <string name="message_error_required_fields">Please fill up the required fields.</string>
+    <string name="message_error_required_fields">Please fill up the fields.</string>
     <string name="message_error_required_location_access">Turn on Location Services.\nYour current location will be displayed on the map.</string>
     <string name="message_error_required_location_permission">&appname; needs permission to access Location Service.\nYour location is used to show on map.</string>
     <string name="message_error_required_verification_code">Please enter your verification code.</string>
@@ -99,6 +99,7 @@
     <string name="message_error_camera">&appname; does not support your device camera.</string>
     <string name="message_error_required_media">Take picture or select from gallery.</string>
     <string name="message_error_required_brand_product">Brand &amp; Product are required.</string>
+    <string name="message_error_required_status_reason">Status &amp; Reason are required.</string>
 
     <!--Placeholder-->
     <string name="placeholder_login_verification">Account Verification Code</string>
@@ -145,11 +146,11 @@
     <string name="action_next">Next</string>
     <string name="action_done">Done</string>
     <string name="action_skip">SKIP</string>
-    <string name="action_more">more</string>
     <string name="action_add_media">Add Media</string>
     <string name="action_upload_media">Upload Media</string>
     <string name="action_save">save</string>
-    <string name="action_less">less</string>
+    <string name="action_more">show more</string>
+    <string name="action_less">show less</string>
     <string name="action_hide">hide</string>
     <string name="action_sign_in">Sign in</string>
     <string name="action_sign_up">Sign up</string>
