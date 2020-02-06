@@ -52,7 +52,7 @@ public class StatusFragment extends Fragment implements
 
     private BillboardStatusModel status;
     private boolean isInitialized = false;
-    boolean toBeRemoved = true;
+    private boolean is_deleted = true;
 
     public StatusFragment() {
         // Required empty public constructor
@@ -235,38 +235,34 @@ public class StatusFragment extends Fragment implements
      * onInteresting
      */
 
-    @Override
     public void onDeleteMedia(final int index) {
 
-        toBeRemoved = true;
+        is_deleted = true;
 
         final View coordinatorLayout = Objects.requireNonNull(getActivity()).findViewById(R.id.coordinatorLayout);
         Snackbar snackbar = Snackbar
                 .make(coordinatorLayout, "Media is deleted", Snackbar.LENGTH_LONG)
                 .setAction("UNDO", (view1) -> {
-                    toBeRemoved = false;
+                    is_deleted = false;
+                    adapter.restoreItem();
                     Snackbar.make(coordinatorLayout, "Media is restored!", Snackbar.LENGTH_SHORT).show();
                 });
-        snackbar.show();
+        snackbar.setDuration(2000).show();
 
         final Handler handler = new Handler();
         handler.postDelayed(() -> {
-            if (!toBeRemoved)
-                adapter.restoreItem();
+            if (is_deleted) {
+                // TODO: ***************************** actual deletion
+                // delete if local OR call api if not
 
-
-            // TODO: ***************************** actual deletion
-            // delete if local OR call api if not
-
-        }, 2000);
+                // status.files.get(index)
+            }
+        }, 2400);
     }
 
-    @Override
     public void onDelete(int index) { }
 
-    @Override
     public void onUpdate(int index) { }
 
-    @Override
     public void onInteresting(int index, boolean isInteresting) { }
 }

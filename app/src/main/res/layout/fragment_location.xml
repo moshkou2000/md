@@ -95,14 +95,6 @@
                 android:visibility="gone">
 
                 <TextView
-                    style="@style/titleText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginBottom="12dp"
-                    android:text="@string/placeholder_address" />
-
-                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/title_address" />

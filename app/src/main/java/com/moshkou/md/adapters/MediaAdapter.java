@@ -77,10 +77,10 @@ public class MediaAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public void toggleItem(int index, View view) {
+    public void toggleItem(final int index, View view) {
         Animation animation = new AlphaAnimation(0, 1);
         animation.setInterpolator(new DecelerateInterpolator());
-        animation.setDuration(2000);
+        animation.setDuration(1400);
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) { }
@@ -88,6 +88,7 @@ public class MediaAdapter extends BaseAdapter {
             @Override
             public void onAnimationEnd(Animation animation) {
                 removeItem(index);
+                onAlertListener.onDeleteMedia(index);
             }
 
             @Override
@@ -96,9 +97,14 @@ public class MediaAdapter extends BaseAdapter {
         view.startAnimation(animation);
     }
 
+    public void toggleInteresting(final int index, boolean isChecked, View view) {
+        view.setBackgroundResource(isChecked ? R.drawable.ic_star : R.drawable.ic_star_border);
+        onAlertListener.onInteresting(index, isChecked);
+    }
+
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
 
@@ -126,11 +132,8 @@ public class MediaAdapter extends BaseAdapter {
 
         viewHolder.image.setOnClickListener(view -> onAlertListener.onUpdate(position));
         viewHolder.checkboxInteresting.setOnClickListener(view ->
-                onAlertListener.onInteresting(position, viewHolder.checkboxInteresting.isChecked()));
-        viewHolder.button.setOnClickListener(view -> {
-            toggleItem(position, viewHolder.root);
-            onAlertListener.onDeleteMedia(position);
-        });
+                toggleInteresting(position, viewHolder.checkboxInteresting.isChecked(), view));
+        viewHolder.button.setOnClickListener(view -> toggleItem(position, viewHolder.root));
 
         return convertView;
     }

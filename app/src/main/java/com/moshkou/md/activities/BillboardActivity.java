@@ -44,6 +44,8 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static androidx.fragment.app.FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
@@ -69,8 +71,6 @@ public class BillboardActivity extends AppCompatActivity implements
     private static final int[] TAB_TITLES = new int[] { R.string.placeholder_location, R.string.placeholder_billboards, R.string.placeholder_media, R.string.placeholder_status };
 
     private BillboardModel selectedBillboard;
-    public BillboardStatusModel status = new BillboardStatusModel();
-    public List<BillboardMediaModel> medias = new ArrayList<>();
 
 
 
@@ -110,12 +110,11 @@ public class BillboardActivity extends AppCompatActivity implements
 
 
                 if (selectedBillboard != null) {
-                    status = null;
                     selectedBillboard.status.files.add(mediaPath);
                     statusFragment.setStatus(selectedBillboard.status);
                 } else {
-                    status.files.add(mediaPath);
-                    statusFragment.setStatus(status);
+//                    status.files.add(mediaPath);
+//                    statusFragment.setStatus(status);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -131,15 +130,12 @@ public class BillboardActivity extends AppCompatActivity implements
         billboardFragment = null;
         mediaFragment = null;
         statusFragment = null;
-        medias.clear();
-        medias = null;
-        status = null;
         selectedBillboard = null;
         Runtime.getRuntime().gc();
     }
 
     @Override
-    protected void onNewIntent(Intent intent) {
+    protected void onNewIntent(Intent intent){
         super.onNewIntent(intent);
         setIntent(intent);
         getExtra();
@@ -217,12 +213,10 @@ public class BillboardActivity extends AppCompatActivity implements
 
                 if (media != null) {
                     if (selectedBillboard != null) {
-                        medias = null;
                         selectedBillboard.medias.add(media);
                         mediaFragment.setMedias(selectedBillboard.medias);
                     } else {
-                        medias.add(media);
-                        mediaFragment.setMedias(medias);
+                        mediaFragment.setMedias(new ArrayList<>(Collections.singletonList(media)));
                     }
                 }
 
@@ -231,12 +225,11 @@ public class BillboardActivity extends AppCompatActivity implements
 
                 if (uri != null) {
                     if (selectedBillboard != null) {
-                        status = null;
                         selectedBillboard.status.files.add(uri.getPath());
                         statusFragment.setStatus(selectedBillboard.status);
                     } else {
-                        status.files.add(uri.getPath());
-                        statusFragment.setStatus(status);
+//                        status.files.add(uri.getPath());
+//                        statusFragment.setStatus(status);
                     }
                 }
             }
@@ -267,7 +260,7 @@ public class BillboardActivity extends AppCompatActivity implements
         locationFragment.setLocation(selectedBillboard != null ? selectedBillboard.location : null);
         billboardFragment.setBillboard(selectedBillboard);
         mediaFragment.setMedias(selectedBillboard != null ? selectedBillboard.medias : null);
-        statusFragment.setStatus(status);
+        statusFragment.setStatus(selectedBillboard != null ? selectedBillboard.status : null);
     }
 
 
@@ -285,6 +278,11 @@ public class BillboardActivity extends AppCompatActivity implements
         // call api
 //        Billboards.createBillboardInfo(this, billboard);
         // then update the fragment
+
+
+        if (selectedBillboard == null)
+            selectedBillboard = new BillboardModel();
+
         billboardFragment.setBillboard(billboard);
     }
 
@@ -292,6 +290,12 @@ public class BillboardActivity extends AppCompatActivity implements
         // TODO: set location
         // call api
         // then update the fragment
+
+
+        if (selectedBillboard == null)
+            selectedBillboard = new BillboardModel();
+
+        selectedBillboard.location = location;
         locationFragment.setLocation(location);
     }
 
@@ -300,24 +304,26 @@ public class BillboardActivity extends AppCompatActivity implements
         // call api
 //        Billboards.createBillboardInfo(this, billboard);
         // then update the fragment
+
+
+        if (selectedBillboard == null)
+            selectedBillboard = new BillboardModel();
+
         billboardFragment.setBillboard(billboard);
     }
 
-    @Override
     public void onStatusFragmentInteraction(BillboardStatusModel status) {
         // TODO: set billboard
         // call api
 //        Billboards.createBillboardInfo(this, billboard);
         // then update the fragment
 
-        if (selectedBillboard != null) {
-            this.status = null;
-            selectedBillboard.status = status;
-            statusFragment.setStatus(selectedBillboard.status);
-        } else {
-            this.status = status;
-            statusFragment.setStatus(status);
-        }
+
+        if (selectedBillboard == null)
+            selectedBillboard = new BillboardModel();
+
+        selectedBillboard.status = status;
+        statusFragment.setStatus(status);
     }
 
 
@@ -336,47 +342,38 @@ public class BillboardActivity extends AppCompatActivity implements
      * onUpdateBillboardStatus
      */
 
-    @Override
     public void onGetBillboards(List<BillboardModel> billboards) {
 
     }
 
-    @Override
     public void onCreateBillboardLocation(BillboardLocationModel location) {
 
     }
 
-    @Override
     public void onUpdateBillboardLocation(BillboardLocationModel location) {
 
     }
 
-    @Override
     public void onCreateBillboardInfo(BillboardModel billboard) {
 
     }
 
-    @Override
     public void onUpdateBillboardInfo(BillboardModel billboard) {
 
     }
 
-    @Override
     public void onCreateBillboardMedia(BillboardMediaModel media) {
 
     }
 
-    @Override
     public void onUpdateBillboardMedia(BillboardMediaModel media) {
 
     }
 
-    @Override
     public void onCreateBillboardStatus(BillboardStatusModel status) {
 
     }
 
-    @Override
     public void onUpdateBillboardStatus(BillboardStatusModel status) {
 
     }

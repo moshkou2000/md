@@ -54,6 +54,11 @@ import java.util.Scanner;
 public class Utils {
 //    2020-01-14T02:28:45.480Z
 
+    public static void init(Context context) {
+        Utils.getDeviceSize(context);
+        Utils.getAppPictureDirectory();
+    }
+
     @SuppressLint("DefaultLocale")
     public static String humanizerDateTime(String dateTime) {
 

@@ -9,20 +9,20 @@ import java.util.List;
 
 public class Config {
 
-    public final static String TEST_URL                 = "https://jsonplaceholder.typicode.com/todos/1";
+    public static final String TEST_URL                 = "https://jsonplaceholder.typicode.com/todos/1";
 
-    private final static String BASE_URL                = "https://sgdev.apptractive.com.my:3020/api/";
-    public final static String LOGIN_URL                = BASE_URL + "auth/login";
-    public final static String BILLBOARDS_URL           = BASE_URL + "billboards";
-    public final static String BILLBOARD_LOCATION_URL   = BASE_URL + "billboards/location";
-    public final static String BILLBOARD_INFO_URL       = BASE_URL + "billboards/info";
-    public final static String BILLBOARD_MEDIA_URL      = BASE_URL + "billboards/media";
-    public final static String BILLBOARD_STATUS_URL     = BASE_URL + "billboards/status";
+    private static final String BASE_URL                = "https://sgdev.apptractive.com.my:3020/api/";
+    public static final String LOGIN_URL                = BASE_URL + "auth/login";
+    public static final String BILLBOARDS_URL           = BASE_URL + "billboards";
+    public static final String BILLBOARD_LOCATION_URL   = BASE_URL + "billboards/location";
+    public static final String BILLBOARD_INFO_URL       = BASE_URL + "billboards/info";
+    public static final String BILLBOARD_MEDIA_URL      = BASE_URL + "billboards/media";
+    public static final String BILLBOARD_STATUS_URL     = BASE_URL + "billboards/status";
 
-    public final static String REGEX_NUMBER             = "^[0-9]*$";
-    public final static String PATTER_DATETIME          = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+    public static final String REGEX_NUMBER             = "^[0-9]*$";
+    public static final String PATTER_DATETIME          = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
-    public final static List<String> MONTH              = new ArrayList<>(
+    public static final List<String> MONTH              = new ArrayList<>(
             Arrays.asList(
                     "JAN",
                     "FEB",
@@ -36,7 +36,7 @@ public class Config {
                     "OCT",
                     "NOV",
                     "DEC"));
-    public final static List<String> WEEKDAY            = new ArrayList<>(
+    public static final List<String> WEEKDAY            = new ArrayList<>(
             Arrays.asList(
                     "SUNDAY",
                     "MONDAY",
@@ -46,7 +46,7 @@ public class Config {
                     "FRIDAY",
                     "SATURDAY"));
 
-    public final static List<String> STATES             = new ArrayList<>(
+    public static final List<String> STATES             = new ArrayList<>(
             Arrays.asList(
 //                    "Select State",
                     "Johor",
@@ -66,7 +66,7 @@ public class Config {
                     "Selangor",
                     "Terengganu"));
     
-    public final static List<KeyValue> CITIES             = new ArrayList<>(
+    public static final List<KeyValue> CITIES             = new ArrayList<>(
             Arrays.asList(
                     new KeyValue("Johor", Arrays.asList(
 //                            "Select City",
@@ -300,13 +300,13 @@ public class Config {
                             "Paka"))
                     ));
 
-    public final static List<String> MEDIA_OWNER            = new ArrayList<>(Arrays.asList(
+    public static final List<String> MEDIA_OWNER            = new ArrayList<>(Arrays.asList(
 //            "Select Media Owner"
     ));
-    public final static List<String> ADVERTISER          = new ArrayList<>(Arrays.asList(
+    public static final List<String> ADVERTISER          = new ArrayList<>(Arrays.asList(
 //            "Select Advertiser"
     ));
-    public final static List<String> FORMAT                 = new ArrayList<>(Arrays.asList(
+    public static final List<String> FORMAT                 = new ArrayList<>(Arrays.asList(
 //            "Select Format",
             "Citylight",
             "Spectacular",
@@ -314,12 +314,12 @@ public class Config {
             "OHB",
             "Digital Screen",
             "Unipole" ));
-    public final static List<String> ENVIRONMENT            = new ArrayList<>(Arrays.asList(
+    public static final List<String> ENVIRONMENT            = new ArrayList<>(Arrays.asList(
 //            "Select Environment",
             "Roadside"
     ));
 
-    public final static int MIN_YEAR                        = 1900;
+    public static final int MIN_YEAR                        = 1900;
 
     public static final int MEDIA_REQUEST_CODE_KITKAT       = 102;
 

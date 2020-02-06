@@ -11,6 +11,4 @@ public class BillboardLocationModel {
     public String postcode = "";
     public double latitude;
     public double longitude;
-    public String by = "";
-
 }

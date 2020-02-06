@@ -97,13 +97,11 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.ItemRowHol
     public void onBindViewHolder(@NonNull ItemRowHolder itemRowHolder, int i) {
         final KeyValue item = getItem(i);
 
-        if (i == (getItemCount() - 1)) {
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.setMarginEnd(180);
-            itemRowHolder.root.setLayoutParams(params);
-        }
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.setMarginEnd(i == (getItemCount() - 1) ? 200 : 0);
+        itemRowHolder.root.setLayoutParams(params);
 
         itemRowHolder.filter.setText(item.value.toString());
         itemRowHolder.filter.setOnClickListener(view -> {

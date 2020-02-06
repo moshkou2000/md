@@ -172,7 +172,6 @@
             android:background="@drawable/ic_location"
             android:clickable="true"
             android:focusable="true"
-            app:borderWidth="0dp"
             android:translationZ="44dp"
             android:visibility="gone"
             android:layout_centerInParent="true"/>
@@ -253,7 +252,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="35dp"
-            android:layout_marginBottom="0dp"
+            android:layout_marginBottom="8dp"
             android:layout_marginEnd="10dp"
             android:background="@drawable/ic_tag_white"
             android:focusable="true"
@@ -345,8 +344,6 @@
             android:layout_height="46dp"
             android:visibility="visible"
             android:layout_below="@id/search_box"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="0dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"/>
 

@@ -16,8 +16,6 @@ import com.moshkou.md.R;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private final Context context = this;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +26,9 @@ public class SplashActivity extends AppCompatActivity {
 
     private void launch() {
 
-        Utils.getDeviceSize(context);
-        Utils.getAppPictureDirectory();
+        final Context context = this;
+
+        Utils.init(context);
 
         String data = SharedPreferencesSupport.getString(context, Keys.USER);
         Gson gson = new Gson();

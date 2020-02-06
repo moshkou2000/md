@@ -9,5 +9,4 @@ public class BillboardStatusModel {
     public String status = "";
     public String reason = "";
     public List<String> files = new ArrayList<>();
-
 }

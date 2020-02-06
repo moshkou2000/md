@@ -46,7 +46,7 @@ public class MediaFragment extends Fragment implements
 
     private List<BillboardMediaModel> medias;
     private boolean isInitialized = false;
-    boolean toBeRemoved = true;
+    private boolean is_deleted = true;
 
     public MediaFragment() {
         // Required empty public constructor
@@ -163,39 +163,41 @@ public class MediaFragment extends Fragment implements
     @Override
     public void onDeleteMedia(final int index) {
 
-        toBeRemoved = true;
+        is_deleted = true;
 
         final View coordinatorLayout = Objects.requireNonNull(getActivity()).findViewById(R.id.coordinatorLayout);
         Snackbar snackbar = Snackbar
                 .make(coordinatorLayout, "Media is deleted", Snackbar.LENGTH_LONG)
                 .setAction("UNDO", (view1) -> {
-                    toBeRemoved = false;
+                    is_deleted = false;
+                    adapter.restoreItem();
                     Snackbar.make(coordinatorLayout, "Media is restored!", Snackbar.LENGTH_SHORT).show();
                 });
-        snackbar.show();
+        snackbar.setDuration(2000).show();
 
         final Handler handler = new Handler();
         handler.postDelayed(() -> {
-            if (!toBeRemoved)
-                adapter.restoreItem();
+            if (is_deleted) {
+                // TODO: ***************************** actual deletion
+                // delete if local OR call api if not
 
-
-            // TODO: ***************************** actual deletion
-            // delete if local OR call api if not
-
-        }, 2000);
+                // medias.get(index)
+            }
+        }, 2400);
     }
 
-    @Override
     public void onDelete(int index) { }
 
-    @Override
     public void onUpdate(int index) {
         Intent i = new Intent(App.getContext(), MediaActivity.class);
         i.putExtra(Keys.DATA, new Gson().toJson(medias.get(index), BillboardMediaModel.class));
         startActivity(i);
     }
 
-    @Override
-    public void onInteresting(int index, boolean isInteresting) { }
+    public void onInteresting(int index, boolean isInteresting) {
+
+        // TODO: ***************************** api
+
+        // medias.get(index)
+    }
 }

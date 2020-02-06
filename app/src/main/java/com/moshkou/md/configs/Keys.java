@@ -21,6 +21,7 @@ public class Keys {
     public final static String TYPE         = "TYPE";
     public final static String MEDIA        = "MEDIA";
     public final static String DATA         = "DATA";
+    public final static String CENTER_MAP   = "CENTER_MAP";
 
     public final static String STATE        = "state";
     public final static String CITY         = "city";
