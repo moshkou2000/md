@@ -68,9 +68,9 @@ public class BillboardsAdapter extends RecyclerView.Adapter<BillboardsAdapter.It
     public void onBindViewHolder(@NonNull ItemRowHolder itemRowHolder, int i) {
         final BillboardModel item = getItem(i);
 
-        String url = item.getMedias().get(0);
+        List<String> urls = item.getMedias();
 
-        Utils.setPicasso(url, itemRowHolder.image);
+        Utils.setPicasso(urls.get(0), itemRowHolder.image);
 
         itemRowHolder.imageFlag.setImageResource(
                 item.type.equals(Flags.STATIC) ?
@@ -81,7 +81,7 @@ public class BillboardsAdapter extends RecyclerView.Adapter<BillboardsAdapter.It
         itemRowHolder.textViewTitle.setText(item.media_owner);
         itemRowHolder.textViewLastUpdate.setText(Utils.humanizerDateTime(item.updated_at));
         itemRowHolder.button.setOnClickListener(view ->
-                Utils.activityPreview(App.getContext(), url, item.name, false));
+                Utils.activityPreview(App.getContext(), urls.toArray(new String[0]), item.name, false));
         itemRowHolder.imageFlag.setOnClickListener(view ->
                 billboardListener.onBillboardInteraction(item));
 

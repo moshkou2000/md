@@ -30,7 +30,9 @@ import com.moshkou.md.models.KeyValue;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.Objects;
 
 
@@ -130,7 +132,7 @@ public class MediaActivity extends AppCompatActivity {
             Settings.MEDIA_PICKER = Enumerates.MediaPicker.MEDIA_ACTIVITY;
             Utils.openDefaultGalleryApp(Objects.requireNonNull(this));
         });
-        image.setOnClickListener(v -> Utils.activityPreview(App.getContext(), selectedMedia.media, "", false));
+        image.setOnClickListener(v -> Utils.activityPreview(App.getContext(), new String[]{selectedMedia.media}, "", false));
     }
 
 
@@ -176,7 +178,8 @@ public class MediaActivity extends AppCompatActivity {
         new Handler().postDelayed(() -> {
             Intent i = new Intent(App.getContext(), BillboardActivity.class);
             i.putExtra(Keys.TYPE, Flags.MEDIA);
-            Type type = new TypeToken<BillboardMediaModel>(){}.getType();
+            Type type = new TypeToken<BillboardMediaModel>() {
+            }.getType();
             String str = new Gson().toJson(selectedMedia, type);
             i.putExtra(Keys.DATA, str);
             startActivity(i);

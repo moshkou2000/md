@@ -72,7 +72,7 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.ItemRowHolder>
         Utils.setPicasso(item.media, itemRowHolder.image);
 
         itemRowHolder.button.setOnClickListener(view ->
-                Utils.activityPreview(App.getContext(), item.media, billboard.name, false));
+                Utils.activityPreview(App.getContext(), new String[]{item.media}, billboard.name, false));
     }
 
     public class ItemRowHolder extends RecyclerView.ViewHolder {

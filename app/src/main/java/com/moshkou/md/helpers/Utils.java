@@ -38,12 +38,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.channels.FileChannel;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -51,8 +49,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
+
 public class Utils {
 //    2020-01-14T02:28:45.480Z
+
+    private static final String TAG = "UTILS";
 
     public static void init(Context context) {
         Utils.getDeviceSize(context);
@@ -158,7 +159,17 @@ public class Utils {
                     .centerInside()
                     .placeholder(R.drawable.bg_placeholder_image)
                     .error(R.drawable.bg_placeholder_image)
-                    .into(image);
+                    .into(image, new com.squareup.picasso.Callback() {
+                        @Override
+                        public void onSuccess() {
+                            Log.i(TAG, "success");
+                        }
+
+                        @Override
+                        public void onError(Exception ex) {
+                            Log.i(TAG, "error: " + ex.getMessage());
+                        }
+                    });
 
         } else {
             Picasso.get()
@@ -168,7 +179,17 @@ public class Utils {
                     .centerInside()
                     .placeholder(R.drawable.bg_placeholder_image)
                     .error(R.drawable.bg_placeholder_image)
-                    .into(image);
+                    .into(image, new com.squareup.picasso.Callback() {
+                        @Override
+                        public void onSuccess() {
+                            Log.i(TAG, "success");
+                        }
+
+                        @Override
+                        public void onError(Exception ex) {
+                            Log.i(TAG, "error: " + ex.getMessage());
+                        }
+                    });
         }
     }
 
@@ -294,7 +315,7 @@ public class Utils {
         snackbar.show();
     }
 
-    public static void activityPreview(Context context, String url, String title, boolean isVideo){
+    public static void activityPreview(Context context, String[] url, String title, boolean isVideo){
         Intent i = new Intent(context, PreviewActivity.class);
         i.addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK);
         i.putExtra(Keys.URL, url);

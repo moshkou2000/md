@@ -45,7 +45,7 @@ public class InfoItemFragment extends Fragment {
 
         Utils.setPicasso(media.media, image);
 
-        button.setOnClickListener(v -> Utils.activityPreview(App.getContext(), media.media, "", false));
+        button.setOnClickListener(v -> Utils.activityPreview(App.getContext(), new String[]{media.media}, "", false));
 
         return view;
     }
