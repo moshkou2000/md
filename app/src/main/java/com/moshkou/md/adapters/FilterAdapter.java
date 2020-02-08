@@ -106,7 +106,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.ItemRowHol
         itemRowHolder.filter.setText(item.value.toString());
         itemRowHolder.filter.setOnClickListener(view -> {
             data.remove(item);
-            filterListener.onFilterInteraction();
+            filterListener.onFilterInteraction(getItemCount() == 0);
             notifyDataSetChanged();
         });
 

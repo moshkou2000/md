@@ -10,6 +10,7 @@ public class Keys {
     public final static String URI          = "URI";
     public final static String BRAND        = "BRAND";
     public final static String PRODUCT      = "PRODUCT";
+    public final static String BILLBOARD    = "BILLBOARD";
     public final static String VIDEO        = "VIDEO";
     public final static String NAME         = "NAME";
     public final static String ID           = "ID";

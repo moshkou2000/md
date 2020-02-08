@@ -80,12 +80,13 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import static androidx.fragment.app.FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
 
 
 public class MainActivity extends FragmentActivity implements
-        OnMapReadyCallback, GoogleMap.OnMarkerClickListener,
+        OnMapReadyCallback,
         OnSearchListener, OnFilterListener, OnBillboardsListener, OnBillboardListener {
 
 
@@ -135,7 +136,7 @@ public class MainActivity extends FragmentActivity implements
 
     private List<Marker> markers = new ArrayList<>();
     private List<BillboardModel> billboards = new ArrayList<>();
-    private BillboardModel selectedBillboard;
+    private BillboardModel selectedBillboard = new BillboardModel();
 
 
 
@@ -204,7 +205,7 @@ public class MainActivity extends FragmentActivity implements
 
         if (type != null && type.equals(Keys.FILTER)) {
             filterAdapter.setItems();
-            filter();
+            filter(false);
         }
     }
 
@@ -266,13 +267,32 @@ public class MainActivity extends FragmentActivity implements
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-        map.setOnMarkerClickListener(this);
         map.getUiSettings().setMapToolbarEnabled(false);
         map.getUiSettings().setZoomControlsEnabled(false);
         map.getUiSettings().setCompassEnabled(true);
 
         if (Permission.ACCESS_FINE_LOCATION)
             map.setMyLocationEnabled(true);
+
+        // Marker click
+        googleMap.setOnMarkerClickListener(marker -> {
+            if (Settings.LAYOUT_STATUS != Enumerates.LayoutStatus.ADD) {
+                findBillboard(Objects.requireNonNull(marker.getTag()).toString());
+                showLayoutInfo();
+                gotoMarker();
+            }
+            return true;
+        });
+
+        // Map click
+//        googleMap.setOnMapClickListener(latLng -> { });
+//        googleMap.setOnCameraIdleListener(() -> {
+//            Log.i(TAG,"centerLat:: " + map.getCameraPosition().target.latitude);
+//        });
+//        googleMap.setOnCameraChangeListener(cameraPosition -> {
+//            Log.i(TAG,"centerLat: " + cameraPosition.target.latitude);
+//            Log.i(TAG,"centerLong: " + cameraPosition.target.longitude);
+//        });
 
         final View mapViewParent = ((View) mapView.findViewById(Integer.parseInt("1")).getParent());
 
@@ -283,9 +303,9 @@ public class MainActivity extends FragmentActivity implements
                 locationButton.setVisibility(View.GONE);
 
             actionButtonMyLocation.setOnClickListener(view -> {
-                if (!Permission.ACCESS_FINE_LOCATION)
+                if (!Permission.ACCESS_FINE_LOCATION) {
                     Permission.Check.LOCATION(this);
-                else {
+                } else {
                     if (Permission.Check.LOCATION_STATUS(this))
                         locationButton.callOnClick();
                     else
@@ -318,16 +338,6 @@ public class MainActivity extends FragmentActivity implements
         mapStyle = currentTime < 1915 ? null : MapStyleOptions.loadRawResourceStyle(App.getContext(), R.raw.mapstyle_night);
 
         populateMap();
-    }
-
-    @Override
-    public boolean onMarkerClick(Marker marker) {
-        if (Settings.LAYOUT_STATUS != Enumerates.LayoutStatus.ADD) {
-            findBillboard(marker.getTag().toString());
-            showLayoutInfo();
-            gotoMarker();
-        }
-        return true;
     }
 
 
@@ -499,22 +509,32 @@ public class MainActivity extends FragmentActivity implements
     /**
      * Helper functions ->
      * filter
-     * addMarker
      * findBillboard
+     * clearSelected
+     * clearSearchFocus
+     * addMarker
+     * getMapCenter
+     * gotoMarker
+     * gotoBillboardActivity
      * toggleListSearch
-     * hasSearchText
+     * toggleFilter
+     * toggleAdd
      */
 
-    private void filter() {
-        Log.i(TAG, "filter");
+    private void filter(boolean isEmpty) {
+        Log.i(TAG, "filter.state: " + Settings.FILTER_BILLBOARD.location.state);
+        Log.i(TAG, "filter.city: " + Settings.FILTER_BILLBOARD.location.state);
+        Log.i(TAG, "filter.media_owner: " + Settings.FILTER_BILLBOARD.media_owner);
+        Log.i(TAG, "filter.format: " + Settings.FILTER_BILLBOARD.format);
+        Log.i(TAG, "filter.advertiser: " + Settings.FILTER_BILLBOARD.advertiser);
 
 //        if (Settings.FILTER_BILLBOARD.is_updated)
         {
-            if (Settings.FILTER_BILLBOARD.location.state.isEmpty() &&
+            if (isEmpty || (Settings.FILTER_BILLBOARD.location.state.isEmpty() &&
                     Settings.FILTER_BILLBOARD.location.city.isEmpty() &&
                     Settings.FILTER_BILLBOARD.media_owner.isEmpty() &&
                     Settings.FILTER_BILLBOARD.format.isEmpty() &&
-                    Settings.FILTER_BILLBOARD.advertiser.isEmpty()) {
+                    Settings.FILTER_BILLBOARD.advertiser.isEmpty())) {
 
                 if (buttonFilterClear.getVisibility() != View.GONE)
                     buttonFilterClear.setVisibility(View.GONE);
@@ -527,6 +547,17 @@ public class MainActivity extends FragmentActivity implements
         }
     }
 
+    private void findBillboard(String id) {
+        if (billboards != null)
+            for (BillboardModel b : billboards) {
+                if (b._id.equals(id)) {
+                    selectedBillboard = b;
+                    break;
+                }
+            }
+    }
+
+
     private void clearFilter() {
         Settings.FILTER_BILLBOARD = new BillboardModel();
         filterAdapter.setItems();
@@ -535,8 +566,18 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void clearSelected() {
-        selectedBillboard = null;
+        selectedBillboard = new BillboardModel();
     }
+
+    private void clearSearchFocus() {
+        textSearchJustForFocus.requestFocus();
+
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) buttonSearchClear.getLayoutParams();
+        params.removeRule(RelativeLayout.ALIGN_PARENT_END);
+        params.addRule(RelativeLayout.ALIGN_PARENT_START, RelativeLayout.TRUE);
+        buttonSearchClear.setLayoutParams(params);
+    }
+
 
     private Marker addMarker(LatLng latLng, String title, String id, BitmapDescriptor icon) {
         Marker marker = map.addMarker(new MarkerOptions()
@@ -548,21 +589,35 @@ public class MainActivity extends FragmentActivity implements
         return marker;
     }
 
+    private LatLng getMapCenter() {
+//        return map.getProjection().getVisibleRegion().latLngBounds.getCenter();
+        return map.getCameraPosition().target;
+    }
+
     private void gotoMarker() {
         LatLng latLng = new LatLng(selectedBillboard.location.latitude, selectedBillboard.location.longitude);
         map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16.0f));
     }
 
-    private void findBillboard(String id) {
-        if (billboards != null)
-            for (BillboardModel b : billboards) {
-                if (b._id.equals(id)) {
-                    selectedBillboard = b;
-                    break;
-                }
-            }
+    private void gotoBillboardActivity() {
+        LatLng latLng = getMapCenter();
+        selectedBillboard.location.latitude = latLng.latitude;
+        selectedBillboard.location.longitude = latLng.longitude;
+
+        if (latLng.latitude != 0.0 || latLng.longitude != 0.0) {
+            Intent i = new Intent(App.getContext(), BillboardActivity.class);
+            i.putExtra(Keys.TYPE, Keys.BILLBOARD);
+            Type type = new TypeToken<BillboardModel>() {
+            }.getType();
+            i.putExtra(Keys.DATA, new Gson().toJson(selectedBillboard, type));
+            startActivity(i);
+
+        } else {
+            showToast("Zoom In Please");
+        }
     }
+
 
     private void toggleListSearch(int visibility) {
         if (listSearch.getVisibility() != visibility)
@@ -618,27 +673,6 @@ public class MainActivity extends FragmentActivity implements
                 actionButtonAddLocation.setVisibility(View.GONE);
             }
         }
-    }
-
-    private void clearSearchFocus() {
-        textSearchJustForFocus.requestFocus();
-
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) buttonSearchClear.getLayoutParams();
-        params.removeRule(RelativeLayout.ALIGN_PARENT_END);
-        params.addRule(RelativeLayout.ALIGN_PARENT_START, RelativeLayout.TRUE);
-        buttonSearchClear.setLayoutParams(params);
-    }
-
-    private void gotoBillboardActivity() {
-        Intent i = new Intent(App.getContext(), BillboardActivity.class);
-        if (selectedBillboard == null) {
-            i.putExtra(Keys.TYPE, Flags.NEW);
-        } else {
-            i.putExtra(Keys.TYPE, Flags.UPDATE);
-            Type type = new TypeToken<BillboardModel>(){}.getType();
-            i.putExtra(Keys.DATA, new Gson().toJson(selectedBillboard, type));
-        }
-        startActivity(i);
     }
 
 
@@ -801,12 +835,13 @@ public class MainActivity extends FragmentActivity implements
                     billboard.name,
                     billboard._id,
                     BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+//                    BitmapDescriptorFactory.fromResource(R.drawable.ic_location_searching)
             markers.add(marker);
         }
     }
 
     private void populateInfo() {
-        textInfoBillboardName.setText(selectedBillboard.product);
+        textInfoBillboardName.setText(selectedBillboard.name);
         textInfoLastUpdate.setText(getString(
                 R.string.placeholder_last_update,
                 Utils.humanizerDateTime(selectedBillboard.updated_at)));
@@ -826,9 +861,7 @@ public class MainActivity extends FragmentActivity implements
         }
     }
 
-    private void setBillboardInfo() {
-
-    }
+    private void setBillboardInfo() {}
 
     private void setBillboardDetails() {}
 
@@ -868,10 +901,8 @@ public class MainActivity extends FragmentActivity implements
         }
     }
 
-    public void onFilterInteraction() {
-        Log.i(TAG, "onFilterInteraction");
-
-        filter();
+    public void onFilterInteraction(boolean isEmpty) {
+        filter(isEmpty);
     }
 
 
@@ -1018,6 +1049,7 @@ public class MainActivity extends FragmentActivity implements
 
 
 
+
     /**
      * TODO: testing mode only
      * Sample data ->
@@ -1031,8 +1063,6 @@ public class MainActivity extends FragmentActivity implements
             b._id = "billboard_id_" + i;
             b.name = "billboard name " + i;
             b.media_owner = "billboard  media owner" + i;
-            b.product = "billboard product " + i;
-            b.brand = "brand " + i;
             b.advertiser = "billboard advertiser " + i;
             b.format = "96 Sheets";
             b.size = "billboard size " + i;
@@ -1043,6 +1073,8 @@ public class MainActivity extends FragmentActivity implements
             b.type = Flags.STATIC;
             b.created_at = "2020-01-11T08:15:39.736Z";
             b.updated_at = "2020-01-14T08:15:39.736Z";
+
+            b.is_new = false;
 
             b.location = new BillboardLocationModel();
             b.location._id = "location_id_" + i;
@@ -1071,10 +1103,10 @@ public class MainActivity extends FragmentActivity implements
             b.status = new BillboardStatusModel();
             b.status._id = "status_id_" + i;
             b.status.status = "status " + i;
-            b.status.reason = "reason " + i;
+            b.status.comment = "comment " + i;
 
             for (int j = 0; j < 7; j++) {
-                b.status.files.add("https://media.gettyimages.com/photos/powder-explosion-picture-id642320289?s=2048x2048");
+                b.status.medias.add("https://media.gettyimages.com/photos/powder-explosion-picture-id642320289?s=2048x2048");
             }
 
             billboards.add(b);

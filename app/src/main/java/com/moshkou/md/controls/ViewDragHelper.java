@@ -1119,7 +1119,7 @@ public class ViewDragHelper {
                 saveInitialMotion(x, y, pointerId);
 
                 // Since the parent is already directly processing this touch event,
-                // there is no reason to delay for a slop before dragging.
+                // there is no comment to delay for a slop before dragging.
                 // Start immediately if possible.
                 tryCaptureViewForDrag(toCapture, pointerId);
 

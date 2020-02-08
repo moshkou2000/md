@@ -7,6 +7,6 @@ public class BillboardStatusModel {
 
     public String _id = "";
     public String status = "";
-    public String reason = "";
-    public List<String> files = new ArrayList<>();
+    public String comment = "";
+    public List<String> medias = new ArrayList<>();
 }

@@ -1,6 +1,5 @@
 package com.moshkou.md.fragments;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -16,17 +15,15 @@ import android.widget.GridView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.moshkou.md.App;
 import com.moshkou.md.R;
 import com.moshkou.md.activities.MediaActivity;
 import com.moshkou.md.adapters.MediaAdapter;
 import com.moshkou.md.configs.Keys;
 import com.moshkou.md.interfaces.OnAdapterListener;
-import com.moshkou.md.interfaces.OnFragmentInteractionListener;
 import com.moshkou.md.models.BillboardMediaModel;
 
-import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -37,15 +34,14 @@ public class MediaFragment extends Fragment implements
 
     private static String TAG = "MEDIA_FRG";
 
-    private OnFragmentInteractionListener mListener;
-
     private MediaAdapter adapter;
 
     private GridView gridViewMedia;
     private Button buttonAdd;
 
-    private List<BillboardMediaModel> medias;
+    private List<BillboardMediaModel> medias = new ArrayList<>();
     private boolean isInitialized = false;
+    private boolean is_new = false;
     private boolean is_deleted = true;
 
     public MediaFragment() {
@@ -80,20 +76,10 @@ public class MediaFragment extends Fragment implements
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        mListener = null;
-        super.onDetach();
+    public void onDestroy() {
+        medias.clear();
+        medias = null;
+        super.onDestroy();
     }
 
 
@@ -125,7 +111,7 @@ public class MediaFragment extends Fragment implements
 
     private void populate() {
         if (isInitialized) {
-            if (medias == null) {
+            if (is_new) {
                 Log.i(TAG, "media: null");
                 if (adapter != null)
                     adapter.clearItems();
@@ -143,7 +129,8 @@ public class MediaFragment extends Fragment implements
         }
     }
 
-    public void setMedias(List<BillboardMediaModel> medias) {
+    public void setMedias(List<BillboardMediaModel> medias, boolean is_new) {
+        this.is_new = is_new;
         this.medias = medias;
 
         populate();
@@ -196,7 +183,7 @@ public class MediaFragment extends Fragment implements
 
     public void onInteresting(int index, boolean isInteresting) {
 
-        // TODO: ***************************** api
+        // TODO: ***************************** service
 
         // medias.get(index)
     }

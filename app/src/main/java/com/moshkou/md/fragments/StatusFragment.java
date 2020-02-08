@@ -1,7 +1,6 @@
 package com.moshkou.md.fragments;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -15,7 +14,6 @@ import android.view.Window;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.moshkou.md.App;
@@ -26,7 +24,6 @@ import com.moshkou.md.configs.Enumerates;
 import com.moshkou.md.configs.Settings;
 import com.moshkou.md.helpers.Utils;
 import com.moshkou.md.interfaces.OnAdapterListener;
-import com.moshkou.md.interfaces.OnFragmentInteractionListener;
 import com.moshkou.md.models.BillboardStatusModel;
 
 import java.util.Objects;
@@ -38,25 +35,20 @@ public class StatusFragment extends Fragment implements
 
     private static String TAG = "STATUS_FRG";
 
-    private OnFragmentInteractionListener mListener;
-
     private StatusAdapter adapter;
 
     private AutoCompleteTextView textEditStatus;
     private AutoCompleteTextView textEditReason;
 
     private GridView gridViewMedia;
-    private Button buttonCancel;
-    private Button buttonSave;
     private Button buttonAdd;
 
-    private BillboardStatusModel status;
+    private BillboardStatusModel status = new BillboardStatusModel();
     private boolean isInitialized = false;
+    private boolean is_new = false;
     private boolean is_deleted = true;
 
-    public StatusFragment() {
-        // Required empty public constructor
-    }
+    public StatusFragment() { }
 
 
 
@@ -79,8 +71,6 @@ public class StatusFragment extends Fragment implements
         textEditStatus = view.findViewById(R.id.text_edit_status);
         textEditReason = view.findViewById(R.id.text_edit_reason);
         gridViewMedia = view.findViewById(R.id.grid_view_media);
-        buttonCancel = view.findViewById(R.id.button_cancel);
-        buttonSave = view.findViewById(R.id.button_save);
         buttonAdd = view.findViewById(R.id.button_add);
 
         init();
@@ -90,20 +80,9 @@ public class StatusFragment extends Fragment implements
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        mListener = null;
-        super.onDetach();
+    public void onDestroy() {
+        status = null;
+        super.onDestroy();
     }
 
 
@@ -116,11 +95,6 @@ public class StatusFragment extends Fragment implements
 
     private void init() {
         isInitialized = true;
-
-        buttonSave.setOnClickListener(v -> save());
-        buttonCancel.setOnClickListener(v -> {
-            // TODO: open add media activity
-        });
         buttonAdd.setOnClickListener(v -> showDialogMediaPicker());
     }
 
@@ -136,52 +110,44 @@ public class StatusFragment extends Fragment implements
 
     private void populate() {
         if (isInitialized) {
-            if (status != null) {
-                textEditStatus.setText(status.status);
-                textEditReason.setText(status.reason);
-
-                if (adapter == null) {
-                    adapter = new StatusAdapter(this, status.files);
-                    gridViewMedia.setAdapter(adapter);
-
-                } else {
-                    adapter.setItem(status.files);
-                }
-
-            } else {
+            if (is_new) {
                 textEditStatus.setText("");
                 textEditReason.setText("");
 
                 if (adapter != null)
                     adapter.clearItems();
+
+            } else {
+                textEditStatus.setText(status.status);
+                textEditReason.setText(status.comment);
+
+                if (adapter == null) {
+                    adapter = new StatusAdapter(this, status.medias);
+                    gridViewMedia.setAdapter(adapter);
+
+                } else {
+                    adapter.setItem(status.medias);
+                }
             }
         }
     }
 
-    public void setStatus(BillboardStatusModel status) {
+    public void setStatus(BillboardStatusModel status, boolean is_new) {
+        this.is_new = is_new;
         this.status = status;
 
         populate();
     }
 
-    private void save() {
-        String status = textEditStatus.getText().toString().trim();
+    private BillboardStatusModel getStatus() {
+        String statuz = textEditStatus.getText().toString().trim();
         String reason = textEditReason.getText().toString().trim();
 
-        if (adapter.getCount() == 0) {
-            showToast(getString(R.string.message_error_required_media));
+        BillboardStatusModel status = new BillboardStatusModel();
+        status.status = statuz;
+        status.comment = reason;
 
-        } else if (status.isEmpty() || reason.isEmpty()) {
-            showToast(getString(R.string.message_error_required_status_reason));
-
-        } else {
-            if (this.status == null)
-                this.status = new BillboardStatusModel();
-            this.status.status = status;
-            this.status.reason = reason;
-
-            mListener.onStatusFragmentInteraction(this.status);
-        }
+        return status;
     }
 
 
@@ -220,10 +186,6 @@ public class StatusFragment extends Fragment implements
         dialog.show();
     }
 
-    private void showToast(String message) {
-        Utils.toast(App.getContext(), Enumerates.Message.ERROR, message, Toast.LENGTH_LONG);
-    }
-
 
 
 
@@ -255,7 +217,7 @@ public class StatusFragment extends Fragment implements
                 // TODO: ***************************** actual deletion
                 // delete if local OR call api if not
 
-                // status.files.get(index)
+                // status.medias.get(index)
             }
         }, 2400);
     }

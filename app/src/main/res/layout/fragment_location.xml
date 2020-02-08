@@ -27,203 +27,90 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/cardView"
         android:fillViewport="true"
-        android:scrollbars="vertical"
-        android:layout_below="@id/cardView">
+        android:scrollbars="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingTop="0dp"
+            android:paddingStart="12dp"
+            android:paddingTop="12dp"
+            android:paddingEnd="12dp"
             android:paddingBottom="66dp">
 
-            <LinearLayout
-                android:id="@+id/layout_view"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="12dp"
-                android:visibility="visible">
+                android:text="@string/title_address" />
 
-                <TextView
-                    android:id="@+id/text_address"
-                    style="@style/contextText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginBottom="4dp" />
-
-                <TextView
-                    android:id="@+id/text_city"
-                    style="@style/contextText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginBottom="4dp" />
-
-                <TextView
-                    android:id="@+id/text_state"
-                    style="@style/contextText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginBottom="4dp"/>
-
-                <TextView
-                    android:id="@+id/text_postcode"
-                    style="@style/contextText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginBottom="4dp"/>
-
-                <TextView
-                    android:id="@+id/text_country"
-                    style="@style/contextText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layout_edit"
+            <EditText
+                android:id="@+id/text_edit_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="12dp"
-                android:visibility="gone">
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_placeholder_search"
+                android:gravity="top|start"
+                android:hint="@string/placeholder_address"
+                android:inputType="textCapSentences|textMultiLine"
+                android:isScrollContainer="true"
+                android:maxLength="254"
+                android:maxLines="4"
+                android:singleLine="false" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/title_address" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title_state" />
 
-                <EditText
-                    android:id="@+id/text_edit_address"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginBottom="12dp"
-                    android:layout_marginStart="0dp"
-                    android:layout_marginEnd="16dp"
-                    android:background="@drawable/bg_placeholder_search"
-                    android:gravity="top|start"
-                    android:hint="@string/placeholder_address"
-                    android:inputType="textCapSentences|textMultiLine"
-                    android:isScrollContainer="true"
-                    android:maxLength="254"
-                    android:maxLines="4"
-                    android:singleLine="false" />
+            <com.moshkou.md.controls.AutoCompleteTextViewControl
+                android:id="@+id/auto_complete_state"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_placeholder_search"
+                android:hint="@string/placeholder_state"
+                android:lines="1"
+                android:singleLine="true" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/title_state" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title_city" />
 
-<!--                <Spinner-->
-<!--                    android:id="@+id/text_edit_state"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"/>-->
+            <com.moshkou.md.controls.AutoCompleteTextViewControl
+                android:id="@+id/auto_complete_city"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_placeholder_search"
+                android:hint="@string/placeholder_city"
+                android:lines="1"
+                android:singleLine="true" />
 
-                <com.moshkou.md.controls.AutoCompleteTextViewControl
-                    android:id="@+id/auto_complete_state"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginBottom="12dp"
-                    android:background="@drawable/bg_placeholder_search"
-                    android:hint="@string/placeholder_state"
-                    android:lines="1"
-                    android:singleLine="true" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title_postcode" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/title_city" />
-
-<!--                <Spinner-->
-<!--                    android:id="@+id/text_edit_city"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"/>-->
-
-
-
-                <com.moshkou.md.controls.AutoCompleteTextViewControl
-                    android:id="@+id/auto_complete_city"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginBottom="12dp"
-                    android:background="@drawable/bg_placeholder_search"
-                    android:hint="@string/placeholder_city"
-                    android:lines="1"
-                    android:singleLine="true" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/title_postcode" />
-
-                <EditText
-                    android:id="@+id/text_edit_postcode"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:layout_marginEnd="16dp"
-                    android:background="@drawable/bg_placeholder_search"
-                    android:hint="@string/placeholder_postcode"
-                    android:inputType="number"
-                    android:maxLength="5"
-                    android:lines="1"
-                    android:singleLine="true" />
-            </LinearLayout>
+            <EditText
+                android:id="@+id/text_edit_postcode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/bg_placeholder_search"
+                android:hint="@string/placeholder_postcode"
+                android:inputType="number"
+                android:lines="1"
+                android:maxLength="5"
+                android:singleLine="true" />
         </LinearLayout>
     </ScrollView>
-
-    <Button
-        android:id="@+id/button_edit"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="0dp"
-        android:background="@color/info"
-        android:text="@string/action_edit_location"
-        android:textColor="#FFFFFF" />
-
-    <LinearLayout
-        android:id="@+id/layout_save"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        android:background="#FFF"
-        android:visibility="gone">
-
-        <Button
-            android:id="@+id/button_cancel"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:background="@color/info"
-            android:text="@string/action_cancel"
-            android:textColor="#FFFFFF" />
-
-        <Button
-            android:id="@+id/button_save"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="1dp"
-            android:layout_weight="2"
-            android:background="@color/info"
-            android:text="@string/action_save"
-            android:textColor="#FFFFFF" />
-    </LinearLayout>
 </RelativeLayout>

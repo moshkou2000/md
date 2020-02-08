@@ -40,7 +40,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ItemRowHol
         keyword = keyword.toLowerCase();
         for (int i = 0; i < dataTemp.size(); i++) {
             String name = dataTemp.get(i).name;
-            String product = dataTemp.get(i).product;
+            String product = dataTemp.get(i).advertiser;
             String address = dataTemp.get(i).location.address;
             if (name.toLowerCase().contains(keyword) ||
                     product.contains(keyword) ||
@@ -86,7 +86,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ItemRowHol
     public void onBindViewHolder(@NonNull ItemRowHolder itemRowHolder, int i) {
         final BillboardModel item = getItem(i);
         itemRowHolder.name.setText(item.name);
-        itemRowHolder.product.setText(item.product);
+        itemRowHolder.product.setText(item.advertiser);
         itemRowHolder.address.setText(item.location.address);
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         itemRowHolder.itemView.setLayoutParams(lp);

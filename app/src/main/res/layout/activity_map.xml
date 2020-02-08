@@ -162,19 +162,24 @@
             </LinearLayout>
         </LinearLayout>
 
-        <Button
-            android:id="@+id/action_button_add_location"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_gravity="top|end"
-            android:layout_marginEnd="12dp"
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/ic_location"
-            android:clickable="true"
-            android:focusable="true"
-            android:translationZ="44dp"
-            android:visibility="gone"
-            android:layout_centerInParent="true"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerInParent="true"
+            android:paddingBottom="60dp">
+
+            <Button
+                android:id="@+id/action_button_add_location"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="top|end"
+                android:background="@drawable/ic_location"
+                android:clickable="true"
+                android:focusable="true"
+                android:translationZ="44dp"
+                android:visibility="gone" />
+        </LinearLayout>
     </RelativeLayout>
 
     <!--details layout-->
@@ -341,9 +346,10 @@
         <androidx.leanback.widget.HorizontalGridView
             android:id="@+id/grid_view_filter"
             android:layout_width="wrap_content"
-            android:layout_height="46dp"
+            android:layout_height="48dp"
             android:visibility="visible"
             android:layout_below="@id/search_box"
+            android:foregroundGravity="center_vertical"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"/>
 
@@ -352,15 +358,15 @@
             android:id="@+id/button_filter_clear"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:layout_below="@id/search_box"
+            android:layout_alignParentEnd="true"
             android:layout_gravity="top|end"
             android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginTop="4dp"
             android:layout_marginBottom="12dp"
             android:background="@drawable/bg_clear"
             android:translationZ="44dp"
-            android:visibility="gone"
-            android:layout_below="@id/search_box"
-            android:layout_alignParentEnd="true"/>
+            android:visibility="gone" />
     </RelativeLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

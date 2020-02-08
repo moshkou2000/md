@@ -108,7 +108,7 @@
     <string name="placeholder_email">Email</string>
     <string name="placeholder_name">Full Name</string>
     <string name="placeholder_bottom_holder">Billboards</string>
-    <string name="placeholder_search">Address, Billboard &amp; Product Name</string>
+    <string name="placeholder_search">Billboard name, address &amp; advertiser</string>
     <string name="placeholder_search_hint_header">Search for</string>
     <string name="placeholder_search_hint_body">Type address, billboard and product name</string>
     <string name="placeholder_search_hint_nothing">No Item matched your search.\nTry to filter..</string>

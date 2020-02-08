@@ -125,7 +125,7 @@ public class FilterActivity extends AppCompatActivity {
         toolbar.setTitle(R.string.title_activity_filter);
         toolbar.inflateMenu(R.menu.filter);
         toolbar.setNavigationOnClickListener(view -> backPressed());
-        toolbar.setOnMenuItemClickListener(menuItem -> setSelectedStyle(menuItem.getItemId()));
+        toolbar.setOnMenuItemClickListener(menuItem -> onMenuItemClick(menuItem.getItemId()));
     }
 
 
@@ -173,8 +173,8 @@ public class FilterActivity extends AppCompatActivity {
         backPressed();
     }
 
-    private boolean setSelectedStyle(int selectedStyleId) {
-        switch (selectedStyleId) {
+    private boolean onMenuItemClick(int itemId) {
+        switch (itemId) {
             case R.id.action1:
                 clear();
                 break;

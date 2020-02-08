@@ -13,8 +13,6 @@ public class BillboardModel {
     public String _id = "";
     public String name = "";
     public String media_owner = "";
-    public String product = "";
-    public String brand = "";
     public String advertiser = "";
     public String format = "";
     public String size = "";
@@ -31,6 +29,7 @@ public class BillboardModel {
     public List<BillboardMediaModel> medias = new ArrayList<>();
     public BillboardStatusModel status = new BillboardStatusModel();
 
+    public boolean is_new = true;
 
 
     public List<String> getMedias() {

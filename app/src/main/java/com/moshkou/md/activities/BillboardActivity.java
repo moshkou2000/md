@@ -34,7 +34,6 @@ import com.moshkou.md.fragments.MediaFragment;
 import com.moshkou.md.fragments.StatusFragment;
 import com.moshkou.md.helpers.Utils;
 import com.moshkou.md.interfaces.OnBillboardsListener;
-import com.moshkou.md.interfaces.OnFragmentInteractionListener;
 import com.moshkou.md.models.BillboardLocationModel;
 import com.moshkou.md.models.BillboardMediaModel;
 import com.moshkou.md.models.BillboardModel;
@@ -43,16 +42,13 @@ import com.moshkou.md.models.BillboardStatusModel;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static androidx.fragment.app.FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
 
 
 public class BillboardActivity extends AppCompatActivity implements
-        OnBillboardsListener, OnFragmentInteractionListener {
+        OnBillboardsListener {
 
 
     private static String TAG = "BILLBOARD";
@@ -70,7 +66,7 @@ public class BillboardActivity extends AppCompatActivity implements
 
     private static final int[] TAB_TITLES = new int[] { R.string.placeholder_location, R.string.placeholder_billboards, R.string.placeholder_media, R.string.placeholder_status };
 
-    private BillboardModel selectedBillboard;
+    private BillboardModel selectedBillboard = new BillboardModel();
 
 
 
@@ -106,16 +102,8 @@ public class BillboardActivity extends AppCompatActivity implements
                 File dst = new File(Settings.APP_PICTURE_DIRECTORY, Utils.makeFileName(".png"));
                 String mediaPath = Utils.copyTo(data.getData(), dst);
 
-
-
-
-                if (selectedBillboard != null) {
-                    selectedBillboard.status.files.add(mediaPath);
-                    statusFragment.setStatus(selectedBillboard.status);
-                } else {
-//                    status.files.add(mediaPath);
-//                    statusFragment.setStatus(status);
-                }
+                selectedBillboard.status.medias.add(mediaPath);
+                statusFragment.setStatus(selectedBillboard.status, selectedBillboard.is_new);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -168,7 +156,7 @@ public class BillboardActivity extends AppCompatActivity implements
         pager.setOffscreenPageLimit(4);
         tabs.setupWithViewPager(pager);
 
-        if (selectedBillboard == null)
+        if (selectedBillboard.is_new)
             tabs.getTabAt(0).select();
         else
             tabs.getTabAt(2).select();
@@ -179,7 +167,9 @@ public class BillboardActivity extends AppCompatActivity implements
     private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.title_activity_billboard);
+        toolbar.inflateMenu(R.menu.filter);
         toolbar.setNavigationOnClickListener(view -> backPressed());
+        toolbar.setOnMenuItemClickListener(menuItem -> onMenuItemClick(menuItem.getItemId()));
     }
 
 
@@ -199,9 +189,7 @@ public class BillboardActivity extends AppCompatActivity implements
         Log.i(TAG, "type: " + type);
 
         if (type != null) {
-            if (type.equals(Flags.NEW)) {
-
-            } else if (type.equals(Flags.UPDATE)) {
+            if (type.equals(Keys.BILLBOARD)) {
                 String data = intent.getStringExtra(Keys.DATA);
                 Type t = new TypeToken<BillboardModel>(){}.getType();
                 selectedBillboard = new Gson().fromJson(data, t);
@@ -212,28 +200,46 @@ public class BillboardActivity extends AppCompatActivity implements
                 BillboardMediaModel media = new Gson().fromJson(data, t);
 
                 if (media != null) {
-                    if (selectedBillboard != null) {
-                        selectedBillboard.medias.add(media);
-                        mediaFragment.setMedias(selectedBillboard.medias);
-                    } else {
-                        mediaFragment.setMedias(new ArrayList<>(Collections.singletonList(media)));
-                    }
+                    selectedBillboard.medias.add(media);
+                    mediaFragment.setMedias(selectedBillboard.medias, selectedBillboard.is_new);
                 }
 
             } else if (type.equals(Keys.URI)) { // from CameraActivity
                 Uri uri = intent.getParcelableExtra(Keys.URI);
 
                 if (uri != null) {
-                    if (selectedBillboard != null) {
-                        selectedBillboard.status.files.add(uri.getPath());
-                        statusFragment.setStatus(selectedBillboard.status);
-                    } else {
-//                        status.files.add(uri.getPath());
-//                        statusFragment.setStatus(status);
-                    }
+                    selectedBillboard.status.medias.add(uri.getPath());
+                    statusFragment.setStatus(selectedBillboard.status, selectedBillboard.is_new);
                 }
             }
         } // END_OF_TYPE
+    }
+
+    private void clear() {
+        // TODO: cancel
+
+        backPressed();
+    }
+
+    private void done() {
+        // TODO: save into local storage
+
+        backPressed();
+    }
+
+    private boolean onMenuItemClick(int itemId) {
+        switch (itemId) {
+            case R.id.action1:
+                clear();
+                break;
+            case R.id.action2:
+                done();
+                break;
+            default:
+                break;
+        }
+
+        return true;
     }
 
     private void backPressed() {
@@ -257,73 +263,10 @@ public class BillboardActivity extends AppCompatActivity implements
      */
 
     private void populate() {
-        locationFragment.setLocation(selectedBillboard != null ? selectedBillboard.location : null);
-        billboardFragment.setBillboard(selectedBillboard);
-        mediaFragment.setMedias(selectedBillboard != null ? selectedBillboard.medias : null);
-        statusFragment.setStatus(selectedBillboard != null ? selectedBillboard.status : null);
-    }
-
-
-
-
-    /**
-     * Fragments functions ->
-     * onFragmentInteraction
-     * onBillboardFragmentInteraction
-     * onLocationFragmentInteraction
-     */
-
-    public void onFragmentInteraction(BillboardModel billboard) {
-        // TODO: set billboard
-        // call api
-//        Billboards.createBillboardInfo(this, billboard);
-        // then update the fragment
-
-
-        if (selectedBillboard == null)
-            selectedBillboard = new BillboardModel();
-
-        billboardFragment.setBillboard(billboard);
-    }
-
-    public void onLocationFragmentInteraction(BillboardLocationModel location) {
-        // TODO: set location
-        // call api
-        // then update the fragment
-
-
-        if (selectedBillboard == null)
-            selectedBillboard = new BillboardModel();
-
-        selectedBillboard.location = location;
-        locationFragment.setLocation(location);
-    }
-
-    public void onBillboardFragmentInteraction(BillboardModel billboard) {
-        // TODO: set billboard
-        // call api
-//        Billboards.createBillboardInfo(this, billboard);
-        // then update the fragment
-
-
-        if (selectedBillboard == null)
-            selectedBillboard = new BillboardModel();
-
-        billboardFragment.setBillboard(billboard);
-    }
-
-    public void onStatusFragmentInteraction(BillboardStatusModel status) {
-        // TODO: set billboard
-        // call api
-//        Billboards.createBillboardInfo(this, billboard);
-        // then update the fragment
-
-
-        if (selectedBillboard == null)
-            selectedBillboard = new BillboardModel();
-
-        selectedBillboard.status = status;
-        statusFragment.setStatus(status);
+        locationFragment.setLocation(selectedBillboard.location, selectedBillboard.is_new);
+        billboardFragment.setBillboard(selectedBillboard, selectedBillboard.is_new);
+        mediaFragment.setMedias(selectedBillboard.medias, selectedBillboard.is_new);
+        statusFragment.setStatus(selectedBillboard.status, selectedBillboard.is_new);
     }
 
 
