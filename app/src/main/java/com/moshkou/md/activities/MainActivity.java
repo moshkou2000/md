@@ -66,6 +66,7 @@ import com.moshkou.md.R;
 import com.moshkou.md.interfaces.OnBillboardListener;
 import com.moshkou.md.interfaces.OnBillboardsListener;
 import com.moshkou.md.interfaces.OnFilterListener;
+import com.moshkou.md.interfaces.OnInfoListener;
 import com.moshkou.md.interfaces.OnSearchListener;
 import com.moshkou.md.models.BillboardMediaModel;
 import com.moshkou.md.models.BillboardModel;
@@ -87,16 +88,17 @@ import static androidx.fragment.app.FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CU
 
 public class MainActivity extends FragmentActivity implements
         OnMapReadyCallback,
-        OnSearchListener, OnFilterListener, OnBillboardsListener, OnBillboardListener {
+        OnSearchListener, OnFilterListener, OnBillboardsListener, OnBillboardListener, OnInfoListener {
 
 
     private static String TAG = "MAIN";
 
     private View mapView;
 
-    private LinearLayout layoutInfoContent;
-    private LinearLayout layoutBottomSheetBillboards;
-    private BottomSheetBehavior layoutList;
+    private LinearLayout layoutInfo;
+    private LinearLayout layoutBillboards;
+    private BottomSheetBehavior bottomSheetInfo;
+    private BottomSheetBehavior bottomSheetBillboards;
 
     private EditText textSearch;
     private EditText textSearchJustForFocus;
@@ -159,9 +161,11 @@ public class MainActivity extends FragmentActivity implements
 
         mapView = findViewById(R.id.map);
 
-        layoutInfoContent = findViewById(R.id.layout_info_content);
-        layoutBottomSheetBillboards = findViewById(R.id.bottom_sheet_billboards);
-        layoutList = BottomSheetBehavior.from(layoutBottomSheetBillboards);
+        layoutInfo = findViewById(R.id.bottom_sheet_info);
+        bottomSheetInfo = BottomSheetBehavior.from(layoutInfo);
+
+        layoutBillboards = findViewById(R.id.bottom_sheet_billboards);
+        bottomSheetBillboards = BottomSheetBehavior.from(layoutBillboards);
 
         textSearch = findViewById(R.id.text_search);
         textSearchJustForFocus = findViewById(R.id.text_search_just_for_focus);
@@ -194,6 +198,27 @@ public class MainActivity extends FragmentActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onDestroy() {
+        searchAdapter = null;
+        filterAdapter = null;
+        billboardsAdapter = null;
+        infoPagerAdapter = null;
+        infoPages.clear();
+        infoPages = null;
+        animationAdd = null;
+        map = null;
+        mapStyle = null;
+        markers.clear();
+        markers = null;
+        billboards.clear();
+        billboards = null;
+        selectedBillboard = null;
+
+        Runtime.getRuntime().gc();
+        super.onDestroy();
     }
 
     @Override
@@ -306,9 +331,10 @@ public class MainActivity extends FragmentActivity implements
                 if (!Permission.ACCESS_FINE_LOCATION) {
                     Permission.Check.LOCATION(this);
                 } else {
-                    if (Permission.Check.LOCATION_STATUS(this))
+                    if (Permission.Check.LOCATION_STATUS(this)) {
+                        Log.i(TAG, "CLICKED");
                         locationButton.callOnClick();
-                    else
+                    } else
                         showDialogLocationAccess();
                 }
             });
@@ -364,15 +390,6 @@ public class MainActivity extends FragmentActivity implements
         initMore();
         initInfo();
         initAdd();
-
-        CoordinatorLayout.LayoutParams paramsBillboards = (CoordinatorLayout.LayoutParams) layoutBottomSheetBillboards.getLayoutParams();
-        paramsBillboards.height = (int) (Settings.DEVICE_HEIGHT * 0.64); // set the height to 64%
-        layoutBottomSheetBillboards.setLayoutParams(paramsBillboards);
-
-        buttonBack.setOnClickListener(view -> {
-            clearSearchFocus();
-            showLayoutList();
-        });
     }
 
     private void initMap() {
@@ -381,6 +398,10 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void initBillboards() {
+        CoordinatorLayout.LayoutParams paramsBillboards = (CoordinatorLayout.LayoutParams) layoutBillboards.getLayoutParams();
+        paramsBillboards.height = (int) (Settings.DEVICE_HEIGHT * 0.64); // set the height to 64%
+        layoutBillboards.setLayoutParams(paramsBillboards);
+
         billboardsAdapter = new BillboardsAdapter(billboards, this);
         recyclerViewBillboards.setAdapter(billboardsAdapter);
     }
@@ -433,6 +454,11 @@ public class MainActivity extends FragmentActivity implements
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) { }
         });
+
+        buttonBack.setOnClickListener(view -> {
+            clearSearchFocus();
+            showLayoutList();
+        });
     }
 
     private void initFilter() {
@@ -475,6 +501,19 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void initInfo() {
+        bottomSheetInfo.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View view, int i) {
+                if (bottomSheetInfo.getState() == BottomSheetBehavior.STATE_COLLAPSED)
+                    showLayoutList();
+            }
+
+            @Override
+            public void onSlide(@NonNull View view, float v) {
+
+            }
+        });
+
         infoPagerAdapter = new InfoPagerAdapter(getSupportFragmentManager(), BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         viewPagerInfo.setAdapter(infoPagerAdapter);
 
@@ -487,7 +526,6 @@ public class MainActivity extends FragmentActivity implements
         buttonInfoClose.setOnClickListener(view -> {
             showLayoutList();
         });
-
     }
 
     private void initAdd() {
@@ -691,11 +729,11 @@ public class MainActivity extends FragmentActivity implements
 
         Settings.LAYOUT_STATUS = Enumerates.LayoutStatus.INFO;
 
-        if (layoutInfoContent.getVisibility() != View.VISIBLE)
-            layoutInfoContent.setVisibility(View.VISIBLE);
+        if (layoutInfo.getVisibility() != View.VISIBLE)
+            layoutInfo.setVisibility(View.VISIBLE);
 
-        if (layoutBottomSheetBillboards.getVisibility() != View.GONE)
-            layoutBottomSheetBillboards.setVisibility(View.GONE);
+        if (layoutBillboards.getVisibility() != View.GONE)
+            layoutBillboards.setVisibility(View.GONE);
 
         if (layoutSearch.getVisibility() != View.GONE)
             layoutSearch.setVisibility(View.GONE);
@@ -707,6 +745,8 @@ public class MainActivity extends FragmentActivity implements
         if (spinnerMore.getVisibility() != View.VISIBLE)
             spinnerMore.setVisibility(View.VISIBLE);
 
+        bottomSheetInfo.setState(BottomSheetBehavior.STATE_EXPANDED);
+        bottomSheetBillboards.setState(BottomSheetBehavior.STATE_COLLAPSED);
         Utils.hideKeyboard(this);
     }
 
@@ -716,11 +756,11 @@ public class MainActivity extends FragmentActivity implements
 
         Settings.LAYOUT_STATUS = Enumerates.LayoutStatus.NULL;
 
-        if (layoutInfoContent.getVisibility() != View.GONE)
-            layoutInfoContent.setVisibility(View.GONE);
+        if (layoutInfo.getVisibility() != View.GONE)
+            layoutInfo.setVisibility(View.GONE);
 
-        if (layoutBottomSheetBillboards.getVisibility() != View.VISIBLE)
-            layoutBottomSheetBillboards.setVisibility(View.VISIBLE);
+        if (layoutBillboards.getVisibility() != View.VISIBLE)
+            layoutBillboards.setVisibility(View.VISIBLE);
 
         if (layoutSearch.getVisibility() != View.GONE)
             layoutSearch.setVisibility(View.GONE);
@@ -738,7 +778,8 @@ public class MainActivity extends FragmentActivity implements
         if (spinnerMore.getVisibility() != View.VISIBLE)
             spinnerMore.setVisibility(View.VISIBLE);
 
-        layoutList.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        bottomSheetInfo.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        bottomSheetBillboards.setState(BottomSheetBehavior.STATE_COLLAPSED);
         Utils.hideKeyboard(this);
     }
 
@@ -746,11 +787,11 @@ public class MainActivity extends FragmentActivity implements
 
         Settings.LAYOUT_STATUS = Enumerates.LayoutStatus.DETAILS;
 
-        if (layoutInfoContent.getVisibility() != View.GONE)
-            layoutInfoContent.setVisibility(View.GONE);
+        if (layoutInfo.getVisibility() != View.GONE)
+            layoutInfo.setVisibility(View.GONE);
 
-        if (layoutBottomSheetBillboards.getVisibility() != View.GONE)
-            layoutBottomSheetBillboards.setVisibility(View.GONE);
+        if (layoutBillboards.getVisibility() != View.GONE)
+            layoutBillboards.setVisibility(View.GONE);
 
         if (layoutSearch.getVisibility() != View.GONE)
             layoutSearch.setVisibility(View.GONE);
@@ -796,11 +837,11 @@ public class MainActivity extends FragmentActivity implements
 
         Settings.LAYOUT_STATUS = Enumerates.LayoutStatus.ADD;
 
-        if (layoutInfoContent.getVisibility() != View.GONE)
-            layoutInfoContent.setVisibility(View.GONE);
+        if (layoutInfo.getVisibility() != View.GONE)
+            layoutInfo.setVisibility(View.GONE);
 
-        if (layoutBottomSheetBillboards.getVisibility() != View.GONE)
-            layoutBottomSheetBillboards.setVisibility(View.GONE);
+        if (layoutBillboards.getVisibility() != View.GONE)
+            layoutBillboards.setVisibility(View.GONE);
 
         if (textMap.getVisibility() != View.VISIBLE)
             textMap.setVisibility(View.VISIBLE);
@@ -847,9 +888,9 @@ public class MainActivity extends FragmentActivity implements
                 Utils.humanizerDateTime(selectedBillboard.updated_at)));
 
         List<Fragment> temp = new ArrayList<>();
-        for (BillboardMediaModel media: selectedBillboard.medias) {
+        for (int i = 0; i < selectedBillboard.getUrls().size(); i++) {
             InfoItemFragment infoItemFragment = new InfoItemFragment();
-            infoItemFragment.setData(media);
+            infoItemFragment.setData(i, selectedBillboard.getMedias().get(i), this);
             temp.add(infoItemFragment);
         }
 
@@ -880,8 +921,8 @@ public class MainActivity extends FragmentActivity implements
 
     public void onSearchInteraction(BillboardModel billboard) {
         selectedBillboard = billboard;
-        gotoMarker();
         clearSearchFocus();
+        gotoMarker();
         showLayoutInfo();
     }
 
@@ -903,6 +944,14 @@ public class MainActivity extends FragmentActivity implements
 
     public void onFilterInteraction(boolean isEmpty) {
         filter(isEmpty);
+    }
+
+    public void onInfoInteraction(int index) {
+        Utils.activityPreview(App.getContext(),
+                selectedBillboard.getUrls().toArray(new String[0]),
+                index,
+                selectedBillboard.medias.get(index).tags.get(0).key,
+                false);
     }
 
 
@@ -1021,7 +1070,6 @@ public class MainActivity extends FragmentActivity implements
 
         dialog.show();
     }
-
 
 
 

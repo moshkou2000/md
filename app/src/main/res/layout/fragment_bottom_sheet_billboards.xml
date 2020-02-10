@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginTop="6dp"
-            android:text="@string/placeholder_bottom_holder"
+            android:text="@string/placeholder_bottom_holder_billboards"
             android:textAlignment="center"
             android:textColor="#707070"
             android:textSize="16sp"

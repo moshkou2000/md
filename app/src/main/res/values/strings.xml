@@ -107,7 +107,8 @@
     <string name="placeholder_phone">Phone Number</string>
     <string name="placeholder_email">Email</string>
     <string name="placeholder_name">Full Name</string>
-    <string name="placeholder_bottom_holder">Billboards</string>
+    <string name="placeholder_bottom_holder_Info">Info</string>
+    <string name="placeholder_bottom_holder_billboards">Billboards</string>
     <string name="placeholder_search">Billboard name, address &amp; advertiser</string>
     <string name="placeholder_search_hint_header">Search for</string>
     <string name="placeholder_search_hint_body">Type address, billboard and product name</string>

@@ -84,7 +84,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ItemRowHol
 
     @Override
     public void onBindViewHolder(@NonNull ItemRowHolder itemRowHolder, int i) {
-        final BillboardModel item = getItem(i);
+        BillboardModel item = getItem(i);
         itemRowHolder.name.setText(item.name);
         itemRowHolder.product.setText(item.advertiser);
         itemRowHolder.address.setText(item.location.address);

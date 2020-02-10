@@ -120,7 +120,7 @@ public class StatusAdapter extends BaseAdapter {
         Utils.setPicasso(item, viewHolder.image);
 
         viewHolder.image.setOnClickListener(view ->
-                Utils.activityPreview(App.getContext(), files.toArray(new String[0]), "", false));
+                Utils.activityPreview(App.getContext(), files.toArray(new String[0]), position, "", false));
         viewHolder.button.setOnClickListener(view -> toggleItem(position, viewHolder.root));
 
         return convertView;

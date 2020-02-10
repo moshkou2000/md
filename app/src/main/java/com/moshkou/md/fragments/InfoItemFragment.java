@@ -10,16 +10,20 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
-import com.moshkou.md.App;
 import com.moshkou.md.R;
 import com.moshkou.md.helpers.Utils;
+import com.moshkou.md.interfaces.OnInfoListener;
 import com.moshkou.md.models.BillboardMediaModel;
+
+import java.util.List;
 
 
 public class InfoItemFragment extends Fragment {
 
 
+    private OnInfoListener onInfoListener;
     private BillboardMediaModel media;
+    private int index = 0;
 
     public InfoItemFragment() { }
 
@@ -45,7 +49,7 @@ public class InfoItemFragment extends Fragment {
 
         Utils.setPicasso(media.media, image);
 
-        button.setOnClickListener(v -> Utils.activityPreview(App.getContext(), new String[]{media.media}, "", false));
+        button.setOnClickListener(v -> onInfoListener.onInfoInteraction(index));
 
         return view;
     }
@@ -53,7 +57,9 @@ public class InfoItemFragment extends Fragment {
 
 
 
-    public void setData(BillboardMediaModel data) {
-        this.media = data;
+    public void setData(int index, BillboardMediaModel media, OnInfoListener onInfoListener) {
+        this.index = index;
+        this.media = media;
+        this.onInfoListener = onInfoListener;
     }
 }

@@ -30,6 +30,9 @@ public class PreviewActivity extends AppCompatActivity implements
         OnImageListener {
 
 
+    private static String TAG = "PREVIEW";
+
+
     private List<Fragment> previewPages = new ArrayList<>();
     private boolean hasFocus = true;
 
@@ -102,6 +105,7 @@ public class PreviewActivity extends AppCompatActivity implements
 
     private void getExtra() {
         Intent i = getIntent();
+        int index = i.getIntExtra(Keys.INDEX, 0);
         String name = i.getStringExtra(Keys.NAME);
         boolean isVideo = i.getBooleanExtra(Keys.VIDEO, false);
 
@@ -110,15 +114,17 @@ public class PreviewActivity extends AppCompatActivity implements
 
         if (!isVideo) {
             String[] urls = i.getStringArrayExtra(Keys.URL);
-            populatePreviewImages(urls);
+            populatePreviewImages(urls, index);
 
         } else {
             String url = i.getStringExtra(Keys.URL);
-            populatePreviewVideos(url);
+            populatePreviewVideos(url, index);
         }
+
+
     }
 
-    private void populatePreviewImages(String[] urls) {
+    private void populatePreviewImages(String[] urls, int index) {
         ViewPager viewPagerImage = findViewById(R.id.view_pager_image);
         PreviewActivity.PreviewPagerAdapter previewPagerAdapter =
                 new PreviewActivity.PreviewPagerAdapter(
@@ -156,9 +162,13 @@ public class PreviewActivity extends AppCompatActivity implements
             previewPagerAdapter.notifyDataSetChanged();
             viewPagerImage.setCurrentItem(0);
         }
+
+        viewPagerImage.setCurrentItem(index);
+
+        Log.i(TAG, "" + temp.size());
     }
 
-    private void populatePreviewVideos(String url) {
+    private void populatePreviewVideos(String url, int index) {
         VideoView video = findViewById(R.id.video);
         video.setOnClickListener(view -> {
             if (!hasFocus) {

@@ -132,7 +132,7 @@ public class MediaActivity extends AppCompatActivity {
             Settings.MEDIA_PICKER = Enumerates.MediaPicker.MEDIA_ACTIVITY;
             Utils.openDefaultGalleryApp(Objects.requireNonNull(this));
         });
-        image.setOnClickListener(v -> Utils.activityPreview(App.getContext(), new String[]{selectedMedia.media}, "", false));
+        image.setOnClickListener(v -> Utils.activityPreview(App.getContext(), new String[]{selectedMedia.media}, 0, "", false));
     }
 
 

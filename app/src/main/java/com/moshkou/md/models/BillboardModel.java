@@ -32,10 +32,66 @@ public class BillboardModel {
     public boolean is_new = true;
 
 
-    public List<String> getMedias() {
+    // TODO: get medias
+    // BillboardMediaModel
+    // OR
+    // String
+    //
+    public List<BillboardMediaModel> getMedias() {
+        List<BillboardMediaModel> result = new ArrayList<>();
         List<String> data = new ArrayList<>();
         for (BillboardMediaModel m: medias) {
-            data.add(m.media);
+            boolean has = false;
+            for (String d: data) {
+                if (m.equals(d)) {
+                    has = true;
+                    break;
+                }
+            }
+            if (!has) {
+                data.add(m.media);
+                result.add(m);
+            }
+        }
+        return result;
+    }
+
+    public List<String> getUrls() {
+        List<String> result = new ArrayList<>();
+        List<KeyValue> data = new ArrayList<>();
+        for (BillboardMediaModel m: medias) {
+            for (KeyValue t: m.tags) {
+                boolean has = false;
+                for (KeyValue d: data) {
+                    if (t.key.equals(d.key) && t.value.equals(d.value)) {
+                        has = true;
+                        break;
+                    }
+                }
+                if (!has) {
+                    data.add(t);
+                    result.add(m.media);
+                }
+            }
+        }
+        return result;
+    }
+
+    public List<KeyValue> getKeyValues() {
+        List<KeyValue> data = new ArrayList<>();
+        for (BillboardMediaModel m: medias) {
+            for (KeyValue t: m.tags) {
+                boolean has = false;
+                for (KeyValue d: data) {
+                    if (t.key.equals(d.key) && t.value.equals(d.value)) {
+                        has = true;
+                        break;
+                    }
+                }
+                if (!has) {
+                    data.add(t);
+                }
+            }
         }
         return data;
     }
@@ -57,25 +113,6 @@ public class BillboardModel {
             return 4;
 
         return 0;
-    }
-
-    public List<KeyValue> getKeyValues() {
-        List<KeyValue> data = new ArrayList<>();
-        for (BillboardMediaModel m: medias) {
-            for (KeyValue t: m.tags) {
-                boolean has = false;
-                for (KeyValue d: data) {
-                    if (t.key.equals(d.key) && t.value.equals(d.value)) {
-                        has = true;
-                        break;
-                    }
-                }
-                if (!has) {
-                    data.add(t);
-                }
-            }
-        }
-        return data;
     }
 }
 

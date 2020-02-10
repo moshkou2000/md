@@ -1,5 +1,11 @@
 
 // ************************************
+// Delay
+// ************************************
+new Handler().postDelayed(this::showLayoutInfo, 1000);
+
+
+// ************************************
 // Snackbar
 // ************************************
 final View coordinatorLayout = findViewById(R.id.coordinatorLayout);

@@ -315,11 +315,12 @@ public class Utils {
         snackbar.show();
     }
 
-    public static void activityPreview(Context context, String[] url, String title, boolean isVideo){
+    public static void activityPreview(Context context, String[] url, int index, String title, boolean isVideo){
         Intent i = new Intent(context, PreviewActivity.class);
         i.addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK);
         i.putExtra(Keys.URL, url);
-        i.putExtra(Keys.NAME, title);
+        i.putExtra(Keys.INDEX, index);
+        i.putExtra(Keys.NAME, "");//title);
         i.putExtra(Keys.VIDEO, isVideo);
         context.startActivity(i);
     }
