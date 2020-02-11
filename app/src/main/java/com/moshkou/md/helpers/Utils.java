@@ -42,6 +42,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -162,12 +165,12 @@ public class Utils {
                     .into(image, new com.squareup.picasso.Callback() {
                         @Override
                         public void onSuccess() {
-                            Log.i(TAG, "success");
+                            Log.i(TAG, "setPicasso.success");
                         }
 
                         @Override
                         public void onError(Exception ex) {
-                            Log.i(TAG, "error: " + ex.getMessage());
+                            Log.i(TAG, "setPicasso.error: " + ex.getMessage());
                         }
                     });
 
@@ -182,12 +185,12 @@ public class Utils {
                     .into(image, new com.squareup.picasso.Callback() {
                         @Override
                         public void onSuccess() {
-                            Log.i(TAG, "success");
+                            Log.i(TAG, "setPicasso.success");
                         }
 
                         @Override
                         public void onError(Exception ex) {
-                            Log.i(TAG, "error: " + ex.getMessage());
+                            Log.i(TAG, "setPicasso.error: " + ex.getMessage());
                         }
                     });
         }
@@ -357,6 +360,23 @@ public class Utils {
             view = new View(activity);
         }
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    public static String toMd5(String input) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] messageDigest = md.digest(input.getBytes());
+            BigInteger number = new BigInteger(1, messageDigest);
+            return String.format("%032X", number);
+
+//            String md5 = number.toString(16);
+//            while (md5.length() < 32)
+//                md5 = "0" + md5;
+//            return md5;
+        } catch (NoSuchAlgorithmException e) {
+            Log.e(TAG, "MD5" + e.getLocalizedMessage());
+            return null;
+        }
     }
 
 

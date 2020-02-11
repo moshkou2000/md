@@ -4,23 +4,36 @@ import android.content.Context;
 import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Patterns;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.moshkou.md.configs.Config;
 import com.moshkou.md.R;
+import com.moshkou.md.configs.Keys;
+import com.moshkou.md.configs.Settings;
+import com.moshkou.md.helpers.SharedPreferencesSupport;
+import com.moshkou.md.helpers.Utils;
+import com.moshkou.md.interfaces.OnLoginListener;
+import com.moshkou.md.models.UserModel;
+import com.moshkou.md.services.Auth;
 
-public class LoginActivity extends AppCompatActivity {
+import org.json.JSONException;
+import org.json.JSONObject;
+
+
+public class LoginActivity extends AppCompatActivity implements
+        OnLoginListener {
+
+    private static final String TAG = "LOGIN";
 
 
     private final Context context = this;
-    private TextView signup;
-    private EditText phoneEmail;
+    private EditText textEditPhone;
+    private EditText textEditPassword;
     private TextView error;
-    private Button signin;
-    private Button help;
 
 
     @Override
@@ -28,65 +41,56 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        phoneEmail = findViewById(R.id.phone_email);
+        textEditPhone = findViewById(R.id.edit_text_phone);
+        textEditPassword = findViewById(R.id.edit_text_password);
         error = findViewById(R.id.error);
-        signin = findViewById(R.id.signin);
-        signup = findViewById(R.id.signup);
-        help = findViewById(R.id.help);
-
-        signin.setOnClickListener(view -> {
-            if (validation())
-                gotoLoginVerification();
-        });
-        signup.setOnClickListener(view -> gotoRegister());
-        help.setOnClickListener(view -> gotoHelp());
+        Button signIn = findViewById(R.id.signin);
+        signIn.setOnClickListener(view -> login());
     }
 
-    private boolean validation() {
+    private void login() {
         error.setText("");
+        String strPhone = textEditPhone.getText().toString().trim();
+        String strPassword = textEditPassword.getText().toString().trim();
 
-        String strPhoneEmail = phoneEmail.getText().toString();
-        boolean bPhoneEmail= strPhoneEmail.matches(Config.REGEX_NUMBER);
+        Log.i(TAG, "p: " + strPassword);
 
-        if (strPhoneEmail.isEmpty()) {
-            error.setText(R.string.message_error_valid_phone_email);
-        } else if (bPhoneEmail) {
-            bPhoneEmail = strPhoneEmail.length() > 9;
-            if (!bPhoneEmail) {
-                error.setText(R.string.message_error_valid_phone);
-            }
+        if (strPhone.length() == 0) {
+            error.setText(R.string.message_error_phone);
+
+        } else if (!strPhone.matches(Config.REGEX_NUMBER)) {
+            error.setText(R.string.message_error_valid_phone);
+
+        } else if (strPassword.length() == 0) {
+            error.setText(R.string.message_error_password);
+
+        } else if (strPassword.length() < 6 || strPassword.length() > 16) {
+            error.setText(R.string.message_error_valid_password);
+
         } else {
-            bPhoneEmail = Patterns.EMAIL_ADDRESS.matcher(strPhoneEmail).matches();
-            if (!bPhoneEmail) {
-                error.setText(R.string.message_error_valid_email);
+            JSONObject data = new JSONObject();
+            try {
+                data.put("phone", strPhone);
+                data.put("password", Utils.toMd5(strPhone + strPassword));
+                Auth.login(this, data);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
-
-        return !strPhoneEmail.isEmpty() && bPhoneEmail;
     }
 
-    private void gotoLoginVerification() {
-        reset();
 
-        Intent i = new Intent(context, LoginVerificationActivity.class);
-        startActivity(i);
-        finish();
-    }
 
-    private void gotoRegister() {
-        Intent i = new Intent(context, RegisterActivity.class);
-        startActivity(i);
-        finish();
-    }
 
-    private void gotoHelp() {
-        Intent i = new Intent(context, HelpActivity.class);
-        startActivity(i);
-    }
+    @Override
+    public void onLoginInteraction(UserModel user) {
+        if (user != null) {
+            Settings.USER = user;
+            SharedPreferencesSupport.setString(context, Keys.USER, new Gson().toJson(user));
 
-    private void reset() {
-        phoneEmail.getText().clear();
-        error.setText("");
+            startActivity(new Intent(context, MainActivity.class));
+            finish();
+        }
     }
 }
 

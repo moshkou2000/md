@@ -61,6 +61,7 @@ import com.moshkou.md.configs.Permission;
 import com.moshkou.md.configs.RequestCode;
 import com.moshkou.md.configs.Settings;
 import com.moshkou.md.fragments.InfoItemFragment;
+import com.moshkou.md.helpers.SharedPreferencesSupport;
 import com.moshkou.md.helpers.Utils;
 import com.moshkou.md.R;
 import com.moshkou.md.interfaces.OnBillboardListener;
@@ -480,19 +481,8 @@ public class MainActivity extends FragmentActivity implements
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 Object item = adapterView.getItemAtPosition(position);
-                if (item != null) {
-                    switch (position) {
-                        case 0:
-                            showToast("do nothing...");
-                            break;
-                        case 1:
-                            // TODO: logout
-                            // clear data
-                            // goto login
-                            showToast(getString(R.string.action_exit));
-                            break;
-                    }
-                }
+                if (item != null && position == 1)
+                    logout();
             }
 
             @Override
@@ -546,6 +536,7 @@ public class MainActivity extends FragmentActivity implements
 
     /**
      * Helper functions ->
+     * logout
      * filter
      * findBillboard
      * clearSelected
@@ -558,6 +549,12 @@ public class MainActivity extends FragmentActivity implements
      * toggleFilter
      * toggleAdd
      */
+
+    private void logout() {
+        SharedPreferencesSupport.remove(this, Keys.USER);
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
+    }
 
     private void filter(boolean isEmpty) {
         Log.i(TAG, "filter.state: " + Settings.FILTER_BILLBOARD.location.state);
@@ -959,6 +956,7 @@ public class MainActivity extends FragmentActivity implements
 
     /**
      * API callback ->
+     * onCreateBillboard
      * onGetBillboards
      * onCreateBillboardLocation
      * onUpdateBillboardLocation
@@ -970,13 +968,11 @@ public class MainActivity extends FragmentActivity implements
      * onUpdateBillboardStatus
      */
 
-    public void onGetBillboards(List<BillboardModel> billboards) {
+    public void onCreateBillboard(BillboardModel billboard) { }
 
-    }
+    public void onGetBillboards(List<BillboardModel> billboards) { }
 
-    public void onCreateBillboardLocation(BillboardLocationModel location) {
-
-    }
+    public void onCreateBillboardLocation(BillboardLocationModel location) { }
 
     public void onUpdateBillboardLocation(BillboardLocationModel location) {
 

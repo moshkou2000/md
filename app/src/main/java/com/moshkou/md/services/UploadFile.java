@@ -2,6 +2,9 @@ package com.moshkou.md.services;
 
 import android.util.Log;
 
+import com.moshkou.md.configs.Config;
+import com.moshkou.md.configs.Settings;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -15,13 +18,14 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
+
+
 public class UploadFile {
 
-    public void upload(final String selectedFilePath, final String tags) {
+    private static final String TAG = "UPLOAD_FILE";
 
-        final String MEDIA_CREATE_URL = "MEDIA_CREATE_URL";
-        final String TOKEN = "EXAMPLE EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE";
 
+    public static void upload(final String selectedFilePath, final String tags) {
         final String boundary = "----WebKitFormBoundary7MA4YWxkTrZu0gW";
         final File selectedFile = new File(selectedFilePath);
 
@@ -32,7 +36,7 @@ public class UploadFile {
 
         final String callback = "/api/media/create";
         final String host = "sgdev.apptractive.com.my";
-        final String port = "3020";
+        final String port = "";
 
         OkHttpClient client = new OkHttpClient();
 
@@ -47,28 +51,28 @@ public class UploadFile {
                 .build();
 
         Request request = new Request.Builder()
-                .url(MEDIA_CREATE_URL)
+                .url(Config.SG_CDN)
                 .post(body)
                 .addHeader("content-type", "multipart/form-data; boundary=" + boundary)
                 .addHeader("cache-control", "no-cache")
                 .addHeader("connection", "keep-alive")
-                .addHeader("x-access-token", TOKEN)
+                .addHeader("x-access-token", Settings.USER.getSgToken())
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
 
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.i("MEDIA_SERVICE", "Failure: " + e.getMessage());
+                Log.i(TAG, "Failure: " + e.getMessage());
             }
 
             @Override
             public void onResponse(Call call, Response response) {
-                Log.i("MEDIA_SERVICE", "Response: " + response);
+                Log.i(TAG, "Response: " + response);
 
                 if (response.isSuccessful()) {
                     ResponseBody responseBody = response.body();
-                    Log.i("MEDIA_SERVICE", "responseBody: " + responseBody);
+                    Log.i(TAG, "responseBody: " + responseBody);
 
                     try {
                         String data = responseBody.string();

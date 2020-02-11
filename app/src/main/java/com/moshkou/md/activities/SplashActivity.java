@@ -21,6 +21,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
         launch();
     }
 
@@ -31,19 +32,13 @@ public class SplashActivity extends AppCompatActivity {
         Utils.init(context);
 
         String data = SharedPreferencesSupport.getString(context, Keys.USER);
-        Gson gson = new Gson();
-        Settings.USER = gson.fromJson(data, UserModel.class);
+        Settings.USER = new Gson().fromJson(data, UserModel.class);
 
-        if (Settings.USER != null) {
-            String token = SharedPreferencesSupport.getString(context, Keys.TOKEN);
+        if (Settings.USER != null)
+            startActivity(new Intent(context, MainActivity.class));
+        else
+            startActivity(new Intent(context, LoginActivity.class));
 
-            if (!token.isEmpty())
-                Settings.USER.setToken(token);
-        }
-
-        Intent i = new Intent(context, MainActivity.class);
-        i.putExtra(Keys.FLAG, Flags.LOGIN);
-        startActivity(i);
         finish();
     }
 }

@@ -16,6 +16,18 @@ import com.moshkou.md.models.BillboardMediaModel;
 
 public class Billboards {
 
+    public static void createBillboard(OnBillboardsListener listener, BillboardModel billboard) {
+        Requests request = new Requests(
+                Request.Method.POST,
+                Config.BILLBOARD_LOCATION_URL,
+                null,
+                new Gson().toJson(billboard),
+                new Error(),
+                respond -> listener.onCreateBillboard(Convertor.toObject(respond))
+        );
+        App.getInstance().addToRequestQueue(request, "createBillboard");
+    }
+
 
     public static void getBillboards(OnBillboardsListener listener, int index, int limit, String query) {
         Requests request = new Requests(

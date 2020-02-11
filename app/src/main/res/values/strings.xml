@@ -95,7 +95,10 @@
     <string name="message_error_required_verification_code">Please enter your verification code.</string>
     <string name="message_error_valid_phone_email">Please enter valid phone number or email.</string>
     <string name="message_error_valid_email">Valid email is required.</string>
+    <string name="message_error_phone">Phone number is required.</string>
     <string name="message_error_valid_phone">Valid phone number is required.</string>
+    <string name="message_error_password">Password is required.</string>
+    <string name="message_error_valid_password">Your password must be between 6 and 16 characters.</string>
     <string name="message_error_camera">&appname; does not support your device camera.</string>
     <string name="message_error_required_media">Take picture or select from gallery.</string>
     <string name="message_error_required_brand_product">Brand &amp; Product are required.</string>
@@ -105,6 +108,7 @@
     <string name="placeholder_login_verification">Account Verification Code</string>
     <string name="placeholder_login">Phone or email</string>
     <string name="placeholder_phone">Phone Number</string>
+    <string name="placeholder_password">Password</string>
     <string name="placeholder_email">Email</string>
     <string name="placeholder_name">Full Name</string>
     <string name="placeholder_bottom_holder_Info">Info</string>
@@ -233,7 +237,7 @@
     </string-array>
 
     <string-array name="more_menu_items">
-        <item>Nothing</item>
+        <item></item>
         <item>Logout</item>
     </string-array>
 

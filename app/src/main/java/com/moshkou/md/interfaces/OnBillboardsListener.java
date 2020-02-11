@@ -9,6 +9,7 @@ import java.util.List;
 
 
 public interface OnBillboardsListener {
+    void onCreateBillboard(BillboardModel billboard);
     void onGetBillboards(List<BillboardModel> billboards);
     void onCreateBillboardLocation(BillboardLocationModel location);
     void onUpdateBillboardLocation(BillboardLocationModel location);

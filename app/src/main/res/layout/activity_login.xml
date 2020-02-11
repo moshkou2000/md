@@ -17,13 +17,6 @@
             android:layout_height="0dp"
             android:layout_weight="3">
 
-            <Button
-                android:id="@+id/help"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="top|end"
-                android:background="@android:drawable/ic_menu_help" />
-
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -56,7 +49,7 @@
                 style="@style/bodyText"/>
 
             <EditText
-                android:id="@+id/phone_email"
+                android:id="@+id/edit_text_phone"
                 android:layout_width="280dp"
                 android:layout_height="40dp"
                 android:layout_gravity="top|center_horizontal"
@@ -64,9 +57,27 @@
                 android:layout_marginBottom="4dp"
                 android:background="@drawable/ic_border"
                 android:ems="10"
-                android:hint="@string/placeholder_login"
-                android:inputType="text"
-                android:maxLength="32"
+                android:hint="@string/placeholder_phone"
+                android:inputType="number"
+                android:maxLength="11"
+                android:paddingStart="8dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="4dp"
+                android:textAlignment="center" />
+
+            <EditText
+                android:id="@+id/edit_text_password"
+                android:layout_width="280dp"
+                android:layout_height="40dp"
+                android:layout_gravity="top|center_horizontal"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/ic_border"
+                android:ems="10"
+                android:hint="@string/placeholder_password"
+                android:inputType="textPassword"
+                android:maxLength="16"
                 android:paddingStart="8dp"
                 android:paddingTop="4dp"
                 android:paddingEnd="8dp"
@@ -88,22 +99,8 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="50dp"
                 android:background="@color/info"
-                android:text="@string/action_next" />
+                android:text="@string/action_sign_in" />
 
         </LinearLayout>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/signup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/action_register"
-                style="@style/hyperlink"/>
-        </FrameLayout>
-
     </LinearLayout>
 </ScrollView>

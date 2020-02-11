@@ -8,12 +8,15 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.NoConnectionError;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.moshkou.md.App;
 import com.moshkou.md.configs.Messages;
 import com.moshkou.md.configs.Settings;
 import com.moshkou.md.configs.Enumerates;
 import com.moshkou.md.configs.StatusCodes;
 import com.moshkou.md.helpers.Utils;
+
+import java.io.UnsupportedEncodingException;
 
 
 public class Error implements Response.ErrorListener {
@@ -23,7 +26,7 @@ public class Error implements Response.ErrorListener {
     @Override
     public void onErrorResponse(VolleyError error) {
 
-        Log.i(TAG, error.toString());
+        Log.i(TAG, "error: " + error.toString());
 
         if (error instanceof NoConnectionError || error instanceof NetworkError) {
             Settings.CONNECTIVITY = Enumerates.Connectivity.NO_CONNECTIVITY;
@@ -32,7 +35,14 @@ public class Error implements Response.ErrorListener {
             NetworkResponse response = error.networkResponse;
 
             if (response != null) {
-                Log.i(TAG, "statusCode: " + response.statusCode);
+                try {
+                    Log.i(TAG, "statusCode: " + response.statusCode);
+                    Log.i(TAG, "data: " + new String(response.data, HttpHeaderParser.parseCharset(response.headers)));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+
+                Utils.toast(App.getContext(), Enumerates.Message.ERROR, "" + response.statusCode, Toast.LENGTH_SHORT);
 
                 switch (response.statusCode) {
                     case StatusCodes._400:  // Bad Request
@@ -49,7 +59,7 @@ public class Error implements Response.ErrorListener {
                         break;
                     case StatusCodes._406:  // Not Acceptable
                         break;
-                    case StatusCodes._407:  // TODO: LOGIN
+                    case StatusCodes._407:  // TODO: Auth
                         break;
                     case StatusCodes._408:  // Timeout
                         break;

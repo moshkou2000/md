@@ -274,6 +274,7 @@ public class BillboardActivity extends AppCompatActivity implements
 
     /**
      * API callback ->
+     * onCreateBillboard
      * onGetBillboards
      * onCreateBillboardLocation
      * onUpdateBillboardLocation
@@ -285,41 +286,25 @@ public class BillboardActivity extends AppCompatActivity implements
      * onUpdateBillboardStatus
      */
 
-    public void onGetBillboards(List<BillboardModel> billboards) {
+    public void onCreateBillboard(BillboardModel billboard) { }
 
-    }
+    public void onGetBillboards(List<BillboardModel> billboards) { }
 
-    public void onCreateBillboardLocation(BillboardLocationModel location) {
+    public void onCreateBillboardLocation(BillboardLocationModel location) { }
 
-    }
+    public void onUpdateBillboardLocation(BillboardLocationModel location) { }
 
-    public void onUpdateBillboardLocation(BillboardLocationModel location) {
+    public void onCreateBillboardInfo(BillboardModel billboard) { }
 
-    }
+    public void onUpdateBillboardInfo(BillboardModel billboard) { }
 
-    public void onCreateBillboardInfo(BillboardModel billboard) {
+    public void onCreateBillboardMedia(BillboardMediaModel media) { }
 
-    }
+    public void onUpdateBillboardMedia(BillboardMediaModel media) { }
 
-    public void onUpdateBillboardInfo(BillboardModel billboard) {
+    public void onCreateBillboardStatus(BillboardStatusModel status) { }
 
-    }
-
-    public void onCreateBillboardMedia(BillboardMediaModel media) {
-
-    }
-
-    public void onUpdateBillboardMedia(BillboardMediaModel media) {
-
-    }
-
-    public void onCreateBillboardStatus(BillboardStatusModel status) {
-
-    }
-
-    public void onUpdateBillboardStatus(BillboardStatusModel status) {
-
-    }
+    public void onUpdateBillboardStatus(BillboardStatusModel status) { }
 
 
 

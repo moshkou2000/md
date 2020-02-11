@@ -11,7 +11,11 @@ public class Config {
 
     public static final String TEST_URL                 = "https://jsonplaceholder.typicode.com/todos/1";
 
-    private static final String BASE_URL                = "https://sgdev.apptractive.com.my:3020/api/";
+    public static final String SG_LOGIN_URL             = "https://api.sgdev4.apptractive.com.my/api/auth/login";
+    public static final String SG_LICENSE_URL           = "https://api.sgdev4.apptractive.com.my/api/auth/license";
+    public static final String SG_CDN                   = "https://cdn.sgdev4.apptractive.com.my/cdn/media";
+
+    private static final String BASE_URL                = "https://DOMAIN/api/";
     public static final String LOGIN_URL                = BASE_URL + "auth/login";
     public static final String BILLBOARDS_URL           = BASE_URL + "billboards";
     public static final String BILLBOARD_LOCATION_URL   = BASE_URL + "billboards/location";
@@ -19,8 +23,13 @@ public class Config {
     public static final String BILLBOARD_MEDIA_URL      = BASE_URL + "billboards/media";
     public static final String BILLBOARD_STATUS_URL     = BASE_URL + "billboards/status";
 
-    public static final String REGEX_NUMBER             = "^[0-9]*$";
+
+    public static final String REGEX_NUMBER             = "^[0]{1}[1]{1}[0-9]{8,9}$";
     public static final String PATTER_DATETIME          = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+
+    public static final String SG_LOGIN_EMAIL           = "hassan.n@tractive.com.my";
+    public static final String SG_LOGIN_PASSWORD        = "123456";
+    public static final String SG_LICENSE_KEY           = "67a02356-87bd-4125-8371-df4241c2c9c5";
 
     public static final List<String> MONTH              = new ArrayList<>(
             Arrays.asList(
